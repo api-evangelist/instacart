@@ -1,0 +1,302 @@
+asyncapi: 2.6.0
+info:
+  title: Instacart Connect Event Callbacks
+  description: >-
+    Instacart Connect notifies retailers of order status changes and fulfillment
+    events through webhook callbacks. Retailers configure callback endpoints to
+    receive real-time notifications about order lifecycle events including order
+    creation, shopper assignment, picking, delivery, cancellation, item
+    replacements, and item refunds. Callback endpoints must be protected by
+    OAuth 2.0 authentication.
+  version: '2.0'
+  contact:
+    name: Instacart Connect Support
+    url: https://docs.instacart.com/connect/
+servers:
+  retailerWebhook:
+    url: '{retailer_callback_url}'
+    protocol: https
+    description: >-
+      The retailer's webhook endpoint configured to receive event callbacks
+      from Instacart Connect. Must support OAuth 2.0 authentication.
+    variables:
+      retailer_callback_url:
+        description: >-
+          The retailer's HTTPS endpoint for receiving Instacart event
+          callbacks.
+    security:
+      - oauth2: []
+channels:
+  /webhook:
+    description: >-
+      The retailer's configured webhook endpoint that receives event callbacks
+      from Instacart Connect. Events are sent as HTTP POST requests. The same
+      event notification may be delivered multiple times when an order reverts
+      to a previous status.
+    publish:
+      operationId: receiveEventCallback
+      summary: Receive an Instacart Connect event callback
+      description: >-
+        Receives event callbacks from Instacart Connect about order status
+        changes, item replacements, and item refunds. Retailers should handle
+        duplicate deliveries of the same event gracefully.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/OrderCreated'
+          - $ref: '#/components/messages/OrderAcknowledged'
+          - $ref: '#/components/messages/OrderPicking'
+          - $ref: '#/components/messages/OrderStaging'
+          - $ref: '#/components/messages/OrderDelivering'
+          - $ref: '#/components/messages/OrderDelivered'
+          - $ref: '#/components/messages/OrderCanceled'
+          - $ref: '#/components/messages/OrderRescheduled'
+          - $ref: '#/components/messages/LateDelivery'
+          - $ref: '#/components/messages/ItemReplacement'
+          - $ref: '#/components/messages/ItemRefund'
+          - $ref: '#/components/messages/CustomerMIA'
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >-
+        OAuth 2.0 authentication required on the retailer's callback endpoint.
+        Instacart authenticates to the retailer's endpoint using OAuth 2.0
+        before sending event data.
+      flows:
+        clientCredentials:
+          tokenUrl: '{retailer_token_url}'
+          scopes: {}
+  messages:
+    OrderCreated:
+      name: fulfillment.order_created
+      title: Order Created
+      summary: >-
+        Sent when an order is successfully created in the Instacart system.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderAcknowledged:
+      name: fulfillment.acknowledged
+      title: Order Acknowledged
+      summary: >-
+        Sent when a shopper acknowledges and accepts the order.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderPicking:
+      name: fulfillment.picking
+      title: Order Picking
+      summary: >-
+        Sent when the shopper begins picking items for the order in the store.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderStaging:
+      name: fulfillment.staging
+      title: Order Staging
+      summary: >-
+        Sent when the order is being staged for delivery or pickup.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderDelivering:
+      name: fulfillment.delivering
+      title: Order Delivering
+      summary: >-
+        Sent when the order has left the store and is being delivered to the
+        customer.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderDelivered:
+      name: fulfillment.delivered
+      title: Order Delivered
+      summary: >-
+        Sent when the order has been successfully delivered to the customer.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderCanceled:
+      name: fulfillment.canceled
+      title: Order Canceled
+      summary: >-
+        Sent when an order has been canceled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    OrderRescheduled:
+      name: fulfillment.rescheduled
+      title: Order Rescheduled
+      summary: >-
+        Sent when an order will be fulfilled at a different time than
+        originally scheduled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    LateDelivery:
+      name: fulfillment.late_delivery
+      title: Late Delivery
+      summary: >-
+        Sent when the estimated delivery time has changed and the delivery
+        will be later than originally scheduled.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+    ItemReplacement:
+      name: fulfillment.order_item_replacement
+      title: Item Replacement
+      summary: >-
+        Sent when a shopper replaces an item in the order with a substitute
+        product.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ItemEventPayload'
+    ItemRefund:
+      name: fulfillment.order_item_refund
+      title: Item Refund
+      summary: >-
+        Sent when a shopper refunds an order item because it is unavailable
+        and no suitable replacement is found.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ItemEventPayload'
+    CustomerMIA:
+      name: fulfillment.customer_mia
+      title: Customer MIA
+      summary: >-
+        Sent when the delivery driver arrives but cannot locate the customer
+        at the delivery address.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/OrderEventPayload'
+  schemas:
+    OrderEventPayload:
+      type: object
+      properties:
+        event:
+          type: string
+          description: >-
+            The event type identifier such as fulfillment.delivered or
+            fulfillment.canceled.
+        order_id:
+          type: string
+          description: >-
+            The unique identifier for the order.
+        status:
+          type: string
+          enum:
+            - brand_new
+            - acknowledged
+            - picking
+            - staging
+            - delivering
+            - delivered
+            - canceled
+            - rescheduled
+          description: >-
+            The current status of the order.
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the event occurred.
+        order:
+          type: object
+          description: >-
+            Summary details about the order.
+          properties:
+            id:
+              type: string
+              description: >-
+                The order identifier.
+            user_id:
+              type: string
+              description: >-
+                The retailer's user identifier for the customer.
+            fulfillment_type:
+              type: string
+              enum:
+                - delivery
+                - pickup
+                - last_mile
+              description: >-
+                The fulfillment type of the order.
+            created_at:
+              type: string
+              format: date-time
+              description: >-
+                When the order was created.
+            estimated_delivery_at:
+              type: string
+              format: date-time
+              description: >-
+                The estimated delivery or pickup time.
+    ItemEventPayload:
+      type: object
+      properties:
+        event:
+          type: string
+          description: >-
+            The event type identifier such as fulfillment.order_item_refund
+            or fulfillment.order_item_replacement.
+        order_id:
+          type: string
+          description: >-
+            The unique identifier for the order.
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the event occurred.
+        items:
+          type: array
+          description: >-
+            The full list of order items with their current statuses. Check
+            the refunded or replaced fields to determine which items were
+            affected.
+          items:
+            type: object
+            properties:
+              product_id:
+                type: string
+                description: >-
+                  The product identifier.
+              name:
+                type: string
+                description: >-
+                  The name of the product.
+              quantity:
+                type: integer
+                description: >-
+                  The ordered quantity.
+              status:
+                type: string
+                enum:
+                  - found
+                  - replaced
+                  - refunded
+                  - pending
+                description: >-
+                  The current status of the item.
+              refunded:
+                type: boolean
+                description: >-
+                  Whether this item has been refunded.
+              replacement:
+                type: object
+                description: >-
+                  Details about the replacement product, if the item was
+                  replaced.
+                properties:
+                  product_id:
+                    type: string
+                    description: >-
+                      The product identifier of the replacement.
+                  name:
+                    type: string
+                    description: >-
+                      The name of the replacement product.
+                  quantity:
+                    type: integer
+                    description: >-
+                      The quantity of the replacement.

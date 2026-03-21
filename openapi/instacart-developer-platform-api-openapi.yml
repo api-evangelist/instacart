@@ -1,0 +1,355 @@
+openapi: 3.1.0
+info:
+  title: Instacart Developer Platform API
+  description: >-
+    The Instacart Developer Platform API is a REST-based API that allows app
+    developers to add Instacart shopping capabilities to their websites and
+    applications. It provides endpoints for creating product shopping lists and
+    recipe pages on Instacart Marketplace, enabling users to select a store, add
+    ingredients or products to a cart, and check out. The API uses predictable
+    resource-oriented URLs, standard HTTP methods, and API key authentication,
+    with requests made to the connect.instacart.com base URL.
+  version: '1.0'
+  contact:
+    name: Instacart Developer Support
+    url: https://docs.instacart.com/developer_platform_api/
+  termsOfService: https://www.instacart.com/terms
+externalDocs:
+  description: Instacart Developer Platform API Documentation
+  url: https://docs.instacart.com/developer_platform_api/
+servers:
+  - url: https://connect.instacart.com
+    description: Production Server
+  - url: https://connect.dev.instacart.tools
+    description: Development Server
+tags:
+  - name: Products
+    description: >-
+      Endpoints for creating shopping list and recipe pages on Instacart
+      Marketplace with product links.
+security:
+  - apiKeyAuth: []
+paths:
+  /idp/v1/products/products_link:
+    post:
+      operationId: createShoppingListPage
+      summary: Create a shopping list page
+      description: >-
+        Creates a shopping list page on Instacart Marketplace and returns a
+        unique URL. The page displays a list of products that users can add to
+        their Instacart cart. Each call generates a new page with a unique URL.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShoppingListRequest'
+      responses:
+        '200':
+          description: Shopping list page created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsLinkResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /idp/v1/products/recipe:
+    post:
+      operationId: createRecipePage
+      summary: Create a recipe page
+      description: >-
+        Creates a recipe page on Instacart Marketplace and returns a unique URL.
+        The page displays recipe details including title, image, ingredients,
+        and cooking instructions. Users can add recipe ingredients to their
+        Instacart cart directly from the page.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequest'
+      responses:
+        '200':
+          description: Recipe page created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsLinkResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        API key authentication. Include your API key in the Authorization
+        header.
+  schemas:
+    ShoppingListRequest:
+      type: object
+      required:
+        - title
+        - line_items
+      properties:
+        title:
+          type: string
+          description: >-
+            The title displayed at the top of the shopping list page.
+        image_url:
+          type: string
+          format: uri
+          description: >-
+            URL of an image to display on the shopping list page.
+        link_type:
+          type: string
+          description: >-
+            The type of product link to create.
+        expires_in:
+          type: integer
+          description: >-
+            The number of seconds until the generated link expires.
+          minimum: 1
+        instructions:
+          type: string
+          description: >-
+            Additional instructions or notes to display on the page.
+        line_items:
+          type: array
+          description: >-
+            The list of products to include on the shopping list page.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        landing_page_configuration:
+          type: object
+          description: >-
+            Configuration options for the landing page appearance and behavior.
+          properties:
+            partner_linkback_url:
+              type: string
+              format: uri
+              description: >-
+                URL to link back to the partner site from the landing page.
+    RecipeRequest:
+      type: object
+      required:
+        - title
+        - ingredients
+      properties:
+        title:
+          type: string
+          description: >-
+            The title of the recipe displayed on the recipe page.
+        image_url:
+          type: string
+          format: uri
+          description: >-
+            URL of an image to display for the recipe.
+        author:
+          type: string
+          description: >-
+            The name of the recipe author.
+        servings:
+          type: integer
+          description: >-
+            The number of servings the recipe makes.
+          minimum: 1
+        cooking_time:
+          type: string
+          description: >-
+            The estimated cooking time for the recipe.
+        external_reference_id:
+          type: string
+          description: >-
+            An external identifier for the recipe from the partner system.
+        content_creator_credit_info:
+          type: object
+          description: >-
+            Information for crediting the content creator on the recipe page.
+          properties:
+            name:
+              type: string
+              description: >-
+                The name of the content creator.
+            url:
+              type: string
+              format: uri
+              description: >-
+                URL to the content creator's website or profile.
+        expires_in:
+          type: integer
+          description: >-
+            The number of seconds until the generated recipe link expires.
+          minimum: 1
+        instructions:
+          type: array
+          description: >-
+            Step-by-step cooking instructions for the recipe.
+          items:
+            type: string
+        ingredients:
+          type: array
+          description: >-
+            The list of ingredients required for the recipe.
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    LineItem:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: >-
+            The name of the product.
+        quantity:
+          type: number
+          description: >-
+            The quantity of the product to add.
+          minimum: 1
+        unit:
+          type: string
+          description: >-
+            The unit of measurement for the quantity.
+        display_text:
+          type: string
+          description: >-
+            Custom display text for the line item on the page.
+        product_ids:
+          type: array
+          description: >-
+            Instacart product identifiers to match specific products.
+          items:
+            type: string
+        upcs:
+          type: array
+          description: >-
+            Universal Product Codes to match specific products.
+          items:
+            type: string
+        line_item_measurements:
+          type: object
+          description: >-
+            Measurement details for the line item.
+          properties:
+            amount:
+              type: number
+              description: >-
+                The measurement amount.
+            unit:
+              type: string
+              description: >-
+                The measurement unit.
+        filters:
+          type: object
+          description: >-
+            Filters to narrow product matching.
+          properties:
+            department:
+              type: string
+              description: >-
+                The store department to filter products by.
+    Ingredient:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: >-
+            The name of the ingredient.
+        display_text:
+          type: string
+          description: >-
+            Custom display text for the ingredient on the recipe page.
+        product_ids:
+          type: array
+          description: >-
+            Instacart product identifiers to match specific products.
+          items:
+            type: string
+        upcs:
+          type: array
+          description: >-
+            Universal Product Codes to match specific products.
+          items:
+            type: string
+        measurements:
+          type: object
+          description: >-
+            Measurement details for the ingredient.
+          properties:
+            amount:
+              type: number
+              description: >-
+                The measurement amount.
+            unit:
+              type: string
+              description: >-
+                The measurement unit.
+        filters:
+          type: object
+          description: >-
+            Filters to narrow product matching for this ingredient.
+          properties:
+            department:
+              type: string
+              description: >-
+                The store department to filter products by.
+    ProductsLinkResponse:
+      type: object
+      properties:
+        products_link_url:
+          type: string
+          format: uri
+          description: >-
+            The unique URL to the generated shopping list or recipe page on
+            Instacart Marketplace.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.
+        status:
+          type: integer
+          description: >-
+            The HTTP status code of the error response.

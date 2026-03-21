@@ -1,0 +1,474 @@
+openapi: 3.1.0
+info:
+  title: Instacart Connect Post-Checkout API
+  description: >-
+    The Instacart Connect Post-Checkout API allows retailers to provide their
+    customers with real-time order tracking and shopper interaction after an
+    order has been placed. Retailers can use this API to build custom order
+    status pages that display order details, live tracking information, and
+    shopper communication. Customers can see updates while their order is being
+    shopped and delivered, approve or decline item replacements suggested by
+    shoppers, and communicate directly with shoppers via chat about
+    replacements and additions.
+  version: '2.0'
+  contact:
+    name: Instacart Connect Support
+    url: https://docs.instacart.com/connect/post-checkout/
+  termsOfService: https://www.instacart.com/terms
+externalDocs:
+  description: Instacart Connect Post-Checkout API Documentation
+  url: https://docs.instacart.com/connect/post-checkout/
+servers:
+  - url: https://connect.instacart.com
+    description: Production Server
+tags:
+  - name: Orders
+    description: >-
+      Endpoints for retrieving order status, handling details, and item
+      information after checkout.
+  - name: Replacements
+    description: >-
+      Endpoints for managing item replacements suggested by shoppers during
+      order fulfillment.
+  - name: Chat
+    description: >-
+      Endpoints for shopper-customer communication including sending and
+      retrieving chat messages.
+security:
+  - bearerAuth: []
+paths:
+  /v2/post_checkout/orders/{order_id}/handling:
+    get:
+      operationId: getOrderHandling
+      summary: Get order handling information
+      description: >-
+        Retrieves handling information for a specific order, including the
+        delivery or pickup address, the coordinates of the delivery or pickup
+        address, information about the current shopper, and any notes or
+        instructions included with the order.
+      tags:
+        - Orders
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: Order handling details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderHandlingResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/post_checkout/orders/{order_id}/items:
+    get:
+      operationId: getOrderItems
+      summary: Get order items
+      description: >-
+        Retrieves the list of items for a specific order. Each item includes
+        item details of the ordered item, the current status of that item, and
+        the current replacement for that item if one exists. Poll this endpoint
+        while a shopper is picking the order to get real-time item status
+        updates.
+      tags:
+        - Orders
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: List of order items with their statuses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItemsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/post_checkout/orders/{order_id}/items/{order_item_id}/replacement:
+    put:
+      operationId: updateItemReplacement
+      summary: Approve or reject an item replacement
+      description: >-
+        Approves or rejects a replacement suggested by the shopper for a
+        specific order item. If the customer approves the replacement, specify
+        the status as APPROVED. If the customer rejects the replacement,
+        specify the status as REJECTED. Items with a rejected replacement are
+        automatically refunded.
+      tags:
+        - Replacements
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+        - $ref: '#/components/parameters/orderItemId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplacementDecisionRequest'
+      responses:
+        '200':
+          description: Replacement decision applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplacementResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/post_checkout/chat/{order_id}/messages:
+    get:
+      operationId: getChatMessages
+      summary: Get chat messages for an order
+      description: >-
+        Retrieves all chat messages associated with an order between the
+        customer and the shopper. Messages are returned in chronological order.
+      tags:
+        - Chat
+      parameters:
+        - $ref: '#/components/parameters/orderIdChat'
+      responses:
+        '200':
+          description: List of chat messages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessagesResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: sendChatMessage
+      summary: Send a message to the shopper
+      description: >-
+        Sends a chat message from the customer to the shopper associated with
+        the order. Used for communicating about replacements, additions, or
+        delivery instructions.
+      tags:
+        - Chat
+      parameters:
+        - $ref: '#/components/parameters/orderIdChat'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        OAuth 2.0 Bearer token obtained from the access token endpoint. A user
+        access token is required for post-checkout operations.
+  parameters:
+    orderId:
+      name: order_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for the order.
+      schema:
+        type: string
+    orderIdChat:
+      name: order_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for the order in the chat context.
+      schema:
+        type: string
+    orderItemId:
+      name: order_item_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for a specific item within the order.
+      schema:
+        type: string
+  schemas:
+    OrderHandlingResponse:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: >-
+            The unique identifier for the order.
+        status:
+          type: string
+          enum:
+            - brand_new
+            - acknowledged
+            - picking
+            - staging
+            - delivering
+            - delivered
+            - canceled
+          description: >-
+            The current status of the order.
+        address:
+          type: object
+          description: >-
+            The delivery or pickup address.
+          properties:
+            address_line_1:
+              type: string
+              description: >-
+                The street address.
+            address_line_2:
+              type: string
+              description: >-
+                Additional address information.
+            city:
+              type: string
+              description: >-
+                The city.
+            state:
+              type: string
+              description: >-
+                The state or province.
+            postal_code:
+              type: string
+              description: >-
+                The postal or ZIP code.
+        coordinates:
+          type: object
+          description: >-
+            The geographic coordinates of the delivery or pickup address.
+          properties:
+            latitude:
+              type: number
+              format: double
+              description: >-
+                The latitude coordinate.
+            longitude:
+              type: number
+              format: double
+              description: >-
+                The longitude coordinate.
+        shopper:
+          type: object
+          description: >-
+            Information about the current shopper assigned to the order.
+          properties:
+            name:
+              type: string
+              description: >-
+                The first name of the shopper.
+            phone_number:
+              type: string
+              description: >-
+                A masked phone number for contacting the shopper.
+        notes:
+          type: string
+          description: >-
+            Any delivery or pickup instructions included with the order.
+    OrderItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          description: >-
+            The list of items in the order with their current statuses.
+          items:
+            $ref: '#/components/schemas/PostCheckoutOrderItem'
+    PostCheckoutOrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier for the order item.
+        product_name:
+          type: string
+          description: >-
+            The name of the ordered product.
+        quantity:
+          type: integer
+          description: >-
+            The ordered quantity.
+        status:
+          type: string
+          enum:
+            - pending
+            - found
+            - replaced
+            - refunded
+            - not_found
+          description: >-
+            The current status of the item during shopping.
+        replacement:
+          $ref: '#/components/schemas/Replacement'
+        replacement_status:
+          type: string
+          enum:
+            - PENDING
+            - APPROVED
+            - REJECTED
+          description: >-
+            The customer's decision on the replacement, if one was suggested.
+    Replacement:
+      type: object
+      description: >-
+        Details about the replacement product suggested by the shopper.
+      properties:
+        product_name:
+          type: string
+          description: >-
+            The name of the replacement product.
+        product_id:
+          type: string
+          description: >-
+            The product identifier of the replacement.
+        quantity:
+          type: integer
+          description: >-
+            The quantity of the replacement product.
+    ReplacementDecisionRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - APPROVED
+            - REJECTED
+          description: >-
+            The customer's decision on the replacement. APPROVED accepts the
+            replacement. REJECTED declines the replacement and triggers an
+            automatic refund.
+    ReplacementResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The order item identifier.
+        replacement_status:
+          type: string
+          enum:
+            - APPROVED
+            - REJECTED
+          description: >-
+            The updated replacement status.
+    ChatMessagesResponse:
+      type: object
+      properties:
+        messages:
+          type: array
+          description: >-
+            The list of chat messages in chronological order.
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier for the message.
+        sender:
+          type: string
+          enum:
+            - customer
+            - shopper
+          description: >-
+            Who sent the message.
+        body:
+          type: string
+          description: >-
+            The text content of the message.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the message was sent.
+    SendMessageRequest:
+      type: object
+      required:
+        - body
+      properties:
+        body:
+          type: string
+          description: >-
+            The text content of the message to send to the shopper.
+          maxLength: 1000
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: >-
+            A human-readable error message.
+        status:
+          type: integer
+          description: >-
+            The HTTP status code.

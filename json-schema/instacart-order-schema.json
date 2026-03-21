@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://instacart.com/schemas/instacart/order.json",
+  "title": "Instacart Order",
+  "description": "Represents an order in the Instacart Connect system, covering delivery, pickup, and last mile fulfillment types with their associated items, service options, and status lifecycle.",
+  "type": "object",
+  "required": ["id", "status", "fulfillment_type"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the order."
+    },
+    "user_id": {
+      "type": "string",
+      "description": "The retailer's unique identifier for the customer who placed the order."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brand_new",
+        "acknowledged",
+        "picking",
+        "staging",
+        "delivering",
+        "delivered",
+        "canceled",
+        "rescheduled"
+      ],
+      "description": "The current status of the order in the fulfillment lifecycle."
+    },
+    "fulfillment_type": {
+      "type": "string",
+      "enum": ["delivery", "pickup", "last_mile"],
+      "description": "The type of fulfillment for this order."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the order was created."
+    },
+    "estimated_delivery_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated delivery or pickup time."
+    },
+    "store": {
+      "$ref": "#/$defs/Store"
+    },
+    "service_option": {
+      "$ref": "#/$defs/ServiceOption"
+    },
+    "delivery_address": {
+      "$ref": "#/$defs/Address"
+    },
+    "delivery_instructions": {
+      "type": "string",
+      "description": "Special instructions for the delivery driver or pickup process."
+    },
+    "items": {
+      "type": "array",
+      "description": "The items included in the order.",
+      "items": {
+        "$ref": "#/$defs/OrderItem"
+      }
+    },
+    "shopper": {
+      "$ref": "#/$defs/Shopper"
+    }
+  },
+  "$defs": {
+    "Store": {
+      "type": "object",
+      "description": "A retail store on the Instacart platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for the store."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the store."
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        }
+      }
+    },
+    "ServiceOption": {
+      "type": "object",
+      "description": "A fulfillment time slot selected for the order.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for the service option."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of the service option."
+        },
+        "window_starts_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The start time of the fulfillment window."
+        },
+        "window_ends_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The end time of the fulfillment window."
+        },
+        "fulfillment_type": {
+          "type": "string",
+          "enum": ["delivery", "pickup", "last_mile"],
+          "description": "The fulfillment type for this service option."
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "description": "A physical address.",
+      "properties": {
+        "address_line_1": {
+          "type": "string",
+          "description": "The street address."
+        },
+        "address_line_2": {
+          "type": "string",
+          "description": "Additional address information such as apartment or suite number."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or province."
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "The postal or ZIP code."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The latitude coordinate."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The longitude coordinate."
+        }
+      }
+    },
+    "OrderItem": {
+      "type": "object",
+      "description": "An item within an order.",
+      "required": ["product_id"],
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "The Instacart product identifier."
+        },
+        "upc": {
+          "type": "string",
+          "description": "The Universal Product Code."
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the product."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The ordered quantity.",
+          "minimum": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "found", "replaced", "refunded", "not_found"],
+          "description": "The current status of the item during fulfillment."
+        },
+        "replacement": {
+          "$ref": "#/$defs/Replacement"
+        },
+        "replacement_status": {
+          "type": "string",
+          "enum": ["PENDING", "APPROVED", "REJECTED"],
+          "description": "The customer's decision on a suggested replacement."
+        },
+        "refunded": {
+          "type": "boolean",
+          "description": "Whether this item has been refunded."
+        }
+      }
+    },
+    "Replacement": {
+      "type": "object",
+      "description": "A replacement product suggested by the shopper.",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "The product identifier of the replacement."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the replacement product."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity of the replacement.",
+          "minimum": 1
+        }
+      }
+    },
+    "Shopper": {
+      "type": "object",
+      "description": "The Instacart shopper assigned to fulfill the order.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The first name of the shopper."
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "A masked phone number for contacting the shopper."
+        }
+      }
+    }
+  }
+}

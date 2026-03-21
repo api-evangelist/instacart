@@ -1,0 +1,954 @@
+openapi: 3.1.0
+info:
+  title: Instacart Connect Fulfillment API
+  description: >-
+    The Instacart Connect Fulfillment API enables retailers to integrate
+    Instacart fulfillment capabilities directly into their e-commerce sites. It
+    combines grocery, delivery, and pickup functionality into a single API,
+    allowing retailers to offer full-service shopping where Instacart shoppers
+    pick items and suggest replacements, as well as same-day or scheduled
+    delivery and pickup options. Key endpoints include finding stores that offer
+    delivery, listing available time slots, previewing service options, and
+    creating delivery or pickup orders.
+  version: '2.0'
+  contact:
+    name: Instacart Connect Support
+    url: https://docs.instacart.com/connect/fulfillment/
+  termsOfService: https://www.instacart.com/terms
+externalDocs:
+  description: Instacart Connect Fulfillment API Documentation
+  url: https://docs.instacart.com/connect/fulfillment/
+servers:
+  - url: https://connect.instacart.com
+    description: Production Server
+tags:
+  - name: Authentication
+    description: >-
+      Endpoints for obtaining and managing OAuth 2.0 access tokens used to
+      authenticate API requests.
+  - name: Delivery
+    description: >-
+      Endpoints for finding delivery stores, previewing time slots, reserving
+      time slots, and creating delivery orders.
+  - name: Pickup
+    description: >-
+      Endpoints for finding pickup stores, previewing time slots, reserving
+      time slots, and creating pickup orders.
+  - name: Last Mile Delivery
+    description: >-
+      Endpoints for last mile delivery where items are pre-packed and only
+      require delivery from the store to the customer.
+security:
+  - bearerAuth: []
+paths:
+  /v2/oauth/token:
+    post:
+      operationId: generateAccessToken
+      summary: Generate an access token
+      description: >-
+        Generates an OAuth 2.0 access token using client credentials. The token
+        is valid for 24 hours and must be included as a Bearer token in all
+        subsequent API requests. During the validity period, reuse the same
+        token rather than generating a new one.
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: Access token generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Invalid client credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/stores/delivery:
+    post:
+      operationId: findDeliveryStores
+      summary: Find stores offering delivery
+      description: >-
+        Returns an array of stores that offer delivery for the customer's
+        location, sorted by distance with the closest store first. Accepts
+        location data such as latitude and longitude or a postal code.
+      tags:
+        - Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindStoresRequest'
+      responses:
+        '200':
+          description: List of stores offering delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoresResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/service_options/delivery:
+    post:
+      operationId: previewDeliveryTimeSlots
+      summary: Preview time slots for delivery
+      description: >-
+        Previews possible service options and available time slots for delivery
+        fulfillments. Useful for displaying delivery time options to customers
+        before they complete checkout.
+      tags:
+        - Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewServiceOptionsRequest'
+      responses:
+        '200':
+          description: Available delivery time slots
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceOptionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/service_options/delivery/hold:
+    post:
+      operationId: reserveDeliveryTimeSlot
+      summary: Reserve a previewed delivery time slot
+      description: >-
+        Reserves a selected delivery time slot for the specified user and their
+        cart items. The hold is temporary and must be followed by order creation
+        before it expires.
+      tags:
+        - Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveTimeSlotRequest'
+      responses:
+        '200':
+          description: Time slot reserved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceOptionHoldResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/orders/delivery:
+    post:
+      operationId: createDeliveryOrder
+      summary: Create a delivery order
+      description: >-
+        Creates a delivery order for a previously reserved time slot. The order
+        includes the cart items and delivery details. Orders should be created
+        as soon as possible after the time slot is reserved.
+      tags:
+        - Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '200':
+          description: Delivery order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/orders/{order_id}:
+    get:
+      operationId: getOrder
+      summary: Get an order
+      description: >-
+        Retrieves details for a specific order, including its current status,
+        items, and delivery or pickup information.
+      tags:
+        - Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/orders/{order_id}/cancel:
+    post:
+      operationId: cancelOrder
+      summary: Cancel an order
+      description: >-
+        Cancels a delivery, pickup, or last mile delivery order. To
+        successfully cancel, the order status must be brand_new. Once a shopper
+        is assigned and the status moves to acknowledged, the order can no
+        longer be canceled through this endpoint.
+      tags:
+        - Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: Order canceled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Order cannot be canceled in its current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/stores/pickup:
+    post:
+      operationId: findPickupStores
+      summary: Find stores offering pickup
+      description: >-
+        Returns an array of stores that offer pickup for the customer's
+        location, sorted by distance with the closest store first.
+      tags:
+        - Pickup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindStoresRequest'
+      responses:
+        '200':
+          description: List of stores offering pickup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoresResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/service_options/pickup:
+    post:
+      operationId: previewPickupTimeSlots
+      summary: Preview time slots for pickup
+      description: >-
+        Previews possible service options and available time slots for pickup
+        fulfillments. Useful for displaying pickup time options to customers
+        before they complete checkout.
+      tags:
+        - Pickup
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewServiceOptionsRequest'
+      responses:
+        '200':
+          description: Available pickup time slots
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceOptionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/users/{user_id}/orders/pickup:
+    post:
+      operationId: createPickupOrder
+      summary: Create a pickup order
+      description: >-
+        Creates a pickup order for a previously reserved time slot. The
+        response can take several seconds, so orders should be created as soon
+        as possible after checkout to minimize wait time.
+      tags:
+        - Pickup
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '200':
+          description: Pickup order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/stores/last_mile:
+    post:
+      operationId: findLastMileStores
+      summary: Find stores offering last mile delivery
+      description: >-
+        Returns an array of stores that offer last mile delivery for the
+        customer's location. Last mile delivery is for pre-packed orders that
+        only require transportation from the store to the customer.
+      tags:
+        - Last Mile Delivery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindStoresRequest'
+      responses:
+        '200':
+          description: List of stores offering last mile delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoresResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/lastmile/users/{user_id}/service_options:
+    post:
+      operationId: previewLastMileServiceOptions
+      summary: Reserve a time slot for last mile delivery
+      description: >-
+        Previews and reserves a time slot for a last mile delivery order. Used
+        to secure a delivery window before creating the order.
+      tags:
+        - Last Mile Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewServiceOptionsRequest'
+      responses:
+        '200':
+          description: Service options for last mile delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceOptionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/lastmile/users/{user_id}/orders:
+    post:
+      operationId: createLastMileOrder
+      summary: Create a last mile delivery order
+      description: >-
+        Creates a last mile delivery order for a previously reserved time slot.
+        Last mile orders are for pre-packed items that require only delivery
+        from the store to the customer location.
+      tags:
+        - Last Mile Delivery
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '200':
+          description: Last mile delivery order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/fulfillment/lastmile/orders/{order_id}/staged:
+    post:
+      operationId: stageLastMileOrder
+      summary: Stage a last mile delivery order
+      description: >-
+        Marks a last mile delivery order as staged and ready for pickup by the
+        delivery driver. This should be called when the order items are packed
+        and ready at the store.
+      tags:
+        - Last Mile Delivery
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: Order staged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        OAuth 2.0 Bearer token obtained from the token endpoint. Valid for 24
+        hours.
+  parameters:
+    userId:
+      name: user_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for the user in the retailer's system.
+      schema:
+        type: string
+    orderId:
+      name: order_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for the order.
+      schema:
+        type: string
+  schemas:
+    TokenRequest:
+      type: object
+      required:
+        - grant_type
+        - client_id
+        - client_secret
+        - scope
+      properties:
+        grant_type:
+          type: string
+          enum:
+            - client_credentials
+          description: >-
+            The OAuth 2.0 grant type. Must be client_credentials.
+        client_id:
+          type: string
+          description: >-
+            The client ID provided by Instacart.
+        client_secret:
+          type: string
+          description: >-
+            The client secret provided by Instacart.
+        scope:
+          type: string
+          description: >-
+            The API scope to request access for, such as connect:fulfillment.
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: >-
+            The Bearer token to use for authenticating API requests.
+        token_type:
+          type: string
+          enum:
+            - Bearer
+          description: >-
+            The type of token issued.
+        expires_in:
+          type: integer
+          description: >-
+            The number of seconds until the token expires. Typically 86400
+            seconds (24 hours).
+        scope:
+          type: string
+          description: >-
+            The scope of access granted by the token.
+        created_at:
+          type: integer
+          description: >-
+            Unix timestamp indicating when the token was created.
+    FindStoresRequest:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+          description: >-
+            The street address of the customer's location.
+        address_line_2:
+          type: string
+          description: >-
+            Additional address information such as apartment or suite number.
+        city:
+          type: string
+          description: >-
+            The city of the customer's location.
+        state:
+          type: string
+          description: >-
+            The state or province of the customer's location.
+        postal_code:
+          type: string
+          description: >-
+            The postal or ZIP code of the customer's location.
+        latitude:
+          type: number
+          format: double
+          description: >-
+            The latitude coordinate of the customer's location.
+        longitude:
+          type: number
+          format: double
+          description: >-
+            The longitude coordinate of the customer's location.
+    StoresResponse:
+      type: object
+      properties:
+        stores:
+          type: array
+          description: >-
+            An array of stores offering the requested fulfillment type, sorted
+            by distance with the closest store first.
+          items:
+            $ref: '#/components/schemas/Store'
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier for the store.
+        name:
+          type: string
+          description: >-
+            The name of the store.
+        address:
+          type: object
+          description: >-
+            The physical address of the store.
+          properties:
+            address_line_1:
+              type: string
+              description: >-
+                The street address.
+            city:
+              type: string
+              description: >-
+                The city.
+            state:
+              type: string
+              description: >-
+                The state or province.
+            postal_code:
+              type: string
+              description: >-
+                The postal or ZIP code.
+        distance:
+          type: number
+          format: double
+          description: >-
+            The distance from the customer's location to the store.
+    PreviewServiceOptionsRequest:
+      type: object
+      properties:
+        store_id:
+          type: string
+          description: >-
+            The unique identifier of the store to preview service options for.
+        address:
+          type: object
+          description: >-
+            The delivery or pickup address.
+          properties:
+            address_line_1:
+              type: string
+              description: >-
+                The street address.
+            address_line_2:
+              type: string
+              description: >-
+                Additional address information.
+            city:
+              type: string
+              description: >-
+                The city.
+            state:
+              type: string
+              description: >-
+                The state or province.
+            postal_code:
+              type: string
+              description: >-
+                The postal or ZIP code.
+    ServiceOptionsResponse:
+      type: object
+      properties:
+        service_options:
+          type: array
+          description: >-
+            Available service option time slots for the requested fulfillment
+            type.
+          items:
+            $ref: '#/components/schemas/ServiceOption'
+    ServiceOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier for the service option.
+        date:
+          type: string
+          format: date
+          description: >-
+            The date of the service option.
+        window_starts_at:
+          type: string
+          format: date-time
+          description: >-
+            The start time of the delivery or pickup window.
+        window_ends_at:
+          type: string
+          format: date-time
+          description: >-
+            The end time of the delivery or pickup window.
+        fulfillment_type:
+          type: string
+          enum:
+            - delivery
+            - pickup
+            - last_mile
+          description: >-
+            The type of fulfillment for this service option.
+    ReserveTimeSlotRequest:
+      type: object
+      required:
+        - service_option_id
+      properties:
+        service_option_id:
+          type: string
+          description: >-
+            The identifier of the service option time slot to reserve.
+        cart:
+          type: object
+          description: >-
+            The customer's cart details to associate with the reservation.
+          properties:
+            items:
+              type: array
+              description: >-
+                The items in the customer's cart.
+              items:
+                $ref: '#/components/schemas/CartItem'
+    ServiceOptionHoldResponse:
+      type: object
+      properties:
+        hold_id:
+          type: string
+          description: >-
+            The unique identifier for the time slot hold.
+        expires_at:
+          type: string
+          format: date-time
+          description: >-
+            The time at which the hold expires and the time slot is released.
+        service_option:
+          $ref: '#/components/schemas/ServiceOption'
+    CreateOrderRequest:
+      type: object
+      required:
+        - hold_id
+      properties:
+        hold_id:
+          type: string
+          description: >-
+            The identifier of the time slot hold from the reserve step.
+        cart:
+          type: object
+          description: >-
+            The finalized cart for the order.
+          properties:
+            items:
+              type: array
+              description: >-
+                The items to include in the order.
+              items:
+                $ref: '#/components/schemas/CartItem'
+        delivery_address:
+          type: object
+          description: >-
+            The delivery address for the order.
+          properties:
+            address_line_1:
+              type: string
+              description: >-
+                The street address.
+            address_line_2:
+              type: string
+              description: >-
+                Additional address information.
+            city:
+              type: string
+              description: >-
+                The city.
+            state:
+              type: string
+              description: >-
+                The state or province.
+            postal_code:
+              type: string
+              description: >-
+                The postal or ZIP code.
+        delivery_instructions:
+          type: string
+          description: >-
+            Special instructions for the delivery driver.
+    CartItem:
+      type: object
+      properties:
+        upc:
+          type: string
+          description: >-
+            The Universal Product Code of the item.
+        quantity:
+          type: integer
+          description: >-
+            The quantity of the item.
+          minimum: 1
+        product_id:
+          type: string
+          description: >-
+            The Instacart product identifier.
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier for the order.
+        status:
+          type: string
+          enum:
+            - brand_new
+            - acknowledged
+            - picking
+            - staging
+            - delivering
+            - delivered
+            - canceled
+            - rescheduled
+          description: >-
+            The current status of the order.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the order was created.
+        fulfillment_type:
+          type: string
+          enum:
+            - delivery
+            - pickup
+            - last_mile
+          description: >-
+            The fulfillment type of the order.
+        service_option:
+          $ref: '#/components/schemas/ServiceOption'
+        store:
+          $ref: '#/components/schemas/Store'
+        items:
+          type: array
+          description: >-
+            The items included in the order.
+          items:
+            $ref: '#/components/schemas/OrderItem'
+    OrderItem:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: >-
+            The Instacart product identifier.
+        upc:
+          type: string
+          description: >-
+            The Universal Product Code of the item.
+        name:
+          type: string
+          description: >-
+            The name of the product.
+        quantity:
+          type: integer
+          description: >-
+            The ordered quantity.
+        status:
+          type: string
+          enum:
+            - pending
+            - found
+            - replaced
+            - refunded
+          description: >-
+            The current status of the item in the order.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: >-
+            A human-readable error message.
+        status:
+          type: integer
+          description: >-
+            The HTTP status code.

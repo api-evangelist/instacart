@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://instacart.com/schemas/instacart/product.json",
+  "title": "Instacart Product",
+  "description": "Represents a product in the Instacart Catalog system. Products are defined at the retailer level and are the same across all of a retailer's stores. Store-specific attributes such as pricing and availability are managed through the Item entity.",
+  "type": "object",
+  "required": ["product_code", "name"],
+  "properties": {
+    "product_code": {
+      "type": "string",
+      "description": "The retailer's unique product identifier used to match the product in the Instacart system."
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the product.",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "brand": {
+      "type": "string",
+      "description": "The brand name of the product."
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed description of the product."
+    },
+    "size": {
+      "type": "string",
+      "description": "The size or quantity description of the product, such as 12 oz or 6-pack."
+    },
+    "upc": {
+      "type": "string",
+      "pattern": "^[0-9]{12,14}$",
+      "description": "The Universal Product Code, typically 12 or 14 digits."
+    },
+    "image_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the primary product image."
+    },
+    "category": {
+      "type": "string",
+      "description": "The product category in the retailer's taxonomy."
+    },
+    "subcategory": {
+      "type": "string",
+      "description": "The product subcategory."
+    },
+    "department": {
+      "type": "string",
+      "description": "The store department the product belongs to."
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Additional product attributes such as dietary information, certifications, or nutritional details.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "Store-specific item records associated with this product.",
+      "items": {
+        "$ref": "#/$defs/Item"
+      }
+    }
+  },
+  "$defs": {
+    "Item": {
+      "type": "object",
+      "description": "An item representing a product at a specific store location, containing store-specific attributes like pricing and availability.",
+      "required": ["product_code", "store_code"],
+      "properties": {
+        "product_code": {
+          "type": "string",
+          "description": "The retailer's product identifier linking this item to its parent product."
+        },
+        "store_code": {
+          "type": "string",
+          "description": "The retailer's unique store identifier where this item is sold."
+        },
+        "price": {
+          "type": "number",
+          "description": "The current selling price of the item at this store.",
+          "minimum": 0
+        },
+        "sale_price": {
+          "type": "number",
+          "description": "The promotional or sale price, if applicable.",
+          "minimum": 0
+        },
+        "sale_start_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The start date of the sale period."
+        },
+        "sale_end_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The end date of the sale period."
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Whether the item is currently available for purchase at this store."
+        },
+        "inventory_count": {
+          "type": "integer",
+          "description": "The current inventory count at this store.",
+          "minimum": 0
+        },
+        "aisle": {
+          "type": "string",
+          "description": "The store aisle where the item is located."
+        },
+        "shelf": {
+          "type": "string",
+          "description": "The shelf location within the aisle."
+        }
+      }
+    }
+  }
+}

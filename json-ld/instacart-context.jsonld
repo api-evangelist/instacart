@@ -1,0 +1,150 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "instacart": "https://connect.instacart.com/ns/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Order": {
+      "@id": "instacart:Order",
+      "@context": {
+        "orderId": "instacart:orderId",
+        "status": "instacart:orderStatus",
+        "fulfillmentType": "instacart:fulfillmentType",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "estimatedDeliveryAt": {
+          "@id": "instacart:estimatedDeliveryAt",
+          "@type": "xsd:dateTime"
+        },
+        "deliveryAddress": {
+          "@id": "schema:deliveryAddress",
+          "@type": "@id"
+        },
+        "deliveryInstructions": "instacart:deliveryInstructions",
+        "items": {
+          "@id": "instacart:orderItems",
+          "@container": "@set"
+        },
+        "store": {
+          "@id": "instacart:store",
+          "@type": "@id"
+        },
+        "shopper": {
+          "@id": "instacart:shopper",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Store": {
+      "@id": "schema:Store",
+      "@context": {
+        "storeId": "instacart:storeId",
+        "name": "schema:name",
+        "address": {
+          "@id": "schema:address",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Product": {
+      "@id": "schema:Product",
+      "@context": {
+        "productCode": "instacart:productCode",
+        "name": "schema:name",
+        "brand": "schema:brand",
+        "description": "schema:description",
+        "size": "schema:size",
+        "upc": "schema:gtin",
+        "imageUrl": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "category": "schema:category",
+        "department": "instacart:department"
+      }
+    },
+
+    "OrderItem": {
+      "@id": "instacart:OrderItem",
+      "@context": {
+        "productId": "instacart:productId",
+        "upc": "schema:gtin",
+        "name": "schema:name",
+        "quantity": "schema:amount",
+        "status": "instacart:itemStatus",
+        "replacement": {
+          "@id": "instacart:replacement",
+          "@type": "@id"
+        },
+        "replacementStatus": "instacart:replacementStatus",
+        "refunded": "instacart:refunded"
+      }
+    },
+
+    "Shopper": {
+      "@id": "instacart:Shopper",
+      "@context": {
+        "name": "schema:givenName",
+        "phoneNumber": "schema:telephone"
+      }
+    },
+
+    "ServiceOption": {
+      "@id": "instacart:ServiceOption",
+      "@context": {
+        "serviceOptionId": "instacart:serviceOptionId",
+        "date": {
+          "@id": "schema:startDate",
+          "@type": "xsd:date"
+        },
+        "windowStartsAt": {
+          "@id": "instacart:windowStartsAt",
+          "@type": "xsd:dateTime"
+        },
+        "windowEndsAt": {
+          "@id": "instacart:windowEndsAt",
+          "@type": "xsd:dateTime"
+        },
+        "fulfillmentType": "instacart:fulfillmentType"
+      }
+    },
+
+    "Address": {
+      "@id": "schema:PostalAddress",
+      "@context": {
+        "addressLine1": "schema:streetAddress",
+        "addressLine2": "schema:streetAddress",
+        "city": "schema:addressLocality",
+        "state": "schema:addressRegion",
+        "postalCode": "schema:postalCode",
+        "latitude": "schema:latitude",
+        "longitude": "schema:longitude"
+      }
+    },
+
+    "Recipe": {
+      "@id": "schema:Recipe",
+      "@context": {
+        "title": "schema:name",
+        "imageUrl": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "author": "schema:author",
+        "servings": "schema:recipeYield",
+        "cookingTime": "schema:cookTime",
+        "instructions": "schema:recipeInstructions",
+        "ingredients": {
+          "@id": "schema:recipeIngredient",
+          "@container": "@set"
+        }
+      }
+    }
+  }
+}

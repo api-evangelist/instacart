@@ -1,0 +1,308 @@
+openapi: 3.1.0
+info:
+  title: Instacart Catalog API
+  description: >-
+    The Instacart Catalog API enables retailers to programmatically manage
+    their product catalogs on the Instacart platform. Retailers can use the API
+    to create or update products and items, with partial updates supported so
+    that only the attributes included in the request body are modified. This
+    API is designed for retailers who need to keep their Instacart product
+    listings synchronized with their inventory management systems, ensuring
+    accurate product information, pricing, and availability across the
+    platform.
+  version: '2.0'
+  contact:
+    name: Instacart Catalog Support
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+  termsOfService: https://www.instacart.com/terms
+externalDocs:
+  description: Instacart Catalog API Documentation
+  url: https://docs.instacart.com/catalog/catalog_api/overview/
+servers:
+  - url: https://connect.instacart.com
+    description: Production Server
+tags:
+  - name: Products
+    description: >-
+      Endpoints for creating and updating products in the retailer's catalog on
+      Instacart. Products are the same across all of a retailer's stores.
+  - name: Items
+    description: >-
+      Endpoints for updating item-level attributes such as pricing and
+      availability at specific store locations. Items contain information that
+      can vary from one store to another.
+security:
+  - bearerAuth: []
+paths:
+  /v2/data_ingestion/catalog/product/submission:
+    post:
+      operationId: submitProducts
+      summary: Create or update products
+      description: >-
+        Creates new products or updates existing products in the retailer's
+        catalog on Instacart. When creating a new product, it takes 1-3
+        business days for the product to be displayed on the storefront. When
+        updating a product, only the attributes included in the request body
+        are modified and changes are displayed within a few hours.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSubmissionRequest'
+      responses:
+        '200':
+          description: Products submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionResponse'
+        '400':
+          description: Bad request due to invalid product data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v2/data_ingestion/catalog/item/submission:
+    post:
+      operationId: submitItems
+      summary: Create or update items
+      description: >-
+        Updates or sets item-level attributes for a product at a specific store
+        location. Items contain information that can vary from one retailer
+        store to another, such as pricing, availability, and inventory levels.
+        Changes can take around two to three hours before they are displayed on
+        the storefront.
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemSubmissionRequest'
+      responses:
+        '200':
+          description: Items submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionResponse'
+        '400':
+          description: Bad request due to invalid item data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        OAuth 2.0 Bearer token obtained using client credentials with the
+        connect:data_ingestion scope.
+  schemas:
+    ProductSubmissionRequest:
+      type: object
+      required:
+        - products
+      properties:
+        products:
+          type: array
+          description: >-
+            The list of products to create or update.
+          items:
+            $ref: '#/components/schemas/Product'
+    Product:
+      type: object
+      required:
+        - product_code
+        - name
+      properties:
+        product_code:
+          type: string
+          description: >-
+            The retailer's unique product identifier used to match the product
+            in the Instacart system.
+        name:
+          type: string
+          description: >-
+            The display name of the product.
+        brand:
+          type: string
+          description: >-
+            The brand name of the product.
+        description:
+          type: string
+          description: >-
+            A detailed description of the product.
+        size:
+          type: string
+          description: >-
+            The size or quantity description of the product.
+        upc:
+          type: string
+          description: >-
+            The Universal Product Code for the product.
+        image_url:
+          type: string
+          format: uri
+          description: >-
+            URL to the primary product image.
+        category:
+          type: string
+          description: >-
+            The product category in the retailer's taxonomy.
+        subcategory:
+          type: string
+          description: >-
+            The product subcategory.
+        department:
+          type: string
+          description: >-
+            The store department the product belongs to.
+        attributes:
+          type: object
+          description: >-
+            Additional product attributes such as dietary information or
+            certifications.
+          additionalProperties:
+            type: string
+    ItemSubmissionRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: >-
+            The list of items to create or update at specific store locations.
+          items:
+            $ref: '#/components/schemas/Item'
+    Item:
+      type: object
+      required:
+        - product_code
+        - store_code
+      properties:
+        product_code:
+          type: string
+          description: >-
+            The retailer's unique product identifier linking this item to its
+            parent product.
+        store_code:
+          type: string
+          description: >-
+            The retailer's unique store identifier where this item is sold.
+        price:
+          type: number
+          format: double
+          description: >-
+            The current selling price of the item at this store.
+          minimum: 0
+        sale_price:
+          type: number
+          format: double
+          description: >-
+            The promotional or sale price, if applicable.
+          minimum: 0
+        sale_start_date:
+          type: string
+          format: date
+          description: >-
+            The start date of the sale period.
+        sale_end_date:
+          type: string
+          format: date
+          description: >-
+            The end date of the sale period.
+        available:
+          type: boolean
+          description: >-
+            Whether the item is currently available for purchase at this store.
+        inventory_count:
+          type: integer
+          description: >-
+            The current inventory count at this store.
+          minimum: 0
+        aisle:
+          type: string
+          description: >-
+            The store aisle where the item is located.
+        shelf:
+          type: string
+          description: >-
+            The shelf location within the aisle.
+    SubmissionResponse:
+      type: object
+      properties:
+        submission_id:
+          type: string
+          description: >-
+            A unique identifier for tracking the submission.
+        status:
+          type: string
+          enum:
+            - accepted
+            - processing
+            - completed
+            - failed
+          description: >-
+            The current status of the submission.
+        submitted_count:
+          type: integer
+          description: >-
+            The number of records submitted.
+        errors:
+          type: array
+          description: >-
+            Any validation errors found in the submitted data.
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: >-
+                  The index of the record with the error.
+              message:
+                type: string
+                description: >-
+                  The error message describing the issue.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: >-
+            A human-readable error message.
+        status:
+          type: integer
+          description: >-
+            The HTTP status code.
