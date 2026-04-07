@@ -30,14 +30,14 @@ tags:
     description: >-
       Endpoints for finding delivery stores, previewing time slots, reserving
       time slots, and creating delivery orders.
-  - name: Pickup
-    description: >-
-      Endpoints for finding pickup stores, previewing time slots, reserving
-      time slots, and creating pickup orders.
   - name: Last Mile Delivery
     description: >-
       Endpoints for last mile delivery where items are pre-packed and only
       require delivery from the store to the customer.
+  - name: Pickup
+    description: >-
+      Endpoints for finding pickup stores, previewing time slots, reserving
+      time slots, and creating pickup orders.
 security:
   - bearerAuth: []
 paths:

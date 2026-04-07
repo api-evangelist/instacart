@@ -1,19 +1,17 @@
 aid: instacart
-url: 
-  https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml
 modified: '2026-03-20'
 apis:
   - aid: instacart:developer-platform-api
     name: Instacart Developer Platform API
     tags:
-      - Grocery
       - Delivery
-      - Shopping
-      - Recipes
-      - Products
       - E-Commerce
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Grocery
+      - Products
+      - Recipes
+      - Shopping
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://connect.instacart.com
     humanURL: https://docs.instacart.com/developer_platform_api/
     properties:
@@ -30,14 +28,13 @@ apis:
   - aid: instacart:connect-fulfillment-api
     name: Instacart Connect Fulfillment API
     tags:
-      - Grocery
       - Delivery
-      - Pickup
-      - Fulfillment
-      - Retail
       - E-Commerce
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Fulfillment
+      - Grocery
+      - Pickup
+      - Retail
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://connect.instacart.com
     humanURL: https://docs.instacart.com/connect/fulfillment/
     properties:
@@ -56,13 +53,12 @@ apis:
   - aid: instacart:connect-post-checkout-api
     name: Instacart Connect Post-Checkout API
     tags:
-      - Orders
-      - Tracking
       - Delivery
-      - Retail
       - Fulfillment
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Orders
+      - Retail
+      - Tracking
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://connect.instacart.com
     humanURL: https://docs.instacart.com/connect/post-checkout/
     properties:
@@ -79,12 +75,11 @@ apis:
     name: Instacart Catalog API
     tags:
       - Catalog
-      - Products
-      - Inventory
-      - Retail
       - E-Commerce
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Inventory
+      - Products
+      - Retail
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://connect.instacart.com
     humanURL: https://docs.instacart.com/catalog/catalog_api/overview/
     properties:
@@ -100,13 +95,12 @@ apis:
   - aid: instacart:shopping-widgets
     name: Instacart Shopping Widgets
     tags:
-      - Widgets
       - Embedding
-      - Shopping
       - Retail
+      - Shopping
       - Web Components
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Widgets
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://docs.instacart.com/widgets/
     properties:
