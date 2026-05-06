@@ -1,35 +1,47 @@
 specification: FinOps Framework
 specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
   dataSpec: FOCUS
   dataSpecVersion: '1.3'
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
-provider: instacart
+provider: Instacart
 providerId: instacart
-publisherName: instacart
-serviceCategory: API
+publisherName: Maplebear Inc. d/b/a Instacart
+serviceCategory: Marketplace + Logistics
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
+  - Grocery
+  - E-Commerce
+  - Marketplace
+  - Logistics
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the instacart API surface. Provides a FOCUS-aligned mapping
-  for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
+description: FOCUS-aligned FinOps shape for Instacart. The dominant cost line for retailer and brand
+  partners is the marketplace take rate (per-order percentage and fees) plus optional advertising spend,
+  not API call fees - APIs are bundled into the partner agreement. FinOps practice for Instacart focuses
+  on per-order economics and ad-spend ROAS rather than per-call accounting.
+notes: API access itself is not separately metered. The meaningful FinOps surface is the per-order take-rate
+  invoice and the Instacart Ads spend.
+sources:
+  - https://docs.instacart.com/connect/api
 principles:
   - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
+    description: Use partner reporting (orders, GMV, take-rate) and Instacart Ads dashboards to surface
+      per-order economics and ad spend.
   - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
+    description: Tag campaigns and SKUs by brand / category so ad spend allocates to product lines; map
+      take-rate fees to the originating retailer storefront.
   - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
+    description: Tune ad bids and daily budgets, retire low-performing SKUs from sponsored placements,
+      and align fulfillment options to lower delivery-cost-to-serve.
   - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
+    description: Designate a Connect / Ads owner with monthly Instacart-spend budget; review per-order
+      contribution margin and ROAS in monthly reviews.
 domains:
   - name: Understand Usage and Cost
     capabilities:
@@ -46,124 +58,68 @@ domains:
       - Unit Economics
   - name: Optimize Usage and Cost
     capabilities:
-      - Architecting for Cloud
       - Rate Optimization
       - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
   - name: Manage the FinOps Practice
     capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
       - Invoicing and Chargeback
       - Onboarding Workloads
-      - Intersecting Disciplines
 billingModel:
-  pricingCategory: Usage-Based
+  pricingCategory: Take Rate + Ads
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
     - Usage
-    - Purchase
     - Tax
-    - Credit
     - Adjustment
+    - Refund
+    - Credit
   chargeFrequency: Recurring
 focusColumns:
-  ServiceName: instacart
-  ServiceCategory: Developer Tools / API
-  ProviderName: instacart
-  PublisherName: instacart
-  InvoiceIssuerName: instacart
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceName: Instacart Connect
+  ServiceCategory: Marketplace + Logistics
+  ProviderName: Instacart
+  PublisherName: Maplebear Inc. d/b/a Instacart
+  InvoiceIssuerName: Maplebear Inc. d/b/a Instacart
+  PricingCategory: Take Rate
+  PricingUnit: order
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: orders_fulfilled
+    description: Completed orders processed through the Instacart marketplace
+    unit: order
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
-      - tier
+      - retailer
       - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+      - delivery_type
+  - name: take_rate_revenue
+    description: Take-rate revenue attributable to the partner
+    unit: USD
     aggregation: sum
     dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
+      - retailer
+      - category
+  - name: ads_spend
+    description: Spend on Instacart Ads (sponsored products, display)
+    unit: USD
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
-      - tier
+      - campaign
+      - sku
+      - brand
 apis:
-  - name: Instacart Developer Platform API
-    baseURL: https://connect.instacart.com
-    tags:
-      - Delivery
-      - E-Commerce
-      - Grocery
-      - Products
-      - Recipes
-      - Shopping
-    serviceName: Instacart Developer Platform API
-    serviceCategory: API
-  - name: Instacart Connect Fulfillment API
-    baseURL: https://connect.instacart.com
-    tags:
-      - Delivery
-      - E-Commerce
-      - Fulfillment
-      - Grocery
-      - Pickup
-      - Retail
-    serviceName: Instacart Connect Fulfillment API
-    serviceCategory: API
-  - name: Instacart Connect Post-Checkout API
-    baseURL: https://connect.instacart.com
-    tags:
-      - Delivery
-      - Fulfillment
-      - Orders
-      - Retail
-      - Tracking
-    serviceName: Instacart Connect Post-Checkout API
-    serviceCategory: API
-  - name: Instacart Catalog API
-    baseURL: https://connect.instacart.com
-    tags:
-      - Catalog
-      - E-Commerce
-      - Inventory
-      - Products
-      - Retail
-    serviceName: Instacart Catalog API
-    serviceCategory: API
-  - name: Instacart Shopping Widgets
-    baseURL: https://api.example.com
-    tags:
-      - Embedding
-      - Retail
-      - Shopping
-      - Web Components
-      - Widgets
-    serviceName: Instacart Shopping Widgets
+  - name: Instacart Connect API
+    baseURL: https://{instacart_domain}/v2
     serviceCategory: API
 unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
+  - name: Cost per Order
+    metric: take_rate_revenue / orders_fulfilled
     target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
+  - name: Return on Ad Spend
+    metric: attributed_revenue / ads_spend
     target: TBD
-maintainers: []
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

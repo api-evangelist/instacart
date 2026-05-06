@@ -1,160 +1,77 @@
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: instacart
+provider: Instacart
 providerId: instacart
 created: '2026-05-04'
-modified: '2026-05-04'
-tags: []
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+modified: '2026-05-05'
+reconciled: false
+tags:
+  - Grocery
+  - E-Commerce
+  - Marketplace
+  - Logistics
+  - Same-Day Delivery
+description: Instacart's Connect / Developer Platform APIs are offered to retail and brand partners under
+  a partner agreement rather than as a self-serve developer product. Access is OAuth 2.0 and granted
+  upon enrollment, with one development and one production environment per partner. Public per-call
+  pricing is not published; the underlying business is the marketplace take rate on grocery orders, retail
+  technology subscriptions for the Instacart-Powered storefronts, and ads.
+notes: No public per-API price list. Marketplace economics (delivery, service, and merchant take rates)
+  are the dominant cost levers; reconcile against the partner agreement.
+sources:
+  - https://docs.instacart.com/connect/api
+  - https://docs.instacart.com/
 plans:
-  - id: instacart-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the instacart API surface. Intended for evaluation, prototyping,
-      and low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://connect.instacart.com
-          - https://api.example.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://connect.instacart.com
-          - https://api.example.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Instacart Developer Platform API
-      - name: Instacart Connect Fulfillment API
-      - name: Instacart Connect Post-Checkout API
-      - name: Instacart Catalog API
-      - name: Instacart Shopping Widgets
-  - id: instacart-pro
-    name: Professional
-    type: paid
-    description: Production tier for instacart. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://connect.instacart.com
-          - https://api.example.com
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://connect.instacart.com
-          - https://api.example.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://connect.instacart.com
-          - https://api.example.com
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Instacart Developer Platform API
-      - name: Instacart Connect Fulfillment API
-      - name: Instacart Connect Post-Checkout API
-      - name: Instacart Catalog API
-      - name: Instacart Shopping Widgets
-  - id: instacart-enterprise
-    name: Enterprise
+  - id: instacart-partner
+    name: Instacart Connect Partner
     type: enterprise
-    description: Custom-negotiated tier for instacart. Includes dedicated capacity, contractual SLAs,
-      security review, data residency options, and named technical account management.
+    description: Partner-only API access for retailers and CPG brands. Access granted via Instacart enrollment;
+      OAuth 2.0 over HTTPS; both a development and production environment provisioned. APIs are bundled
+      into the partner agreement.
     entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
+      - label: Partner program access
+        description: API access bundled into the Instacart partner agreement; not separately metered
+        name: partner_access
+        type: subscription
+        metric: contract
         limit: -1
-        timeFrame: month
-        geo: configurable
+        timeFrame: year
+        geo: US/CA
         domains:
-          - https://connect.instacart.com
-          - https://api.example.com
+          - https://{instacart_domain}/v2
         unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://connect.instacart.com
-          - https://api.example.com
-        unit: 1
-        price: custom
+        price: contact partner team
         userMultiplied: false
     elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Instacart Developer Platform API
-      - name: Instacart Connect Fulfillment API
-      - name: Instacart Connect Post-Checkout API
-      - name: Instacart Catalog API
-      - name: Instacart Shopping Widgets
-maintainers: []
+      - name: Instacart Connect API
+      - name: OAuth 2.0
+      - name: Development + production environments
+      - name: 6-month deprecation notice for retired fields
+      - name: Backward-compatible additions
+  - id: instacart-marketplace
+    name: Marketplace Take Rate (retailer billing)
+    type: usage-based
+    description: Retailers and brands pay Instacart take rates on completed orders rather than per API
+      call. Specific rates are negotiated per retailer.
+    entries:
+      - label: Per-order take rate
+        description: Negotiated take rate on completed marketplace orders
+        name: take_rate
+        type: metered
+        metric: order
+        limit: -1
+        timeFrame: usage
+        geo: US/CA
+        domains:
+          - https://{instacart_domain}/v2
+        unit: 1
+        price: see partner agreement
+        userMultiplied: false
+    elements:
+      - name: Marketplace fulfillment
+      - name: Shopper network
+      - name: Storefront / Powered-by Instacart
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
