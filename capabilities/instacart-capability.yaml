@@ -1,0 +1,101 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Instacart Catalog API
+  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart
+    platform. Retailers can use the API to create or update products and items, with partial updates supported so that only
+    the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart
+    product listings synchronized with their inventory management systems, ensuring accurate product information, pricing,
+    and availability across the platform.
+  tags:
+  - Instacart
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: instacart
+    baseUri: https://connect.instacart.com
+    description: Instacart Catalog API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{INSTACART_TOKEN}}'
+    resources:
+    - name: v2-data-ingestion-catalog-product-submission
+      path: /v2/data_ingestion/catalog/product/submission
+      operations:
+      - name: submitproducts
+        method: POST
+        description: Create or update products
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-data-ingestion-catalog-item-submission
+      path: /v2/data_ingestion/catalog/item/submission
+      operations:
+      - name: submititems
+        method: POST
+        description: Create or update items
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: instacart-rest
+    description: REST adapter for Instacart Catalog API.
+    resources:
+    - path: /v2/data_ingestion/catalog/product/submission
+      name: submitproducts
+      operations:
+      - method: POST
+        name: submitproducts
+        description: Create or update products
+        call: instacart.submitproducts
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/data_ingestion/catalog/item/submission
+      name: submititems
+      operations:
+      - method: POST
+        name: submititems
+        description: Create or update items
+        call: instacart.submititems
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: instacart-mcp
+    transport: http
+    description: MCP adapter for Instacart Catalog API for AI agent use.
+    tools:
+    - name: submitproducts
+      description: Create or update products
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: instacart.submitproducts
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: submititems
+      description: Create or update items
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: instacart.submititems
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    INSTACART_TOKEN: INSTACART_TOKEN
