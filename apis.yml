@@ -112,7 +112,7 @@ apis:
       interacting with any API directly. The widgets enable features such as product
       search results, cart management, product collections, and user authentication.
 common:
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/instacart-context.jsonld
   - type: JSONSchema
     url: json-schema/instacart-order-schema.json
