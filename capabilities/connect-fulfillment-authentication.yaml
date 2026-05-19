@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Instacart Connect Fulfillment API — Authentication
+  description: 'Instacart Connect Fulfillment API — Authentication. 1 operations. Lead operation: Generate an access token.
+    Self-contained Naftiko capability covering one Instacart business surface.'
+  tags:
+  - Instacart
+  - Authentication
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    INSTACART_API_KEY: INSTACART_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: connect-fulfillment-authentication
+    baseUri: https://connect.instacart.com
+    description: Instacart Connect Fulfillment API — Authentication business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-oauth-token
+      path: /v2/oauth/token
+      operations:
+      - name: generateaccesstoken
+        method: POST
+        description: Generate an access token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.INSTACART_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: connect-fulfillment-authentication-rest
+    port: 8080
+    description: REST adapter for Instacart Connect Fulfillment API — Authentication. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/v2/oauth/token
+      name: v2-oauth-token
+      description: REST surface for v2-oauth-token.
+      operations:
+      - method: POST
+        name: generateaccesstoken
+        description: Generate an access token
+        call: connect-fulfillment-authentication.generateaccesstoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: connect-fulfillment-authentication-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Instacart Connect Fulfillment API — Authentication. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: generate-access-token
+      description: Generate an access token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: connect-fulfillment-authentication.generateaccesstoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

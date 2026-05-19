@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Instacart Catalog API — Items
+  description: 'Instacart Catalog API — Items. 1 operations. Lead operation: Create or update items. Self-contained Naftiko
+    capability covering one Instacart business surface.'
+  tags:
+  - Instacart
+  - Items
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    INSTACART_API_KEY: INSTACART_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: catalog-items
+    baseUri: https://connect.instacart.com
+    description: Instacart Catalog API — Items business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-data_ingestion-catalog-item-submission
+      path: /v2/data_ingestion/catalog/item/submission
+      operations:
+      - name: submititems
+        method: POST
+        description: Create or update items
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.INSTACART_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: catalog-items-rest
+    port: 8080
+    description: REST adapter for Instacart Catalog API — Items. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/data-ingestion/catalog/item/submission
+      name: v2-data-ingestion-catalog-item-submission
+      description: REST surface for v2-data_ingestion-catalog-item-submission.
+      operations:
+      - method: POST
+        name: submititems
+        description: Create or update items
+        call: catalog-items.submititems
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: catalog-items-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Instacart Catalog API — Items. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: create-update-items
+      description: Create or update items
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-items.submititems
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
