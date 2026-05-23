@@ -1,0 +1,14 @@
+name: Instacart Domain Vocabulary
+provider: Instacart
+providerId: instacart
+description: Tag-derived vocabulary for the Instacart API surface; sourced from openapi/ tags.
+terms:
+- term: Authentication
+  description: Endpoints for obtaining and managing OAuth 2.0 access tokens used to authenticate API requests.
+- term: Delivery
+  description: Endpoints for finding delivery stores, previewing time slots, reserving time slots, and creating delivery orders.
+- term: Last Mile Delivery
+  description: Endpoints for last mile delivery where items are pre-packed and only require delivery from the store to the
+    customer.
+- term: Pickup
+  description: Endpoints for finding pickup stores, previewing time slots, reserving time slots, and creating pickup orders.

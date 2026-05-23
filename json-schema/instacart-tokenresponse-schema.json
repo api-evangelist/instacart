@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TokenResponse",
+  "title": "TokenResponse",
+  "type": "object",
+  "properties": {
+    "access_token": {
+      "type": "string",
+      "description": "The Bearer token to use for authenticating API requests."
+    },
+    "token_type": {
+      "type": "string",
+      "enum": [
+        "Bearer"
+      ],
+      "description": "The type of token issued."
+    },
+    "expires_in": {
+      "type": "integer",
+      "description": "The number of seconds until the token expires. Typically 86400 seconds (24 hours)."
+    },
+    "scope": {
+      "type": "string",
+      "description": "The scope of access granted by the token."
+    },
+    "created_at": {
+      "type": "integer",
+      "description": "Unix timestamp indicating when the token was created."
+    }
+  }
+}

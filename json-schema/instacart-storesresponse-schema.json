@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StoresResponse",
+  "title": "StoresResponse",
+  "type": "object",
+  "properties": {
+    "stores": {
+      "type": "array",
+      "description": "An array of stores offering the requested fulfillment type, sorted by distance with the closest store first.",
+      "items": {
+        "$ref": "#/components/schemas/Store"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProductsLinkResponse",
+  "title": "ProductsLinkResponse",
+  "type": "object",
+  "properties": {
+    "products_link_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The unique URL to the generated shopping list or recipe page on Instacart Marketplace."
+    }
+  }
+}

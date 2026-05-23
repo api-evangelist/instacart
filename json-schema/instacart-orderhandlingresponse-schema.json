@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OrderHandlingResponse",
+  "title": "OrderHandlingResponse",
+  "type": "object",
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "description": "The unique identifier for the order."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brand_new",
+        "acknowledged",
+        "picking",
+        "staging",
+        "delivering",
+        "delivered",
+        "canceled"
+      ],
+      "description": "The current status of the order."
+    },
+    "address": {
+      "type": "object",
+      "description": "The delivery or pickup address.",
+      "properties": {
+        "address_line_1": {
+          "type": "string",
+          "description": "The street address."
+        },
+        "address_line_2": {
+          "type": "string",
+          "description": "Additional address information."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or province."
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "The postal or ZIP code."
+        }
+      }
+    },
+    "coordinates": {
+      "type": "object",
+      "description": "The geographic coordinates of the delivery or pickup address.",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "description": "The latitude coordinate."
+        },
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "description": "The longitude coordinate."
+        }
+      }
+    },
+    "shopper": {
+      "type": "object",
+      "description": "Information about the current shopper assigned to the order.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The first name of the shopper."
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "A masked phone number for contacting the shopper."
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any delivery or pickup instructions included with the order."
+    }
+  }
+}

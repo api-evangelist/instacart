@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OrderItemsResponse",
+  "title": "OrderItemsResponse",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The list of items in the order with their current statuses.",
+      "items": {
+        "$ref": "#/components/schemas/PostCheckoutOrderItem"
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RecipeRequest",
+  "title": "RecipeRequest",
+  "type": "object",
+  "required": [
+    "title",
+    "ingredients"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the recipe displayed on the recipe page."
+    },
+    "image_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of an image to display for the recipe."
+    },
+    "author": {
+      "type": "string",
+      "description": "The name of the recipe author."
+    },
+    "servings": {
+      "type": "integer",
+      "description": "The number of servings the recipe makes.",
+      "minimum": 1
+    },
+    "cooking_time": {
+      "type": "string",
+      "description": "The estimated cooking time for the recipe."
+    },
+    "external_reference_id": {
+      "type": "string",
+      "description": "An external identifier for the recipe from the partner system."
+    },
+    "content_creator_credit_info": {
+      "type": "object",
+      "description": "Information for crediting the content creator on the recipe page.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the content creator."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the content creator's website or profile."
+        }
+      }
+    },
+    "expires_in": {
+      "type": "integer",
+      "description": "The number of seconds until the generated recipe link expires.",
+      "minimum": 1
+    },
+    "instructions": {
+      "type": "array",
+      "description": "Step-by-step cooking instructions for the recipe.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ingredients": {
+      "type": "array",
+      "description": "The list of ingredients required for the recipe.",
+      "items": {
+        "$ref": "#/components/schemas/Ingredient"
+      }
+    }
+  }
+}

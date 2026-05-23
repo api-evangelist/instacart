@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OrderResponse",
+  "title": "OrderResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the order."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brand_new",
+        "acknowledged",
+        "picking",
+        "staging",
+        "delivering",
+        "delivered",
+        "canceled",
+        "rescheduled"
+      ],
+      "description": "The current status of the order."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the order was created."
+    },
+    "fulfillment_type": {
+      "type": "string",
+      "enum": [
+        "delivery",
+        "pickup",
+        "last_mile"
+      ],
+      "description": "The fulfillment type of the order."
+    },
+    "service_option": {
+      "$ref": "#/components/schemas/ServiceOption"
+    },
+    "store": {
+      "$ref": "#/components/schemas/Store"
+    },
+    "items": {
+      "type": "array",
+      "description": "The items included in the order.",
+      "items": {
+        "$ref": "#/components/schemas/OrderItem"
+      }
+    }
+  }
+}

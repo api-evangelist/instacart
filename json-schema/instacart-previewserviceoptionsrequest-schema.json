@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PreviewServiceOptionsRequest",
+  "title": "PreviewServiceOptionsRequest",
+  "type": "object",
+  "properties": {
+    "store_id": {
+      "type": "string",
+      "description": "The unique identifier of the store to preview service options for."
+    },
+    "address": {
+      "type": "object",
+      "description": "The delivery or pickup address.",
+      "properties": {
+        "address_line_1": {
+          "type": "string",
+          "description": "The street address."
+        },
+        "address_line_2": {
+          "type": "string",
+          "description": "Additional address information."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or province."
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "The postal or ZIP code."
+        }
+      }
+    }
+  }
+}

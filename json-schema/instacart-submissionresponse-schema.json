@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SubmissionResponse",
+  "title": "SubmissionResponse",
+  "type": "object",
+  "properties": {
+    "submission_id": {
+      "type": "string",
+      "description": "A unique identifier for tracking the submission."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "processing",
+        "completed",
+        "failed"
+      ],
+      "description": "The current status of the submission."
+    },
+    "submitted_count": {
+      "type": "integer",
+      "description": "The number of records submitted."
+    },
+    "errors": {
+      "type": "array",
+      "description": "Any validation errors found in the submitted data.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The index of the record with the error."
+          },
+          "message": {
+            "type": "string",
+            "description": "The error message describing the issue."
+          }
+        }
+      }
+    }
+  }
+}

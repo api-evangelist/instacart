@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TokenRequest",
+  "title": "TokenRequest",
+  "type": "object",
+  "required": [
+    "grant_type",
+    "client_id",
+    "client_secret",
+    "scope"
+  ],
+  "properties": {
+    "grant_type": {
+      "type": "string",
+      "enum": [
+        "client_credentials"
+      ],
+      "description": "The OAuth 2.0 grant type. Must be client_credentials."
+    },
+    "client_id": {
+      "type": "string",
+      "description": "The client ID provided by Instacart."
+    },
+    "client_secret": {
+      "type": "string",
+      "description": "The client secret provided by Instacart."
+    },
+    "scope": {
+      "type": "string",
+      "description": "The API scope to request access for, such as connect:fulfillment."
+    }
+  }
+}

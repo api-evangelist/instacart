@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OrderItem",
+  "title": "OrderItem",
+  "type": "object",
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "The Instacart product identifier."
+    },
+    "upc": {
+      "type": "string",
+      "description": "The Universal Product Code of the item."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the product."
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "The ordered quantity."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "found",
+        "replaced",
+        "refunded"
+      ],
+      "description": "The current status of the item in the order."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServiceOptionHoldResponse",
+  "title": "ServiceOptionHoldResponse",
+  "type": "object",
+  "properties": {
+    "hold_id": {
+      "type": "string",
+      "description": "The unique identifier for the time slot hold."
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which the hold expires and the time slot is released."
+    },
+    "service_option": {
+      "$ref": "#/components/schemas/ServiceOption"
+    }
+  }
+}

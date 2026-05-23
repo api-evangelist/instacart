@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ReserveTimeSlotRequest",
+  "title": "ReserveTimeSlotRequest",
+  "type": "object",
+  "required": [
+    "service_option_id"
+  ],
+  "properties": {
+    "service_option_id": {
+      "type": "string",
+      "description": "The identifier of the service option time slot to reserve."
+    },
+    "cart": {
+      "type": "object",
+      "description": "The customer's cart details to associate with the reservation.",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "The items in the customer's cart.",
+          "items": {
+            "$ref": "#/components/schemas/CartItem"
+          }
+        }
+      }
+    }
+  }
+}

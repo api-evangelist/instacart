@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ChatMessagesResponse",
+  "title": "ChatMessagesResponse",
+  "type": "object",
+  "properties": {
+    "messages": {
+      "type": "array",
+      "description": "The list of chat messages in chronological order.",
+      "items": {
+        "$ref": "#/components/schemas/ChatMessage"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServiceOptionsResponse",
+  "title": "ServiceOptionsResponse",
+  "type": "object",
+  "properties": {
+    "service_options": {
+      "type": "array",
+      "description": "Available service option time slots for the requested fulfillment type.",
+      "items": {
+        "$ref": "#/components/schemas/ServiceOption"
+      }
+    }
+  }
+}

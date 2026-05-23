@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PostCheckoutOrderItem",
+  "title": "PostCheckoutOrderItem",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the order item."
+    },
+    "product_name": {
+      "type": "string",
+      "description": "The name of the ordered product."
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "The ordered quantity."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "found",
+        "replaced",
+        "refunded",
+        "not_found"
+      ],
+      "description": "The current status of the item during shopping."
+    },
+    "replacement": {
+      "$ref": "#/components/schemas/Replacement"
+    },
+    "replacement_status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ],
+      "description": "The customer's decision on the replacement, if one was suggested."
+    }
+  }
+}

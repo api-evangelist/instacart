@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServiceOption",
+  "title": "ServiceOption",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the service option."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of the service option."
+    },
+    "window_starts_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The start time of the delivery or pickup window."
+    },
+    "window_ends_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The end time of the delivery or pickup window."
+    },
+    "fulfillment_type": {
+      "type": "string",
+      "enum": [
+        "delivery",
+        "pickup",
+        "last_mile"
+      ],
+      "description": "The type of fulfillment for this service option."
+    }
+  }
+}

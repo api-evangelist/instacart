@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/LineItem",
+  "title": "LineItem",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the product."
+    },
+    "quantity": {
+      "type": "number",
+      "description": "The quantity of the product to add.",
+      "minimum": 1
+    },
+    "unit": {
+      "type": "string",
+      "description": "The unit of measurement for the quantity."
+    },
+    "display_text": {
+      "type": "string",
+      "description": "Custom display text for the line item on the page."
+    },
+    "product_ids": {
+      "type": "array",
+      "description": "Instacart product identifiers to match specific products.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "upcs": {
+      "type": "array",
+      "description": "Universal Product Codes to match specific products.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "line_item_measurements": {
+      "type": "object",
+      "description": "Measurement details for the line item.",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "description": "The measurement amount."
+        },
+        "unit": {
+          "type": "string",
+          "description": "The measurement unit."
+        }
+      }
+    },
+    "filters": {
+      "type": "object",
+      "description": "Filters to narrow product matching.",
+      "properties": {
+        "department": {
+          "type": "string",
+          "description": "The store department to filter products by."
+        }
+      }
+    }
+  }
+}

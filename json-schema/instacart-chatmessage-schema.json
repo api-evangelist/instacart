@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ChatMessage",
+  "title": "ChatMessage",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the message."
+    },
+    "sender": {
+      "type": "string",
+      "enum": [
+        "customer",
+        "shopper"
+      ],
+      "description": "Who sent the message."
+    },
+    "body": {
+      "type": "string",
+      "description": "The text content of the message."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the message was sent."
+    }
+  }
+}

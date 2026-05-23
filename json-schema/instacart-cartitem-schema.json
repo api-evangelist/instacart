@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CartItem",
+  "title": "CartItem",
+  "type": "object",
+  "properties": {
+    "upc": {
+      "type": "string",
+      "description": "The Universal Product Code of the item."
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "The quantity of the item.",
+      "minimum": 1
+    },
+    "product_id": {
+      "type": "string",
+      "description": "The Instacart product identifier."
+    }
+  }
+}

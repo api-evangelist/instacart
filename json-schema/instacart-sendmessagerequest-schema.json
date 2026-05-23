@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SendMessageRequest",
+  "title": "SendMessageRequest",
+  "type": "object",
+  "required": [
+    "body"
+  ],
+  "properties": {
+    "body": {
+      "type": "string",
+      "description": "The text content of the message to send to the shopper.",
+      "maxLength": 1000
+    }
+  }
+}

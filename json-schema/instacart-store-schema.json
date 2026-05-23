@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Store",
+  "title": "Store",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the store."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the store."
+    },
+    "address": {
+      "type": "object",
+      "description": "The physical address of the store.",
+      "properties": {
+        "address_line_1": {
+          "type": "string",
+          "description": "The street address."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or province."
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "The postal or ZIP code."
+        }
+      }
+    },
+    "distance": {
+      "type": "number",
+      "format": "double",
+      "description": "The distance from the customer's location to the store."
+    }
+  }
+}

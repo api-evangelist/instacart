@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Replacement",
+  "title": "Replacement",
+  "type": "object",
+  "description": "Details about the replacement product suggested by the shopper.",
+  "properties": {
+    "product_name": {
+      "type": "string",
+      "description": "The name of the replacement product."
+    },
+    "product_id": {
+      "type": "string",
+      "description": "The product identifier of the replacement."
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "The quantity of the replacement product."
+    }
+  }
+}

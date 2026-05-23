@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProductSubmissionRequest",
+  "title": "ProductSubmissionRequest",
+  "type": "object",
+  "required": [
+    "products"
+  ],
+  "properties": {
+    "products": {
+      "type": "array",
+      "description": "The list of products to create or update.",
+      "items": {
+        "$ref": "#/components/schemas/Product"
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CreateOrderRequest",
+  "title": "CreateOrderRequest",
+  "type": "object",
+  "required": [
+    "hold_id"
+  ],
+  "properties": {
+    "hold_id": {
+      "type": "string",
+      "description": "The identifier of the time slot hold from the reserve step."
+    },
+    "cart": {
+      "type": "object",
+      "description": "The finalized cart for the order.",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "The items to include in the order.",
+          "items": {
+            "$ref": "#/components/schemas/CartItem"
+          }
+        }
+      }
+    },
+    "delivery_address": {
+      "type": "object",
+      "description": "The delivery address for the order.",
+      "properties": {
+        "address_line_1": {
+          "type": "string",
+          "description": "The street address."
+        },
+        "address_line_2": {
+          "type": "string",
+          "description": "Additional address information."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or province."
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "The postal or ZIP code."
+        }
+      }
+    },
+    "delivery_instructions": {
+      "type": "string",
+      "description": "Special instructions for the delivery driver."
+    }
+  }
+}

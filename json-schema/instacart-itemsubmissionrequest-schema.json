@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ItemSubmissionRequest",
+  "title": "ItemSubmissionRequest",
+  "type": "object",
+  "required": [
+    "items"
+  ],
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The list of items to create or update at specific store locations.",
+      "items": {
+        "$ref": "#/components/schemas/Item"
+      }
+    }
+  }
+}

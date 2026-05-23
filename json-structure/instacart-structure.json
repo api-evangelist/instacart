@@ -1,0 +1,237 @@
+{
+  "provider": "Instacart",
+  "providerId": "instacart",
+  "kind": "json-structure",
+  "description": "Structural overview of the Instacart API surface; extracted from openapi/.",
+  "schemaCount": 15,
+  "operationCount": 14,
+  "schemas": [
+    {
+      "name": "TokenRequest",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "grant_type",
+        "client_id",
+        "client_secret",
+        "scope"
+      ]
+    },
+    {
+      "name": "TokenResponse",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "FindStoresRequest",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "StoresResponse",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "Store",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "PreviewServiceOptionsRequest",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "ServiceOptionsResponse",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "ServiceOption",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "ReserveTimeSlotRequest",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "service_option_id"
+      ]
+    },
+    {
+      "name": "ServiceOptionHoldResponse",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "CreateOrderRequest",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "hold_id"
+      ]
+    },
+    {
+      "name": "CartItem",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "OrderResponse",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "OrderItem",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/v2/oauth/token",
+      "operationId": "generateAccessToken",
+      "summary": "Generate an access token",
+      "tags": [
+        "Authentication"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/stores/delivery",
+      "operationId": "findDeliveryStores",
+      "summary": "Find stores offering delivery",
+      "tags": [
+        "Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/users/{user_id}/service_options/delivery",
+      "operationId": "previewDeliveryTimeSlots",
+      "summary": "Preview time slots for delivery",
+      "tags": [
+        "Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/users/{user_id}/service_options/delivery/hold",
+      "operationId": "reserveDeliveryTimeSlot",
+      "summary": "Reserve a previewed delivery time slot",
+      "tags": [
+        "Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/users/{user_id}/orders/delivery",
+      "operationId": "createDeliveryOrder",
+      "summary": "Create a delivery order",
+      "tags": [
+        "Delivery"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v2/fulfillment/users/{user_id}/orders/{order_id}",
+      "operationId": "getOrder",
+      "summary": "Get an order",
+      "tags": [
+        "Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/users/{user_id}/orders/{order_id}/cancel",
+      "operationId": "cancelOrder",
+      "summary": "Cancel an order",
+      "tags": [
+        "Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/stores/pickup",
+      "operationId": "findPickupStores",
+      "summary": "Find stores offering pickup",
+      "tags": [
+        "Pickup"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/users/{user_id}/service_options/pickup",
+      "operationId": "previewPickupTimeSlots",
+      "summary": "Preview time slots for pickup",
+      "tags": [
+        "Pickup"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/users/{user_id}/orders/pickup",
+      "operationId": "createPickupOrder",
+      "summary": "Create a pickup order",
+      "tags": [
+        "Pickup"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/stores/last_mile",
+      "operationId": "findLastMileStores",
+      "summary": "Find stores offering last mile delivery",
+      "tags": [
+        "Last Mile Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/lastmile/users/{user_id}/service_options",
+      "operationId": "previewLastMileServiceOptions",
+      "summary": "Reserve a time slot for last mile delivery",
+      "tags": [
+        "Last Mile Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/lastmile/users/{user_id}/orders",
+      "operationId": "createLastMileOrder",
+      "summary": "Create a last mile delivery order",
+      "tags": [
+        "Last Mile Delivery"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/fulfillment/lastmile/orders/{order_id}/staged",
+      "operationId": "stageLastMileOrder",
+      "summary": "Stage a last mile delivery order",
+      "tags": [
+        "Last Mile Delivery"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FindStoresRequest",
+  "title": "FindStoresRequest",
+  "type": "object",
+  "properties": {
+    "address_line_1": {
+      "type": "string",
+      "description": "The street address of the customer's location."
+    },
+    "address_line_2": {
+      "type": "string",
+      "description": "Additional address information such as apartment or suite number."
+    },
+    "city": {
+      "type": "string",
+      "description": "The city of the customer's location."
+    },
+    "state": {
+      "type": "string",
+      "description": "The state or province of the customer's location."
+    },
+    "postal_code": {
+      "type": "string",
+      "description": "The postal or ZIP code of the customer's location."
+    },
+    "latitude": {
+      "type": "number",
+      "format": "double",
+      "description": "The latitude coordinate of the customer's location."
+    },
+    "longitude": {
+      "type": "number",
+      "format": "double",
+      "description": "The longitude coordinate of the customer's location."
+    }
+  }
+}
