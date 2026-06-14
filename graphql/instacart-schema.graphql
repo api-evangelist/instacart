@@ -1,0 +1,1183 @@
+"""
+Instacart GraphQL Schema
+Conceptual schema for the Instacart grocery delivery and retail platform.
+Covers stores, products, catalog, pricing, inventory, orders, fulfillment,
+delivery, customers, payments, discovery, brands, and platform tooling.
+"""
+
+# --- Scalars ---
+
+scalar DateTime
+scalar Date
+scalar JSON
+scalar URL
+scalar Decimal
+scalar LatLng
+
+# =============================================================================
+# RETAIL STORES
+# =============================================================================
+
+"""Top-level store entity representing an Instacart-integrated retailer location."""
+type Store {
+  id: ID!
+  retailStore: RetailStore!
+  location: StoreLocation!
+  hours: StoreHours!
+  departments: [StoreDepartment!]!
+  zones: [StoreZone!]!
+  aisles: [Aisle!]!
+  inventory: StoreInventory!
+  pricing: StorePricing!
+  fulfillmentOptions: [FulfillmentOption!]!
+  deliveryWindows: [DeliveryWindow!]!
+  pickupWindows: [PickupWindow!]!
+  isActive: Boolean!
+  supportsDelivery: Boolean!
+  supportsPickup: Boolean!
+  minimumOrderAmount: Decimal
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Retailer brand and chain information for a store."""
+type RetailStore {
+  id: ID!
+  name: String!
+  slug: String!
+  logoUrl: URL
+  bannerUrl: URL
+  description: String
+  website: URL
+  stores: [Store!]!
+  brandPage: BrandPage
+  promotions: [BrandPromotion!]!
+  catalogId: String
+}
+
+"""Physical location of a store."""
+type StoreLocation {
+  id: ID!
+  address: Address!
+  coordinates: LatLng!
+  timezone: String!
+  phoneNumber: String
+  deliveryRadius: Decimal
+  zipCodes: [String!]!
+}
+
+"""Operating hours for a store."""
+type StoreHours {
+  id: ID!
+  storeId: ID!
+  monday: DayHours
+  tuesday: DayHours
+  wednesday: DayHours
+  thursday: DayHours
+  friday: DayHours
+  saturday: DayHours
+  sunday: DayHours
+  holidayHours: [HolidayHours!]!
+  isOpen24Hours: Boolean!
+}
+
+"""Hours for a specific day."""
+type DayHours {
+  openTime: String!
+  closeTime: String!
+  isClosed: Boolean!
+}
+
+"""Holiday-specific hours override."""
+type HolidayHours {
+  date: Date!
+  openTime: String
+  closeTime: String
+  isClosed: Boolean!
+  holidayName: String!
+}
+
+"""A department within a store (e.g., Produce, Bakery, Deli)."""
+type StoreDepartment {
+  id: ID!
+  storeId: ID!
+  name: String!
+  slug: String!
+  displayOrder: Int!
+  iconUrl: URL
+  parentDepartmentId: ID
+  subDepartments: [StoreDepartment!]!
+  zones: [StoreZone!]!
+  aisles: [Aisle!]!
+}
+
+"""A zone within a store for layout mapping."""
+type StoreZone {
+  id: ID!
+  storeId: ID!
+  name: String!
+  departmentId: ID
+  aisles: [Aisle!]!
+}
+
+"""An aisle within a store zone."""
+type Aisle {
+  id: ID!
+  storeId: ID!
+  zoneId: ID
+  name: String!
+  number: String
+  side: String
+}
+
+# =============================================================================
+# PRODUCTS AND CATALOG
+# =============================================================================
+
+"""An item as listed in a store's catalog — the purchasable unit."""
+type Item {
+  id: ID!
+  product: Product!
+  storeId: ID!
+  sku: String
+  upc: String
+  retailerItemId: String!
+  availability: ItemAvailability!
+  priceInfo: PriceInfo!
+  aisle: Aisle
+  department: StoreDepartment
+  substitutionPreference: SubstitutionPreference
+  substitutions: [Substitution!]!
+  stockLevel: StockLevel!
+  isAvailable: Boolean!
+  isSoldByWeight: Boolean!
+  weightInPounds: Decimal
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A product in the Instacart catalog."""
+type Product {
+  id: ID!
+  name: String!
+  slug: String!
+  details: ProductDetails!
+  images: [ProductImage!]!
+  category: ProductCategory!
+  brand: ProductBrand
+  nutritionalInfo: NutritionalInfo
+  foodLabel: FoodLabel
+  certifications: [Certification!]!
+  organic: Organic
+  upc: String
+  gtin: String
+  averageRating: Decimal
+  reviewCount: Int!
+  reviews: [Review!]!
+  items: [Item!]!
+  recipes: [Recipe!]!
+}
+
+"""Detailed description and attributes of a product."""
+type ProductDetails {
+  id: ID!
+  productId: ID!
+  description: String
+  ingredients: String
+  allergens: [String!]!
+  size: String
+  unitCount: Decimal
+  unitType: String
+  servingSize: String
+  countryOfOrigin: String
+  storageInstructions: String
+  preparationInstructions: String
+  warnings: [String!]!
+  attributes: JSON
+}
+
+"""An image associated with a product."""
+type ProductImage {
+  id: ID!
+  productId: ID!
+  url: URL!
+  altText: String
+  isPrimary: Boolean!
+  width: Int
+  height: Int
+  contentType: String!
+}
+
+"""A category in the product taxonomy."""
+type ProductCategory {
+  id: ID!
+  name: String!
+  slug: String!
+  level: Int!
+  parentCategoryId: ID
+  parentCategory: ProductCategory
+  subCategories: [ProductCategory!]!
+  products: [Product!]!
+  imageUrl: URL
+}
+
+"""A brand associated with products."""
+type ProductBrand {
+  id: ID!
+  name: String!
+  slug: String!
+  logoUrl: URL
+  description: String
+  website: URL
+  products: [Product!]!
+  brandPage: BrandPage
+  promotions: [BrandPromotion!]!
+}
+
+# =============================================================================
+# NUTRITION AND LABELS
+# =============================================================================
+
+"""Nutritional information panel for a product."""
+type NutritionalInfo {
+  id: ID!
+  productId: ID!
+  servingSize: String!
+  servingsPerContainer: Decimal
+  calories: Decimal
+  totalFatG: Decimal
+  saturatedFatG: Decimal
+  transFatG: Decimal
+  cholesterolMg: Decimal
+  sodiumMg: Decimal
+  totalCarbohydratesG: Decimal
+  dietaryFiberG: Decimal
+  totalSugarsG: Decimal
+  addedSugarsG: Decimal
+  proteinG: Decimal
+  vitaminDMcg: Decimal
+  calciumMg: Decimal
+  ironMg: Decimal
+  potassiumMg: Decimal
+  otherNutrients: JSON
+}
+
+"""Food label classifications for a product."""
+type FoodLabel {
+  id: ID!
+  productId: ID!
+  isGlutenFree: Boolean!
+  isVegan: Boolean!
+  isVegetarian: Boolean!
+  isKosher: Boolean!
+  isHalal: Boolean!
+  isNonGMO: Boolean!
+  isDairyFree: Boolean!
+  isNutFree: Boolean!
+  isSoyFree: Boolean!
+  labels: [String!]!
+}
+
+"""Third-party certifications held by a product."""
+type Certification {
+  id: ID!
+  name: String!
+  certifyingBody: String!
+  logoUrl: URL
+  certificationNumber: String
+  expiresAt: Date
+}
+
+"""Organic classification details."""
+type Organic {
+  isOrganic: Boolean!
+  certificationBody: String
+  certificationNumber: String
+  percentOrganic: Decimal
+}
+
+# =============================================================================
+# PRICING
+# =============================================================================
+
+"""Aggregated price information for an item at a store."""
+type PriceInfo {
+  id: ID!
+  itemId: ID!
+  storeId: ID!
+  regularPrice: RegularPrice!
+  salePrice: SalePrice
+  unitPrice: UnitPrice
+  perWeightPrice: PerWeightPrice
+  isOnSale: Boolean!
+  savingsAmount: Decimal
+  savingsPercent: Decimal
+  coupon: Coupon
+  updatedAt: DateTime!
+}
+
+"""Standard retail price for an item."""
+type RegularPrice {
+  amount: Decimal!
+  currency: String!
+  formatted: String!
+}
+
+"""Discounted sale price for an item."""
+type SalePrice {
+  amount: Decimal!
+  currency: String!
+  formatted: String!
+  saleStartDate: DateTime
+  saleEndDate: DateTime
+  saleEvent: SaleEvent
+}
+
+"""Price per unit for comparison."""
+type UnitPrice {
+  amount: Decimal!
+  currency: String!
+  unit: String!
+  formatted: String!
+}
+
+"""Price per weight unit for items sold by weight."""
+type PerWeightPrice {
+  amount: Decimal!
+  currency: String!
+  weightUnit: String!
+  formatted: String!
+  estimatedWeight: Decimal
+  estimatedTotal: Decimal
+}
+
+"""Pricing applied at the store level across items."""
+type StorePricing {
+  storeId: ID!
+  priceMatchPolicy: String
+  loyaltyProgramName: String
+  loyaltyDiscountAvailable: Boolean!
+  items: [PriceInfo!]!
+}
+
+# =============================================================================
+# FULFILLMENT OPTIONS
+# =============================================================================
+
+"""A fulfillment method offered by a store (delivery or pickup)."""
+type FulfillmentOption {
+  id: ID!
+  storeId: ID!
+  type: FulfillmentType!
+  isAvailable: Boolean!
+  minimumOrderAmount: Decimal
+  deliveryFee: Decimal
+  serviceFee: Decimal
+  expressFee: Decimal
+  description: String
+}
+
+enum FulfillmentType {
+  DELIVERY
+  PICKUP
+  CURBSIDE
+  IN_STORE
+}
+
+"""A time window available for delivery."""
+type DeliveryWindow {
+  id: ID!
+  storeId: ID!
+  startTime: DateTime!
+  endTime: DateTime!
+  isAvailable: Boolean!
+  isExpress: Boolean!
+  fee: Decimal
+  displayLabel: String!
+}
+
+"""A time window available for in-store or curbside pickup."""
+type PickupWindow {
+  id: ID!
+  storeId: ID!
+  startTime: DateTime!
+  endTime: DateTime!
+  isAvailable: Boolean!
+  displayLabel: String!
+}
+
+# =============================================================================
+# INVENTORY
+# =============================================================================
+
+"""Inventory summary for a store."""
+type StoreInventory {
+  storeId: ID!
+  lastUpdated: DateTime!
+  totalItems: Int!
+  availableItems: Int!
+  items: [Item!]!
+}
+
+"""Stock level classification for an item."""
+type StockLevel {
+  itemId: ID!
+  storeId: ID!
+  level: StockStatus!
+  quantityAvailable: Int
+  lastChecked: DateTime!
+}
+
+enum StockStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+  UNKNOWN
+}
+
+"""Availability details for an item at a specific store."""
+type ItemAvailability {
+  itemId: ID!
+  storeId: ID!
+  isAvailable: Boolean!
+  availabilityStatus: AvailabilityStatus!
+  unavailableReason: String
+  nextAvailableDate: Date
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  TEMPORARILY_UNAVAILABLE
+  DISCONTINUED
+  SEASONAL
+  OUT_OF_STOCK
+}
+
+"""A proposed substitution for an unavailable item."""
+type Substitution {
+  id: ID!
+  originalItemId: ID!
+  substitutionItemId: ID!
+  substitutionItem: Item!
+  reason: String
+  isShopper Suggested: Boolean!
+  isCustomerApproved: Boolean
+  approvedAt: DateTime
+}
+
+"""Customer preference for item substitution behavior."""
+type SubstitutionPreference {
+  customerId: ID
+  itemId: ID!
+  preference: SubstitutionPreferenceType!
+  preferredSubstitutionItemId: ID
+  preferredSubstitutionItem: Item
+  notes: String
+}
+
+enum SubstitutionPreferenceType {
+  SUBSTITUTE
+  DO_NOT_SUBSTITUTE
+  CONTACT_ME
+  MY_CHOICE
+}
+
+# =============================================================================
+# SHOPPING AND ORDERS
+# =============================================================================
+
+"""A customer's active shopping cart."""
+type Cart {
+  id: ID!
+  customerId: ID!
+  storeId: ID!
+  store: Store!
+  items: [CartItem!]!
+  summary: CartSummary!
+  fulfillmentOption: FulfillmentOption
+  deliveryWindow: DeliveryWindow
+  pickupWindow: PickupWindow
+  deliveryAddress: DeliveryAddress
+  appliedCoupons: [Coupon!]!
+  paymentMethod: PaymentMethod
+  specialInstructions: String
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An item within a shopping cart."""
+type CartItem {
+  id: ID!
+  cartId: ID!
+  item: Item!
+  quantity: Decimal!
+  specialInstructions: String
+  substitutionPreference: SubstitutionPreference
+  priceAtAddition: PriceInfo!
+  lineTotal: Decimal!
+  addedAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Financial summary of a cart."""
+type CartSummary {
+  cartId: ID!
+  subtotal: Decimal!
+  deliveryFee: Decimal!
+  serviceFee: Decimal!
+  tip: Decimal!
+  taxes: Decimal!
+  discounts: Decimal!
+  total: Decimal!
+  currency: String!
+  itemCount: Int!
+  savings: Decimal!
+}
+
+"""A saved shopping list for future orders."""
+type ShoppingList {
+  id: ID!
+  customerId: ID!
+  name: String!
+  description: String
+  items: [ListItem!]!
+  isPublic: Boolean!
+  sharedWithRecipe: Recipe
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An item on a shopping list."""
+type ListItem {
+  id: ID!
+  listId: ID!
+  product: Product
+  retailerItemId: String
+  name: String!
+  quantity: Decimal!
+  unit: String
+  note: String
+  isChecked: Boolean!
+  addedAt: DateTime!
+}
+
+"""The checkout process state for a cart."""
+type Checkout {
+  id: ID!
+  cartId: ID!
+  cart: Cart!
+  customerId: ID!
+  status: CheckoutStatus!
+  deliveryAddress: DeliveryAddress
+  paymentMethod: PaymentMethod!
+  tip: Decimal!
+  placedAt: DateTime
+  estimatedDeliveryTime: DateTime
+  confirmedAt: DateTime
+}
+
+enum CheckoutStatus {
+  IN_PROGRESS
+  PENDING_PAYMENT
+  CONFIRMED
+  FAILED
+  CANCELLED
+}
+
+"""A placed customer order."""
+type Order {
+  id: ID!
+  customerId: ID!
+  customer: Customer!
+  storeId: ID!
+  store: Store!
+  items: [CartItem!]!
+  summary: CartSummary!
+  fulfillment: OrderFulfillment!
+  status: OrderStatus!
+  history: [OrderHistory!]!
+  delivery: Delivery
+  checkout: Checkout!
+  substitutions: [Substitution!]!
+  rating: Rating
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# =============================================================================
+# DELIVERY AND FULFILLMENT
+# =============================================================================
+
+"""Fulfillment details for a specific order."""
+type OrderFulfillment {
+  id: ID!
+  orderId: ID!
+  type: FulfillmentType!
+  status: FulfillmentStatus!
+  shopperAssignedAt: DateTime
+  shoppingStartedAt: DateTime
+  shoppingCompletedAt: DateTime
+  outForDeliveryAt: DateTime
+  deliveredAt: DateTime
+  pickedUpAt: DateTime
+  estimatedDeliveryTime: DateTime
+  actualDeliveryTime: DateTime
+}
+
+enum FulfillmentStatus {
+  PENDING
+  SHOPPER_ASSIGNED
+  SHOPPING
+  CHECKOUT
+  ON_THE_WAY
+  ARRIVED
+  DELIVERED
+  PICKUP_READY
+  PICKED_UP
+  CANCELLED
+}
+
+"""Delivery details for an order."""
+type Delivery {
+  id: ID!
+  orderId: ID!
+  driver: DeliveryDriver
+  driverLocation: DriverLocation
+  deliveryAddress: DeliveryAddress!
+  proof: DeliveryProof
+  estimatedArrival: DateTime
+  actualArrival: DateTime
+  deliveryNotes: String
+  requiresSignature: Boolean!
+  requiresAgeVerification: Boolean!
+  ageVerification: AgeVerification
+}
+
+"""A delivery driver (shopper) assigned to an order."""
+type DeliveryDriver {
+  id: ID!
+  firstName: String!
+  lastInitial: String!
+  photoUrl: URL
+  rating: Decimal
+  vehicleColor: String
+  vehicleMake: String
+  vehicleModel: String
+  licensePlateLastFour: String
+  currentLocation: DriverLocation
+}
+
+"""Real-time location of a delivery driver."""
+type DriverLocation {
+  driverId: ID!
+  coordinates: LatLng!
+  heading: Decimal
+  speed: Decimal
+  accuracyMeters: Decimal
+  recordedAt: DateTime!
+}
+
+"""Proof of delivery record."""
+type DeliveryProof {
+  id: ID!
+  deliveryId: ID!
+  photoUrl: URL
+  signatureUrl: URL
+  deliveredAt: DateTime!
+  deliveredTo: String
+  deliveryLocation: String
+  notes: String
+}
+
+"""Current status of an order."""
+type OrderStatus {
+  orderId: ID!
+  status: FulfillmentStatus!
+  displayMessage: String!
+  updatedAt: DateTime!
+}
+
+"""A historical status event for an order."""
+type OrderHistory {
+  id: ID!
+  orderId: ID!
+  status: FulfillmentStatus!
+  message: String
+  occurredAt: DateTime!
+  actorType: String
+}
+
+# =============================================================================
+# DISCOVERY — RECIPES AND MEAL KITS
+# =============================================================================
+
+"""A recipe that can generate a shopping list on Instacart."""
+type Recipe {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  imageUrl: URL
+  author: String
+  sourceUrl: URL
+  prepTimeMinutes: Int
+  cookTimeMinutes: Int
+  totalTimeMinutes: Int
+  servings: Int
+  difficulty: RecipeDifficulty
+  cuisineType: String
+  mealType: String
+  ingredients: [Ingredient!]!
+  instructions: [String!]!
+  tags: [String!]!
+  shoppingList: ShoppingList
+  isMealKit: Boolean!
+  mealKit: MealKit
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum RecipeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+"""An ingredient in a recipe, mapped to Instacart products."""
+type Ingredient {
+  id: ID!
+  recipeId: ID!
+  name: String!
+  quantity: Decimal
+  unit: String
+  preparation: String
+  isOptional: Boolean!
+  suggestedProduct: Product
+  alternativeProducts: [Product!]!
+  displayText: String!
+}
+
+"""A curated meal kit offering."""
+type MealKit {
+  id: ID!
+  recipeId: ID!
+  name: String!
+  description: String
+  imageUrl: URL
+  servings: Int!
+  price: Decimal!
+  currency: String!
+  isAvailable: Boolean!
+  availableStores: [Store!]!
+}
+
+# =============================================================================
+# BRANDS AND PROMOTIONS
+# =============================================================================
+
+"""A brand's dedicated page on Instacart."""
+type BrandPage {
+  id: ID!
+  brandId: ID!
+  title: String!
+  slug: String!
+  heroImageUrl: URL
+  logoUrl: URL
+  description: String
+  featuredProducts: [Product!]!
+  promotions: [BrandPromotion!]!
+  coupons: [Coupon!]!
+  isActive: Boolean!
+  publishedAt: DateTime
+}
+
+"""A promotional campaign run by a brand or retailer."""
+type BrandPromotion {
+  id: ID!
+  brandId: ID
+  storeId: ID
+  title: String!
+  description: String
+  imageUrl: URL
+  promoCode: String
+  discountType: DiscountType!
+  discountValue: Decimal!
+  minimumOrderAmount: Decimal
+  applicableProducts: [Product!]!
+  applicableCategories: [ProductCategory!]!
+  startsAt: DateTime!
+  endsAt: DateTime!
+  isActive: Boolean!
+  maxUses: Int
+  usesCount: Int!
+}
+
+enum DiscountType {
+  PERCENT_OFF
+  DOLLAR_OFF
+  BUY_X_GET_Y
+  FREE_ITEM
+  FREE_DELIVERY
+}
+
+"""A coupon that can be applied to an order."""
+type Coupon {
+  id: ID!
+  code: String!
+  description: String!
+  discountType: DiscountType!
+  discountValue: Decimal!
+  currency: String!
+  minimumOrderAmount: Decimal
+  applicableItemIds: [ID!]!
+  applicableCategoryIds: [ID!]!
+  startsAt: DateTime!
+  expiresAt: DateTime!
+  isActive: Boolean!
+  isSingleUse: Boolean!
+  usedAt: DateTime
+}
+
+"""A sale event (e.g., weekly ad, holiday sale)."""
+type SaleEvent {
+  id: ID!
+  storeId: ID
+  name: String!
+  description: String
+  bannerImageUrl: URL
+  startsAt: DateTime!
+  endsAt: DateTime!
+  salePrices: [SalePrice!]!
+  featuredProducts: [Product!]!
+  isActive: Boolean!
+}
+
+# =============================================================================
+# CUSTOMERS
+# =============================================================================
+
+"""A registered Instacart customer."""
+type Customer {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phoneNumber: String
+  addresses: [DeliveryAddress!]!
+  defaultAddress: DeliveryAddress
+  paymentMethods: [PaymentMethod!]!
+  defaultPaymentMethod: PaymentMethod
+  orders: [Order!]!
+  shoppingLists: [ShoppingList!]!
+  cart: Cart
+  ebtAccount: EBT
+  snapAccount: SNAP
+  wallet: Wallet
+  loyaltyNumbers: JSON
+  marketingOptIn: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A postal address."""
+type Address {
+  id: ID!
+  line1: String!
+  line2: String
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+  coordinates: LatLng
+}
+
+"""A delivery address associated with a customer."""
+type DeliveryAddress {
+  id: ID!
+  customerId: ID
+  address: Address!
+  alias: String
+  deliveryInstructions: String
+  isDefault: Boolean!
+  accessCode: String
+  buzzerCode: String
+  createdAt: DateTime!
+}
+
+# =============================================================================
+# PAYMENTS
+# =============================================================================
+
+"""A payment method available to a customer."""
+type PaymentMethod {
+  id: ID!
+  customerId: ID!
+  type: PaymentMethodType!
+  isDefault: Boolean!
+  isActive: Boolean!
+  lastFour: String
+  expiryMonth: Int
+  expiryYear: Int
+  cardBrand: String
+  billingAddress: Address
+  applePay: ApplePay
+  wallet: Wallet
+  ebt: EBT
+  snap: SNAP
+  addedAt: DateTime!
+}
+
+enum PaymentMethodType {
+  CREDIT_CARD
+  DEBIT_CARD
+  APPLE_PAY
+  GOOGLE_PAY
+  PAYPAL
+  WALLET
+  EBT
+  SNAP
+  GIFT_CARD
+}
+
+"""Apple Pay payment details."""
+type ApplePay {
+  id: ID!
+  deviceAccountNumber: String!
+  transactionIdentifier: String
+  isActive: Boolean!
+}
+
+"""Instacart digital wallet balance."""
+type Wallet {
+  id: ID!
+  customerId: ID!
+  balance: Decimal!
+  currency: String!
+  lastUpdated: DateTime!
+  transactions: [WalletTransaction!]!
+}
+
+"""A transaction in the Instacart wallet."""
+type WalletTransaction {
+  id: ID!
+  walletId: ID!
+  amount: Decimal!
+  type: WalletTransactionType!
+  description: String!
+  orderId: ID
+  occurredAt: DateTime!
+}
+
+enum WalletTransactionType {
+  CREDIT
+  DEBIT
+  REFUND
+  PROMOTION
+}
+
+"""EBT (Electronic Benefit Transfer) payment account."""
+type EBT {
+  id: ID!
+  customerId: ID!
+  cardLastFour: String!
+  isActive: Boolean!
+  eligibleCategories: [ProductCategory!]!
+  stateName: String!
+}
+
+"""SNAP (Supplemental Nutrition Assistance Program) account details."""
+type SNAP {
+  id: ID!
+  customerId: ID!
+  ebtId: ID!
+  isEligible: Boolean!
+  approvedAt: DateTime
+  eligibleItems: [Item!]!
+}
+
+# =============================================================================
+# VERIFICATION
+# =============================================================================
+
+"""Alcohol purchase age verification record."""
+type AlcoholVerification {
+  id: ID!
+  orderId: ID!
+  isRequired: Boolean!
+  isVerified: Boolean
+  verifiedAt: DateTime
+  verificationMethod: String
+  idDocumentType: String
+  dateOfBirth: Date
+  isApproved: Boolean
+}
+
+"""Age verification for restricted products."""
+type AgeVerification {
+  id: ID!
+  deliveryId: ID!
+  minimumAge: Int!
+  isVerified: Boolean!
+  verifiedAt: DateTime
+  method: AgeVerificationMethod!
+  idDocumentType: String
+  wasRefused: Boolean!
+  refusalReason: String
+}
+
+enum AgeVerificationMethod {
+  PHOTO_ID
+  BARCODE_SCAN
+  DATE_OF_BIRTH
+  REFUSED
+}
+
+# =============================================================================
+# RATINGS AND REVIEWS
+# =============================================================================
+
+"""A customer rating for a product or order."""
+type Rating {
+  id: ID!
+  customerId: ID!
+  targetId: ID!
+  targetType: RatingTargetType!
+  score: Int!
+  createdAt: DateTime!
+}
+
+enum RatingTargetType {
+  PRODUCT
+  ORDER
+  SHOPPER
+  STORE
+}
+
+"""A customer review for a product."""
+type Review {
+  id: ID!
+  customerId: ID!
+  productId: ID!
+  product: Product!
+  rating: Int!
+  title: String
+  body: String
+  verifiedPurchase: Boolean!
+  helpfulVotes: Int!
+  isApproved: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# =============================================================================
+# PLATFORM — API KEYS, TOKENS, WEBHOOKS
+# =============================================================================
+
+"""An API key for developer platform access."""
+type APIKey {
+  id: ID!
+  name: String!
+  keyPrefix: String!
+  scopes: [String!]!
+  environment: Environment!
+  isActive: Boolean!
+  lastUsedAt: DateTime
+  createdAt: DateTime!
+  expiresAt: DateTime
+}
+
+enum Environment {
+  SANDBOX
+  PRODUCTION
+}
+
+"""An authentication token for API access."""
+type Token {
+  id: ID!
+  accessToken: String!
+  tokenType: String!
+  expiresIn: Int!
+  expiresAt: DateTime!
+  scopes: [String!]!
+  issuedAt: DateTime!
+}
+
+"""A webhook endpoint registered for event delivery."""
+type Webhook {
+  id: ID!
+  url: URL!
+  events: [WebhookEventType!]!
+  secret: String!
+  isActive: Boolean!
+  lastTriggeredAt: DateTime
+  failureCount: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum WebhookEventType {
+  ORDER_CREATED
+  ORDER_UPDATED
+  ORDER_DELIVERED
+  ORDER_CANCELLED
+  SHOPPER_ASSIGNED
+  DRIVER_LOCATION_UPDATED
+  SUBSTITUTION_SUGGESTED
+  PAYMENT_PROCESSED
+  INVENTORY_UPDATED
+  CATALOG_UPDATED
+}
+
+# =============================================================================
+# ROOT TYPES
+# =============================================================================
+
+type Query {
+  store(id: ID!): Store
+  stores(zip: String, lat: Decimal, lng: Decimal, radius: Decimal): [Store!]!
+  retailStore(id: ID!): RetailStore
+  product(id: ID!): Product
+  products(categoryId: ID, brandId: ID, query: String, storeId: ID): [Product!]!
+  item(id: ID!, storeId: ID!): Item
+  order(id: ID!): Order
+  orders(customerId: ID!): [Order!]!
+  cart(id: ID!): Cart
+  customer(id: ID!): Customer
+  recipe(id: ID!): Recipe
+  recipes(query: String, cuisineType: String, mealType: String): [Recipe!]!
+  shoppingList(id: ID!): ShoppingList
+  shoppingLists(customerId: ID!): [ShoppingList!]!
+  coupon(code: String!): Coupon
+  brandPage(slug: String!): BrandPage
+  apiKey(id: ID!): APIKey
+  webhooks: [Webhook!]!
+}
+
+type Mutation {
+  addItemToCart(cartId: ID!, itemId: ID!, quantity: Decimal!, storeId: ID!): CartItem!
+  updateCartItem(cartItemId: ID!, quantity: Decimal!): CartItem!
+  removeCartItem(cartItemId: ID!): Boolean!
+  applyCoupon(cartId: ID!, couponCode: String!): Cart!
+  removeCoupon(cartId: ID!, couponCode: String!): Cart!
+  checkout(cartId: ID!, paymentMethodId: ID!, tip: Decimal): Checkout!
+  cancelOrder(orderId: ID!, reason: String): Order!
+  approveSubstitution(substitutionId: ID!): Substitution!
+  rejectSubstitution(substitutionId: ID!): Substitution!
+  createShoppingList(customerId: ID!, name: String!): ShoppingList!
+  addListItem(listId: ID!, name: String!, quantity: Decimal, unit: String): ListItem!
+  removeListItem(listItemId: ID!): Boolean!
+  createWebhook(url: URL!, events: [WebhookEventType!]!): Webhook!
+  deleteWebhook(webhookId: ID!): Boolean!
+  rateOrder(orderId: ID!, score: Int!): Rating!
+  reviewProduct(productId: ID!, rating: Int!, title: String, body: String): Review!
+  addPaymentMethod(customerId: ID!, type: PaymentMethodType!, token: String!): PaymentMethod!
+  removePaymentMethod(paymentMethodId: ID!): Boolean!
+}
+
+type Subscription {
+  orderStatusUpdated(orderId: ID!): OrderStatus!
+  driverLocationUpdated(orderId: ID!): DriverLocation!
+  cartUpdated(cartId: ID!): Cart!
+  substitutionSuggested(orderId: ID!): Substitution!
+}
