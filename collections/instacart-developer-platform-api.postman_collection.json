@@ -1,0 +1,583 @@
+{
+  "item": [
+    {
+      "id": "f60c07ef-5b3b-4e37-9d1f-0d92c0972971",
+      "name": "Products",
+      "description": {
+        "content": "Endpoints for creating shopping list and recipe pages on Instacart Marketplace with product links.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c0324cb6-21a3-4884-859b-fd39ee0cb8e5",
+          "name": "Create a shopping list page",
+          "request": {
+            "name": "Create a shopping list page",
+            "description": {
+              "content": "Creates a shopping list page on Instacart Marketplace and returns a unique URL. The page displays a list of products that users can add to their Instacart cart. Each call generates a new page with a unique URL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "idp",
+                "v1",
+                "products",
+                "products_link"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"<string>\",\n  \"line_items\": [\n    {\n      \"name\": \"<string>\",\n      \"quantity\": \"<number>\",\n      \"unit\": \"<string>\",\n      \"display_text\": \"<string>\",\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": \"<number>\",\n        \"unit\": \"<string>\"\n      },\n      \"filters\": {\n        \"department\": \"<string>\"\n      }\n    },\n    {\n      \"name\": \"<string>\",\n      \"quantity\": \"<number>\",\n      \"unit\": \"<string>\",\n      \"display_text\": \"<string>\",\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": \"<number>\",\n        \"unit\": \"<string>\"\n      },\n      \"filters\": {\n        \"department\": \"<string>\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"link_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"instructions\": \"<string>\",\n  \"landing_page_configuration\": {\n    \"partner_linkback_url\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "52b78471-b1b5-492f-92e9-940d6dbca83c",
+              "name": "Shopping list page created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "products_link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"line_items\": [\n    {\n      \"name\": \"string\",\n      \"quantity\": 1322.6433508233235,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 3276.384689733387,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"quantity\": 1974.430087930738,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 9861.103968616902,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"link_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"instructions\": \"<string>\",\n  \"landing_page_configuration\": {\n    \"partner_linkback_url\": \"<uri>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"products_link_url\": \"https://KERzHhNHorDOeLogEgbtjCSc.pohwk.suDx1exa88dPjPXGM1Aj36+GqXX1jUvXZBCT2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b030696-6299-4a21-8de2-d69bdd7f9103",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "products_link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"line_items\": [\n    {\n      \"name\": \"string\",\n      \"quantity\": 1322.6433508233235,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 3276.384689733387,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"quantity\": 1974.430087930738,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 9861.103968616902,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"link_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"instructions\": \"<string>\",\n  \"landing_page_configuration\": {\n    \"partner_linkback_url\": \"<uri>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 5989\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f4cfb2b-1a6e-4c97-a338-dae42f64a273",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "products_link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"line_items\": [\n    {\n      \"name\": \"string\",\n      \"quantity\": 1322.6433508233235,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 3276.384689733387,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"quantity\": 1974.430087930738,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 9861.103968616902,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"link_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"instructions\": \"<string>\",\n  \"landing_page_configuration\": {\n    \"partner_linkback_url\": \"<uri>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 5989\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "300b9f1e-07ed-4d28-b48f-47812595a997",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "products_link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"line_items\": [\n    {\n      \"name\": \"string\",\n      \"quantity\": 1322.6433508233235,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 3276.384689733387,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"quantity\": 1974.430087930738,\n      \"unit\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"line_item_measurements\": {\n        \"amount\": 9861.103968616902,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"link_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"instructions\": \"<string>\",\n  \"landing_page_configuration\": {\n    \"partner_linkback_url\": \"<uri>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 5989\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ca8b296-1c51-458a-9c5f-f8919023cbb4",
+          "name": "Create a recipe page",
+          "request": {
+            "name": "Create a recipe page",
+            "description": {
+              "content": "Creates a recipe page on Instacart Marketplace and returns a unique URL. The page displays recipe details including title, image, ingredients, and cooking instructions. Users can add recipe ingredients to their Instacart cart directly from the page.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "idp",
+                "v1",
+                "products",
+                "recipe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"<string>\",\n  \"ingredients\": [\n    {\n      \"name\": \"<string>\",\n      \"display_text\": \"<string>\",\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"measurements\": {\n        \"amount\": \"<number>\",\n        \"unit\": \"<string>\"\n      },\n      \"filters\": {\n        \"department\": \"<string>\"\n      }\n    },\n    {\n      \"name\": \"<string>\",\n      \"display_text\": \"<string>\",\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"measurements\": {\n        \"amount\": \"<number>\",\n        \"unit\": \"<string>\"\n      },\n      \"filters\": {\n        \"department\": \"<string>\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"author\": \"<string>\",\n  \"servings\": \"<integer>\",\n  \"cooking_time\": \"<string>\",\n  \"external_reference_id\": \"<string>\",\n  \"content_creator_credit_info\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"expires_in\": \"<integer>\",\n  \"instructions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a5396a2a-dae4-4b22-bd35-8988e3ce43bf",
+              "name": "Recipe page created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "recipe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"ingredients\": [\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 2390.0266772536006,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 6009.134057421273,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"author\": \"<string>\",\n  \"servings\": \"<integer>\",\n  \"cooking_time\": \"<string>\",\n  \"external_reference_id\": \"<string>\",\n  \"content_creator_credit_info\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"expires_in\": \"<integer>\",\n  \"instructions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"products_link_url\": \"https://KERzHhNHorDOeLogEgbtjCSc.pohwk.suDx1exa88dPjPXGM1Aj36+GqXX1jUvXZBCT2\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e856f92-0ab3-467f-b076-708c613f598b",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "recipe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"ingredients\": [\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 2390.0266772536006,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 6009.134057421273,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"author\": \"<string>\",\n  \"servings\": \"<integer>\",\n  \"cooking_time\": \"<string>\",\n  \"external_reference_id\": \"<string>\",\n  \"content_creator_credit_info\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"expires_in\": \"<integer>\",\n  \"instructions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 5989\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b286cc9b-f8ae-48d3-a0e8-23b7bae48722",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "recipe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"ingredients\": [\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 2390.0266772536006,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 6009.134057421273,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"author\": \"<string>\",\n  \"servings\": \"<integer>\",\n  \"cooking_time\": \"<string>\",\n  \"external_reference_id\": \"<string>\",\n  \"content_creator_credit_info\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"expires_in\": \"<integer>\",\n  \"instructions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 5989\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d3d4941-f590-4e35-8642-af46124cfdb3",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "idp",
+                    "v1",
+                    "products",
+                    "recipe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"ingredients\": [\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 2390.0266772536006,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"display_text\": \"string\",\n      \"product_ids\": [\n        \"string\",\n        \"string\"\n      ],\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"measurements\": {\n        \"amount\": 6009.134057421273,\n        \"unit\": \"string\"\n      },\n      \"filters\": {\n        \"department\": \"string\"\n      }\n    }\n  ],\n  \"image_url\": \"<uri>\",\n  \"author\": \"<string>\",\n  \"servings\": \"<integer>\",\n  \"cooking_time\": \"<string>\",\n  \"external_reference_id\": \"<string>\",\n  \"content_creator_credit_info\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"expires_in\": \"<integer>\",\n  \"instructions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 5989\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://connect.instacart.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d395b35d-69d9-4cad-b618-13455798934d",
+    "name": "Instacart Developer Platform API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Instacart Developer Platform API is a REST-based API that allows app developers to add Instacart shopping capabilities to their websites and applications. It provides endpoints for creating product shopping lists and recipe pages on Instacart Marketplace, enabling users to select a store, add ingredients or products to a cart, and check out. The API uses predictable resource-oriented URLs, standard HTTP methods, and API key authentication, with requests made to the connect.instacart.com base URL.\n\nContact Support:\n Name: Instacart Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,596 @@
+{
+  "item": [
+    {
+      "id": "0676b483-dddb-41e8-8991-7869b7b8bf75",
+      "name": "Items",
+      "description": {
+        "content": "Endpoints for updating item-level attributes such as pricing and availability at specific store locations. Items contain information that can vary from one store to another.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7cd54db2-9eac-48bb-9f17-5ae4c8122d9c",
+          "name": "Create or update items",
+          "request": {
+            "name": "Create or update items",
+            "description": {
+              "content": "Updates or sets item-level attributes for a product at a specific store location. Items contain information that can vary from one retailer store to another, such as pricing, availability, and inventory levels. Changes can take around two to three hours before they are displayed on the storefront.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "data_ingestion",
+                "catalog",
+                "item",
+                "submission"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"<string>\",\n      \"store_code\": \"<string>\",\n      \"price\": \"<double>\",\n      \"sale_price\": \"<double>\",\n      \"sale_start_date\": \"<date>\",\n      \"sale_end_date\": \"<date>\",\n      \"available\": \"<boolean>\",\n      \"inventory_count\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"product_code\": \"<string>\",\n      \"store_code\": \"<string>\",\n      \"price\": \"<double>\",\n      \"sale_price\": \"<double>\",\n      \"sale_start_date\": \"<date>\",\n      \"sale_end_date\": \"<date>\",\n      \"available\": \"<boolean>\",\n      \"inventory_count\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5019d7b1-86ff-442e-9a03-342c182ea444",
+              "name": "Items submitted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9925.775201785224,\n      \"sale_price\": 3987.7921745722965,\n      \"sale_start_date\": \"2019-12-17\",\n      \"sale_end_date\": \"1959-10-20\",\n      \"available\": true,\n      \"inventory_count\": 5526,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 1117.7823680432896,\n      \"sale_price\": 1257.8519401886567,\n      \"sale_start_date\": \"2014-10-12\",\n      \"sale_end_date\": \"2022-02-26\",\n      \"available\": true,\n      \"inventory_count\": 6735,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"submission_id\": \"string\",\n  \"status\": \"completed\",\n  \"submitted_count\": 9183,\n  \"errors\": [\n    {\n      \"index\": 6682,\n      \"message\": \"string\"\n    },\n    {\n      \"index\": 2494,\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "716d0247-bb4b-453e-80ca-bc2bc0c4d150",
+              "name": "Bad request due to invalid item data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9925.775201785224,\n      \"sale_price\": 3987.7921745722965,\n      \"sale_start_date\": \"2019-12-17\",\n      \"sale_end_date\": \"1959-10-20\",\n      \"available\": true,\n      \"inventory_count\": 5526,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 1117.7823680432896,\n      \"sale_price\": 1257.8519401886567,\n      \"sale_start_date\": \"2014-10-12\",\n      \"sale_end_date\": \"2022-02-26\",\n      \"available\": true,\n      \"inventory_count\": 6735,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 6631\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97b35a62-45fe-4296-9c2f-713bad7fc5ff",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9925.775201785224,\n      \"sale_price\": 3987.7921745722965,\n      \"sale_start_date\": \"2019-12-17\",\n      \"sale_end_date\": \"1959-10-20\",\n      \"available\": true,\n      \"inventory_count\": 5526,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 1117.7823680432896,\n      \"sale_price\": 1257.8519401886567,\n      \"sale_start_date\": \"2014-10-12\",\n      \"sale_end_date\": \"2022-02-26\",\n      \"available\": true,\n      \"inventory_count\": 6735,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 6631\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cf83646-93c9-42fc-bd01-92d4c4a497d2",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9925.775201785224,\n      \"sale_price\": 3987.7921745722965,\n      \"sale_start_date\": \"2019-12-17\",\n      \"sale_end_date\": \"1959-10-20\",\n      \"available\": true,\n      \"inventory_count\": 5526,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 1117.7823680432896,\n      \"sale_price\": 1257.8519401886567,\n      \"sale_start_date\": \"2014-10-12\",\n      \"sale_end_date\": \"2022-02-26\",\n      \"available\": true,\n      \"inventory_count\": 6735,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 6631\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "012a920e-1951-4f56-8a7e-67ccd99facff",
+      "name": "Products",
+      "description": {
+        "content": "Endpoints for creating and updating products in the retailer's catalog on Instacart. Products are the same across all of a retailer's stores.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03a387f9-ba43-4729-ac53-f1da44b7ff5b",
+          "name": "Create or update products",
+          "request": {
+            "name": "Create or update products",
+            "description": {
+              "content": "Creates new products or updates existing products in the retailer's catalog on Instacart. When creating a new product, it takes 1-3 business days for the product to be displayed on the storefront. When updating a product, only the attributes included in the request body are modified and changes are displayed within a few hours.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "data_ingestion",
+                "catalog",
+                "product",
+                "submission"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"products\": [\n    {\n      \"product_code\": \"<string>\",\n      \"name\": \"<string>\",\n      \"brand\": \"<string>\",\n      \"description\": \"<string>\",\n      \"size\": \"<string>\",\n      \"upc\": \"<string>\",\n      \"image_url\": \"<uri>\",\n      \"category\": \"<string>\",\n      \"subcategory\": \"<string>\",\n      \"department\": \"<string>\",\n      \"attributes\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      }\n    },\n    {\n      \"product_code\": \"<string>\",\n      \"name\": \"<string>\",\n      \"brand\": \"<string>\",\n      \"description\": \"<string>\",\n      \"size\": \"<string>\",\n      \"upc\": \"<string>\",\n      \"image_url\": \"<uri>\",\n      \"category\": \"<string>\",\n      \"subcategory\": \"<string>\",\n      \"department\": \"<string>\",\n      \"attributes\": {\n        \"key_0\": \"<string>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9399e6bd-3871-4a2b-85d3-13052ead37d1",
+              "name": "Products submitted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "product",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"http://fUCLDMPHQsiKRhbf.xjptST0ObEQCslh5Dh+4hoiQSZCA1FF8gmhCn7Pd8WI0NAjr91z3kvEDEqDvOt\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      }\n    },\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"https://uAZqLDpClIaQCtowiHYY.ioqTwLobYM5RAsnNNaWbiTBq16DXzFQwNrrIV0\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"submission_id\": \"string\",\n  \"status\": \"completed\",\n  \"submitted_count\": 9183,\n  \"errors\": [\n    {\n      \"index\": 6682,\n      \"message\": \"string\"\n    },\n    {\n      \"index\": 2494,\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2daa462f-3fce-4a06-a752-1517e62c760f",
+              "name": "Bad request due to invalid product data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "product",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"http://fUCLDMPHQsiKRhbf.xjptST0ObEQCslh5Dh+4hoiQSZCA1FF8gmhCn7Pd8WI0NAjr91z3kvEDEqDvOt\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      }\n    },\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"https://uAZqLDpClIaQCtowiHYY.ioqTwLobYM5RAsnNNaWbiTBq16DXzFQwNrrIV0\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 6631\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "810b12e0-b195-4a1e-8836-7752ab4dad66",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "product",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"http://fUCLDMPHQsiKRhbf.xjptST0ObEQCslh5Dh+4hoiQSZCA1FF8gmhCn7Pd8WI0NAjr91z3kvEDEqDvOt\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      }\n    },\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"https://uAZqLDpClIaQCtowiHYY.ioqTwLobYM5RAsnNNaWbiTBq16DXzFQwNrrIV0\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 6631\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9bbaee8-fdfe-497b-9d2f-1f7221d77b65",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "product",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"products\": [\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"http://fUCLDMPHQsiKRhbf.xjptST0ObEQCslh5Dh+4hoiQSZCA1FF8gmhCn7Pd8WI0NAjr91z3kvEDEqDvOt\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      }\n    },\n    {\n      \"product_code\": \"string\",\n      \"name\": \"string\",\n      \"brand\": \"string\",\n      \"description\": \"string\",\n      \"size\": \"string\",\n      \"upc\": \"string\",\n      \"image_url\": \"https://uAZqLDpClIaQCtowiHYY.ioqTwLobYM5RAsnNNaWbiTBq16DXzFQwNrrIV0\",\n      \"category\": \"string\",\n      \"subcategory\": \"string\",\n      \"department\": \"string\",\n      \"attributes\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 6631\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://connect.instacart.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "42a93c00-7ff8-4414-8c90-7427666aa92f",
+    "name": "Instacart Catalog API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.\n\nContact Support:\n Name: Instacart Catalog Support",
+      "type": "text/plain"
+    }
+  }
+}

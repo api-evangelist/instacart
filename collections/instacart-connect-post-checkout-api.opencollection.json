@@ -1,0 +1,149 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Connect Post-Checkout API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get order handling information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/post_checkout/orders/:order_id/handling",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Retrieves handling information for a specific order, including the delivery or pickup address, the coordinates of the delivery or pickup address, information about the current shopper, and any notes or instructions included with the order."
+        },
+        {
+          "info": {
+            "name": "Get order items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/post_checkout/orders/:order_id/items",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Retrieves the list of items for a specific order. Each item includes item details of the ordered item, the current status of that item, and the current replacement for that item if one exists. Poll this endpoint while a shopper is picking the order to get real-time item status updates."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Replacements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Approve or reject an item replacement",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://connect.instacart.com/v2/post_checkout/orders/:order_id/items/:order_item_id/replacement",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              },
+              {
+                "name": "order_item_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for a specific item within the order."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approves or rejects a replacement suggested by the shopper for a specific order item. If the customer approves the replacement, specify the status as APPROVED. If the customer rejects the replacement, specify the status as REJECTED. Items with a rejected replacement are automatically refunded."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get chat messages for an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/post_checkout/chat/:order_id/messages",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order in the chat context."
+              }
+            ]
+          },
+          "docs": "Retrieves all chat messages associated with an order between the customer and the shopper. Messages are returned in chronological order."
+        },
+        {
+          "info": {
+            "name": "Send a message to the shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/post_checkout/chat/:order_id/messages",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order in the chat context."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a chat message from the customer to the shopper associated with the order. Used for communicating about replacements, additions, or delivery instructions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

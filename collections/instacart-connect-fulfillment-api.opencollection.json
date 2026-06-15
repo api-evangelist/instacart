@@ -1,0 +1,338 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Connect Fulfillment API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate an access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/oauth/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates an OAuth 2.0 access token using client credentials. The token is valid for 24 hours and must be included as a Bearer token in all subsequent API requests. During the validity period, reuse the same token rather than generating a new one."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Delivery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find stores offering delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/stores/delivery",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns an array of stores that offer delivery for the customer's location, sorted by distance with the closest store first. Accepts location data such as latitude and longitude or a postal code."
+        },
+        {
+          "info": {
+            "name": "Preview time slots for delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/service_options/delivery",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Previews possible service options and available time slots for delivery fulfillments. Useful for displaying delivery time options to customers before they complete checkout."
+        },
+        {
+          "info": {
+            "name": "Reserve a previewed delivery time slot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/service_options/delivery/hold",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reserves a selected delivery time slot for the specified user and their cart items. The hold is temporary and must be followed by order creation before it expires."
+        },
+        {
+          "info": {
+            "name": "Create a delivery order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/orders/delivery",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a delivery order for a previously reserved time slot. The order includes the cart items and delivery details. Orders should be created as soon as possible after the time slot is reserved."
+        },
+        {
+          "info": {
+            "name": "Get an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/orders/:order_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Retrieves details for a specific order, including its current status, items, and delivery or pickup information."
+        },
+        {
+          "info": {
+            "name": "Cancel an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/orders/:order_id/cancel",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Cancels a delivery, pickup, or last mile delivery order. To successfully cancel, the order status must be brand_new. Once a shopper is assigned and the status moves to acknowledged, the order can no longer be canceled through this endpoint."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Pickup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find stores offering pickup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/stores/pickup",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns an array of stores that offer pickup for the customer's location, sorted by distance with the closest store first."
+        },
+        {
+          "info": {
+            "name": "Preview time slots for pickup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/service_options/pickup",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Previews possible service options and available time slots for pickup fulfillments. Useful for displaying pickup time options to customers before they complete checkout."
+        },
+        {
+          "info": {
+            "name": "Create a pickup order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/users/:user_id/orders/pickup",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a pickup order for a previously reserved time slot. The response can take several seconds, so orders should be created as soon as possible after checkout to minimize wait time."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Last Mile Delivery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find stores offering last mile delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/stores/last_mile",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns an array of stores that offer last mile delivery for the customer's location. Last mile delivery is for pre-packed orders that only require transportation from the store to the customer."
+        },
+        {
+          "info": {
+            "name": "Reserve a time slot for last mile delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/lastmile/users/:user_id/service_options",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Previews and reserves a time slot for a last mile delivery order. Used to secure a delivery window before creating the order."
+        },
+        {
+          "info": {
+            "name": "Create a last mile delivery order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/lastmile/users/:user_id/orders",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a last mile delivery order for a previously reserved time slot. Last mile orders are for pre-packed items that require only delivery from the store to the customer location."
+        },
+        {
+          "info": {
+            "name": "Stage a last mile delivery order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/lastmile/orders/:order_id/staged",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Marks a last mile delivery order as staged and ready for pickup by the delivery driver. This should be called when the order items are packed and ready at the store."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Developer Platform API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a shopping list page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/idp/v1/products/products_link",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a shopping list page on Instacart Marketplace and returns a unique URL. The page displays a list of products that users can add to their Instacart cart. Each call generates a new page with a unique URL."
+        },
+        {
+          "info": {
+            "name": "Create a recipe page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/idp/v1/products/recipe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a recipe page on Instacart Marketplace and returns a unique URL. The page displays recipe details including title, image, ingredients, and cooking instructions. Users can add recipe ingredients to their Instacart cart directly from the page."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
