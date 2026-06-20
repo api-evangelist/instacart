@@ -11,7 +11,7 @@ apis:
   - Products
   - Recipes
   - Shopping
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://connect.instacart.com
   humanURL: https://docs.instacart.com/developer_platform_api/
   properties:
@@ -35,7 +35,7 @@ apis:
   - Grocery
   - Pickup
   - Retail
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://connect.instacart.com
   humanURL: https://docs.instacart.com/connect/fulfillment/
   properties:
@@ -58,7 +58,7 @@ apis:
   - Orders
   - Retail
   - Tracking
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://connect.instacart.com
   humanURL: https://docs.instacart.com/connect/post-checkout/
   properties:
@@ -78,7 +78,7 @@ apis:
   - Inventory
   - Products
   - Retail
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://connect.instacart.com
   humanURL: https://docs.instacart.com/catalog/catalog_api/overview/
   properties:
@@ -98,7 +98,7 @@ apis:
   - Shopping
   - Web Components
   - Widgets
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.example.com
   humanURL: https://docs.instacart.com/widgets/
   properties:
