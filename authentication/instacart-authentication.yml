@@ -1,0 +1,27 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/instacart-catalog-api-openapi.yml, openapi/instacart-connect-fulfillment-api-openapi.yml,
+  openapi/instacart-connect-post-checkout-api-openapi.yml, openapi/instacart-developer-platform-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: OAuth 2.0 Bearer token obtained using client credentials with the connect:data_ingestion
+    scope.
+  sources:
+  - openapi/instacart-catalog-api-openapi.yml
+  - openapi/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-connect-post-checkout-api-openapi.yml
+- name: apiKeyAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: API key authentication. Include your API key in the Authorization header.
+  sources:
+  - openapi/instacart-developer-platform-api-openapi.yml

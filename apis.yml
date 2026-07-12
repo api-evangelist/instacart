@@ -109,6 +109,12 @@ apis:
     without interacting with any API directly. The widgets enable features such as
     product search results, cart management, product collections, and user authentication.
 common:
+- type: VulnerabilityDisclosure
+  url: security/instacart-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/instacart-domain-security.yml
+- type: Authentication
+  url: authentication/instacart-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/instacart
 - type: LinkedIn

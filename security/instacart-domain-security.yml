@@ -1,0 +1,38 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: docs.instacart.com
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Nov 24 23:59:59 2026 GMT
+  hsts: false
+- host: connect.instacart.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 24 23:59:59 2026 GMT
+  hsts: null
+- host: connect.dev.instacart.tools
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 20 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: instacart.com
+  dnssec: false
+  caa:
+  - 0 issue "amazonaws.com"
+  - 0 issue "amazontrust.com"
+  - 0 issue "awstrust.com"
+  - 0 issue "comodoca.com"
+  - 0 issue "digicert.com"
+  - 0 issue "godaddy.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: instacart.tools
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
