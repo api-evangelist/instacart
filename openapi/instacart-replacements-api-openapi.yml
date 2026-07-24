@@ -1,0 +1,116 @@
+openapi: 3.1.0
+info:
+  title: Instacart Catalog Authentication Replacements API
+  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.
+  version: '2.0'
+  contact:
+    name: Instacart Catalog Support
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+  termsOfService: https://www.instacart.com/terms
+servers:
+- url: https://connect.instacart.com
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Replacements
+  description: Endpoints for managing item replacements suggested by shoppers during order fulfillment.
+paths:
+  /v2/post_checkout/orders/{order_id}/items/{order_item_id}/replacement:
+    put:
+      operationId: updateItemReplacement
+      summary: Approve or reject an item replacement
+      description: Approves or rejects a replacement suggested by the shopper for a specific order item. If the customer approves the replacement, specify the status as APPROVED. If the customer rejects the replacement, specify the status as REJECTED. Items with a rejected replacement are automatically refunded.
+      tags:
+      - Replacements
+      parameters:
+      - $ref: '#/components/parameters/orderId'
+      - $ref: '#/components/parameters/orderItemId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplacementDecisionRequest'
+      responses:
+        '200':
+          description: Replacement decision applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplacementResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Order item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    orderItemId:
+      name: order_item_id
+      in: path
+      required: true
+      description: The unique identifier for a specific item within the order.
+      schema:
+        type: string
+    orderId:
+      name: order_id
+      in: path
+      required: true
+      description: The unique identifier for the order.
+      schema:
+        type: string
+  schemas:
+    ReplacementResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The order item identifier.
+        replacement_status:
+          type: string
+          enum:
+          - APPROVED
+          - REJECTED
+          description: The updated replacement status.
+    ReplacementDecisionRequest:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string
+          enum:
+          - APPROVED
+          - REJECTED
+          description: The customer's decision on the replacement. APPROVED accepts the replacement. REJECTED declines the replacement and triggers an automatic refund.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token obtained using client credentials with the connect:data_ingestion scope.
+externalDocs:
+  description: Instacart Catalog API Documentation
+  url: https://docs.instacart.com/catalog/catalog_api/overview/

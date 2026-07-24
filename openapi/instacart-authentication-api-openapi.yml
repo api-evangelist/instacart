@@ -1,0 +1,106 @@
+openapi: 3.1.0
+info:
+  title: Instacart Catalog Authentication API
+  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.
+  version: '2.0'
+  contact:
+    name: Instacart Catalog Support
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+  termsOfService: https://www.instacart.com/terms
+servers:
+- url: https://connect.instacart.com
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Authentication
+  description: Endpoints for obtaining and managing OAuth 2.0 access tokens used to authenticate API requests.
+paths:
+  /v2/oauth/token:
+    post:
+      operationId: generateAccessToken
+      summary: Generate an access token
+      description: Generates an OAuth 2.0 access token using client credentials. The token is valid for 24 hours and must be included as a Bearer token in all subsequent API requests. During the validity period, reuse the same token rather than generating a new one.
+      tags:
+      - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: Access token generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Invalid client credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The Bearer token to use for authenticating API requests.
+        token_type:
+          type: string
+          enum:
+          - Bearer
+          description: The type of token issued.
+        expires_in:
+          type: integer
+          description: The number of seconds until the token expires. Typically 86400 seconds (24 hours).
+        scope:
+          type: string
+          description: The scope of access granted by the token.
+        created_at:
+          type: integer
+          description: Unix timestamp indicating when the token was created.
+    TokenRequest:
+      type: object
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      - scope
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - client_credentials
+          description: The OAuth 2.0 grant type. Must be client_credentials.
+        client_id:
+          type: string
+          description: The client ID provided by Instacart.
+        client_secret:
+          type: string
+          description: The client secret provided by Instacart.
+        scope:
+          type: string
+          description: The API scope to request access for, such as connect:fulfillment.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token obtained using client credentials with the connect:data_ingestion scope.
+externalDocs:
+  description: Instacart Catalog API Documentation
+  url: https://docs.instacart.com/catalog/catalog_api/overview/
