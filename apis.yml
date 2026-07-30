@@ -1,95 +1,21 @@
 aid: instacart
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/instacart.png
 url: https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml
 modified: '2026-05-19'
 apis:
-- aid: instacart:developer-platform-api
-  name: Instacart Developer Platform API
-  tags:
-  - Delivery
-  - E-Commerce
-  - Grocery
-  - Products
-  - Recipes
-  - Shopping
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://connect.instacart.com
-  humanURL: https://docs.instacart.com/developer_platform_api/
-  properties:
-  - url: https://docs.instacart.com/developer_platform_api/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/instacart-developer-platform-api-openapi.yml
-  - url: graphql/instacart-graphql.md
-    type: GraphQL
-  description: The Instacart Developer Platform API is a REST-based API that allows
-    app developers to add Instacart shopping capabilities to their websites and applications.
-    It provides endpoints for creating product shopping lists and recipe pages on
-    Instacart Marketplace, enabling users to select a store, add ingredients or products
-    to a cart, and check out.
-- aid: instacart:connect-fulfillment-api
-  name: Instacart Connect Fulfillment API
-  tags:
-  - Delivery
-  - E-Commerce
-  - Fulfillment
-  - Grocery
-  - Pickup
-  - Retail
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://connect.instacart.com
-  humanURL: https://docs.instacart.com/connect/fulfillment/
-  properties:
-  - url: https://docs.instacart.com/connect/fulfillment/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/instacart-connect-fulfillment-api-openapi.yml
-  - type: AsyncAPI
-    url: asyncapi/instacart-connect-events-asyncapi.yml
-  description: The Instacart Connect Fulfillment API enables retailers to integrate
-    Instacart fulfillment capabilities directly into their e-commerce sites. It combines
-    grocery, delivery, and pickup functionality into a single API, allowing retailers
-    to offer full-service shopping where Instacart shoppers pick items and suggest
-    replacements, as well as same-day or scheduled delivery and pickup options.
-- aid: instacart:connect-post-checkout-api
-  name: Instacart Connect Post-Checkout API
-  tags:
-  - Delivery
-  - Fulfillment
-  - Orders
-  - Retail
-  - Tracking
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://connect.instacart.com
-  humanURL: https://docs.instacart.com/connect/post-checkout/
-  properties:
-  - url: https://docs.instacart.com/connect/post-checkout/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/instacart-connect-post-checkout-api-openapi.yml
-  description: The Instacart Connect Post-Checkout API allows retailers to provide
-    their customers with real-time order tracking and shopper interaction after an
-    order has been placed. Retailers can use this API to build custom order status
-    pages that display order details, live tracking information, and shopper communication.
-- aid: instacart:catalog-api
-  name: Instacart Catalog API
-  tags:
-  - Catalog
-  - E-Commerce
-  - Inventory
-  - Products
-  - Retail
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://connect.instacart.com
-  humanURL: https://docs.instacart.com/catalog/catalog_api/overview/
-  properties:
-  - url: https://docs.instacart.com/catalog/catalog_api/overview/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/instacart-catalog-api-openapi.yml
-  description: The Instacart Catalog API enables retailers to programmatically manage
-    their product catalogs on the Instacart platform. Retailers can use the API to
-    create or update products and items, with partial updates supported so that only
-    the attributes included in the request body are modified.
 - aid: instacart:shopping-widgets
   name: Instacart Shopping Widgets
   tags:
@@ -104,10 +30,222 @@ apis:
   properties:
   - url: https://docs.instacart.com/widgets/
     type: Documentation
-  description: Instacart Shopping Widgets are front-end web components that retailers
-    can embed into their websites to add e-commerce functionalities powered by Instacart
-    without interacting with any API directly. The widgets enable features such as
-    product search results, cart management, product collections, and user authentication.
+  description: >-
+    Instacart Shopping Widgets are front-end web components that retailers can embed into their websites
+    to add e-commerce functionalities powered by Instacart without interacting with any API directly.
+    The widgets enable features such as product search results, cart management, product collections,
+    and user authentication.
+- aid: instacart:instacart-authentication-api
+  name: instacart Authentication API
+  description: >-
+    Endpoints for obtaining and managing OAuth 2.0 access tokens used to authenticate API requests.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-chat-api
+  name: instacart Chat API
+  description: >-
+    Endpoints for shopper-customer communication including sending and retrieving chat messages.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-chat-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-delivery-api
+  name: instacart Delivery API
+  description: >-
+    Endpoints for finding delivery stores, previewing time slots, reserving time slots, and creating delivery
+    orders.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-delivery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-items-api
+  name: instacart Items API
+  description: >-
+    Endpoints for updating item-level attributes such as pricing and availability at specific store locations.
+    Items contain information that can vary from one store to another.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Items
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-items-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-last-mile-delivery-api
+  name: instacart Last Mile Delivery API
+  description: >-
+    Endpoints for last mile delivery where items are pre-packed and only require delivery from the store
+    to the customer.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Last Mile Delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-last-mile-delivery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-orders-api
+  name: instacart Orders API
+  description: >-
+    Endpoints for retrieving order status, handling details, and item information after checkout.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-orders-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-pickup-api
+  name: instacart Pickup API
+  description: >-
+    Endpoints for finding pickup stores, previewing time slots, reserving time slots, and creating pickup
+    orders.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Pickup
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-pickup-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-products-api
+  name: instacart Products API
+  description: >-
+    Endpoints for creating and updating products in the retailer's catalog on Instacart. Products are
+    the same across all of a retailer's stores.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Products
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-products-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
+- aid: instacart:instacart-replacements-api
+  name: instacart Replacements API
+  description: Endpoints for managing item replacements suggested by shoppers during order fulfillment.
+  humanURL: https://docs.instacart.com/developer_platform_api/
+  baseURL: https://connect.instacart.com
+  tags:
+  - Replacements
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-replacements-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
+  - type: GraphQL
+    url: graphql/instacart-graphql.md
+  - type: Documentation
+    url: https://docs.instacart.com/connect/fulfillment/
+  - type: AsyncAPI
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/connect/post-checkout/
+  - type: Documentation
+    url: https://docs.instacart.com/catalog/catalog_api/overview/
 common:
 - type: AgenticAccess
   url: agentic-access/instacart-agentic-access.yml
