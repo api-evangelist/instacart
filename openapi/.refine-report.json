@@ -1,0 +1,30 @@
+{
+  "provider": "instacart",
+  "sources": [
+    "instacart-authentication-api-openapi.yml",
+    "instacart-chat-api-openapi.yml",
+    "instacart-delivery-api-openapi.yml",
+    "instacart-items-api-openapi.yml",
+    "instacart-last-mile-delivery-api-openapi.yml",
+    "instacart-orders-api-openapi.yml",
+    "instacart-pickup-api-openapi.yml",
+    "instacart-products-api-openapi.yml",
+    "instacart-replacements-api-openapi.yml"
+  ],
+  "outputs": [
+    "instacart-authentication-api-openapi.yml",
+    "instacart-chat-api-openapi.yml",
+    "instacart-delivery-api-openapi.yml",
+    "instacart-items-api-openapi.yml",
+    "instacart-last-mile-delivery-api-openapi.yml",
+    "instacart-orders-api-openapi.yml",
+    "instacart-pickup-api-openapi.yml",
+    "instacart-products-api-openapi.yml",
+    "instacart-replacements-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
