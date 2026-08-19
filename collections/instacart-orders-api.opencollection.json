@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Catalog Authentication Orders API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get order handling information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/post_checkout/orders/:order_id/handling",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Retrieves handling information for a specific order, including the delivery or pickup address, the coordinates of the delivery or pickup address, information about the current shopper, and any notes or instructions included with the order."
+        },
+        {
+          "info": {
+            "name": "Get order items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/post_checkout/orders/:order_id/items",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Retrieves the list of items for a specific order. Each item includes item details of the ordered item, the current status of that item, and the current replacement for that item if one exists. Poll this endpoint while a shopper is picking the order to get real-time item status updates."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

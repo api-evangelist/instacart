@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Catalog Authentication Last Mile Delivery API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Last Mile Delivery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find stores offering last mile delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/stores/last_mile",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns an array of stores that offer last mile delivery for the customer's location. Last mile delivery is for pre-packed orders that only require transportation from the store to the customer."
+        },
+        {
+          "info": {
+            "name": "Reserve a time slot for last mile delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/lastmile/users/:user_id/service_options",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Previews and reserves a time slot for a last mile delivery order. Used to secure a delivery window before creating the order."
+        },
+        {
+          "info": {
+            "name": "Create a last mile delivery order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/lastmile/users/:user_id/orders",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the user in the retailer's system."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a last mile delivery order for a previously reserved time slot. Last mile orders are for pre-packed items that require only delivery from the store to the customer location."
+        },
+        {
+          "info": {
+            "name": "Stage a last mile delivery order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/fulfillment/lastmile/orders/:order_id/staged",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              }
+            ]
+          },
+          "docs": "Marks a last mile delivery order as staged and ready for pickup by the delivery driver. This should be called when the order items are packed and ready at the store."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

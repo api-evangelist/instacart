@@ -1,0 +1,313 @@
+{
+  "item": [
+    {
+      "id": "b0299ee7-8047-468b-bf58-8bdd5a296295",
+      "name": "Items",
+      "description": {
+        "content": "Endpoints for updating item-level attributes such as pricing and availability at specific store locations. Items contain information that can vary from one store to another.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0f468078-8f63-4954-88f9-dbaa157233ed",
+          "name": "Create or update items",
+          "request": {
+            "name": "Create or update items",
+            "description": {
+              "content": "Updates or sets item-level attributes for a product at a specific store location. Items contain information that can vary from one retailer store to another, such as pricing, availability, and inventory levels. Changes can take around two to three hours before they are displayed on the storefront.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "data_ingestion",
+                "catalog",
+                "item",
+                "submission"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"<string>\",\n      \"store_code\": \"<string>\",\n      \"price\": \"<double>\",\n      \"sale_price\": \"<double>\",\n      \"sale_start_date\": \"<date>\",\n      \"sale_end_date\": \"<date>\",\n      \"available\": \"<boolean>\",\n      \"inventory_count\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"product_code\": \"<string>\",\n      \"store_code\": \"<string>\",\n      \"price\": \"<double>\",\n      \"sale_price\": \"<double>\",\n      \"sale_start_date\": \"<date>\",\n      \"sale_end_date\": \"<date>\",\n      \"available\": \"<boolean>\",\n      \"inventory_count\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fcf33dc5-ac9c-499d-a8aa-221a479979b0",
+              "name": "Items submitted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 2390.9341143585416,\n      \"sale_price\": 3202.910081844871,\n      \"sale_start_date\": \"1969-08-07\",\n      \"sale_end_date\": \"2001-03-25\",\n      \"available\": false,\n      \"inventory_count\": 1985,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9971.747637477463,\n      \"sale_price\": 6201.97336903526,\n      \"sale_start_date\": \"2010-05-21\",\n      \"sale_end_date\": \"1961-01-02\",\n      \"available\": true,\n      \"inventory_count\": 7281,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"submission_id\": \"string\",\n  \"status\": \"processing\",\n  \"submitted_count\": 3696,\n  \"errors\": [\n    {\n      \"index\": 4488,\n      \"message\": \"string\"\n    },\n    {\n      \"index\": 7616,\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ed30d5e-6cfd-4490-9f83-a50700ed476e",
+              "name": "Bad request due to invalid item data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 2390.9341143585416,\n      \"sale_price\": 3202.910081844871,\n      \"sale_start_date\": \"1969-08-07\",\n      \"sale_end_date\": \"2001-03-25\",\n      \"available\": false,\n      \"inventory_count\": 1985,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9971.747637477463,\n      \"sale_price\": 6201.97336903526,\n      \"sale_start_date\": \"2010-05-21\",\n      \"sale_end_date\": \"1961-01-02\",\n      \"available\": true,\n      \"inventory_count\": 7281,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 4404\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "130ff4e1-99f8-45cb-aa62-ea50d7ae0219",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 2390.9341143585416,\n      \"sale_price\": 3202.910081844871,\n      \"sale_start_date\": \"1969-08-07\",\n      \"sale_end_date\": \"2001-03-25\",\n      \"available\": false,\n      \"inventory_count\": 1985,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9971.747637477463,\n      \"sale_price\": 6201.97336903526,\n      \"sale_start_date\": \"2010-05-21\",\n      \"sale_end_date\": \"1961-01-02\",\n      \"available\": true,\n      \"inventory_count\": 7281,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 4404\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd998e51-8267-443a-8579-bbd03988bc5d",
+              "name": "Too many requests - rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "data_ingestion",
+                    "catalog",
+                    "item",
+                    "submission"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 2390.9341143585416,\n      \"sale_price\": 3202.910081844871,\n      \"sale_start_date\": \"1969-08-07\",\n      \"sale_end_date\": \"2001-03-25\",\n      \"available\": false,\n      \"inventory_count\": 1985,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    },\n    {\n      \"product_code\": \"string\",\n      \"store_code\": \"string\",\n      \"price\": 9971.747637477463,\n      \"sale_price\": 6201.97336903526,\n      \"sale_start_date\": \"2010-05-21\",\n      \"sale_end_date\": \"1961-01-02\",\n      \"available\": true,\n      \"inventory_count\": 7281,\n      \"aisle\": \"string\",\n      \"shelf\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"status\": 4404\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://connect.instacart.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7680aacf-e8bc-4661-b704-7375dad74635",
+    "name": "Instacart Catalog Authentication Items API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.\n\nContact Support:\n Name: Instacart Catalog Support",
+      "type": "text/plain"
+    }
+  }
+}

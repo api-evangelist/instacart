@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Catalog Authentication Products API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or update products",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/data_ingestion/catalog/product/submission",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates new products or updates existing products in the retailer's catalog on Instacart. When creating a new product, it takes 1-3 business days for the product to be displayed on the storefront. When updating a product, only the attributes included in the request body are modified and changes are displayed within a few hours."
+        },
+        {
+          "info": {
+            "name": "Create a shopping list page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/idp/v1/products/products_link",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a shopping list page on Instacart Marketplace and returns a unique URL. The page displays a list of products that users can add to their Instacart cart. Each call generates a new page with a unique URL."
+        },
+        {
+          "info": {
+            "name": "Create a recipe page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/idp/v1/products/recipe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a recipe page on Instacart Marketplace and returns a unique URL. The page displays recipe details including title, image, ingredients, and cooking instructions. Users can add recipe ingredients to their Instacart cart directly from the page."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

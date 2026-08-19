@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Catalog Authentication Replacements API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Replacements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Approve or reject an item replacement",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://connect.instacart.com/v2/post_checkout/orders/:order_id/items/:order_item_id/replacement",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order."
+              },
+              {
+                "name": "order_item_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for a specific item within the order."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approves or rejects a replacement suggested by the shopper for a specific order item. If the customer approves the replacement, specify the status as APPROVED. If the customer rejects the replacement, specify the status as REJECTED. Items with a rejected replacement are automatically refunded."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

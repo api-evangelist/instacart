@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Instacart Catalog Authentication Chat API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get chat messages for an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://connect.instacart.com/v2/post_checkout/chat/:order_id/messages",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order in the chat context."
+              }
+            ]
+          },
+          "docs": "Retrieves all chat messages associated with an order between the customer and the shopper. Messages are returned in chronological order."
+        },
+        {
+          "info": {
+            "name": "Send a message to the shopper",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://connect.instacart.com/v2/post_checkout/chat/:order_id/messages",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the order in the chat context."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a chat message from the customer to the shopper associated with the order. Used for communicating about replacements, additions, or delivery instructions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
