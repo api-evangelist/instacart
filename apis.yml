@@ -114,6 +114,8 @@ apis:
   humanURL: https://docs.instacart.com/developer_platform_api/
   baseURL: https://connect.instacart.com
   tags:
+  - Item
+  tags_raw:
   - Items
   properties:
   - type: OpenAPI
@@ -161,6 +163,8 @@ apis:
   humanURL: https://docs.instacart.com/developer_platform_api/
   baseURL: https://connect.instacart.com
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -209,6 +213,8 @@ apis:
   humanURL: https://docs.instacart.com/developer_platform_api/
   baseURL: https://connect.instacart.com
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
