@@ -15,7 +15,7 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/instacart.png
 url: https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml
-modified: '2026-05-19'
+modified: '2026-08-27'
 apis:
 - aid: instacart:shopping-widgets
   name: Instacart Shopping Widgets
@@ -26,16 +26,29 @@ apis:
   - Web Components
   - Widgets
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://api.example.com
+  baseURL: https://dboktu48tbzl9.cloudfront.net/{retailer-name}/evergreen
   humanURL: https://docs.instacart.com/widgets/
   properties:
   - url: https://docs.instacart.com/widgets/
     type: Documentation
+  - type: Components
+    url: components/instacart-components.yml
+  - type: ChangeLog
+    url: https://docs.instacart.com/widgets/changelog
+  - type: GettingStarted
+    url: https://docs.instacart.com/widgets/guide/tutorials/get_started_with_prebuilt_widgets
   description: >-
     Instacart Shopping Widgets are front-end web components that retailers can embed into their websites
     to add e-commerce functionalities powered by Instacart without interacting with any API directly.
     The widgets enable features such as product search results, cart management, product collections,
     and user authentication.
+  x-base-url-note: >-
+    Shopping Widgets are front-end web components, not an API: Instacart's own documentation says they
+    add e-commerce capability 'without having to interact with any API directly'. The only host a retailer
+    actually calls is the CloudFront path that serves the per-retailer UMD bundle (ic-widgets-v1.umd.js),
+    which is templated on the retailer name and issued at sign-up. Recorded here in place of the api.example.com
+    placeholder that was previously carried. Custom widgets, by contrast, call the Developer Platform
+    Partner API documented on the partner-gated host partner-docs.instacart.com.
 - aid: instacart:instacart-authentication-api
   name: instacart Authentication API
   description: >-
@@ -49,8 +62,6 @@ apis:
     url: openapi/instacart-authentication-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -59,6 +70,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-authentication-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-chat-api
   name: instacart Chat API
   description: >-
@@ -72,8 +87,6 @@ apis:
     url: openapi/instacart-chat-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -82,6 +95,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-chat-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-delivery-api
   name: instacart Delivery API
   description: >-
@@ -96,8 +113,6 @@ apis:
     url: openapi/instacart-delivery-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -106,6 +121,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-delivery-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-items-api
   name: instacart Items API
   description: >-
@@ -122,8 +141,6 @@ apis:
     url: openapi/instacart-items-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -132,6 +149,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-items-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-last-mile-delivery-api
   name: instacart Last Mile Delivery API
   description: >-
@@ -146,8 +167,6 @@ apis:
     url: openapi/instacart-last-mile-delivery-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -156,6 +175,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-last-mile-delivery-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-orders-api
   name: instacart Orders API
   description: >-
@@ -171,8 +194,6 @@ apis:
     url: openapi/instacart-orders-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -181,6 +202,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-orders-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-pickup-api
   name: instacart Pickup API
   description: >-
@@ -195,8 +220,6 @@ apis:
     url: openapi/instacart-pickup-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -205,6 +228,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-pickup-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-products-api
   name: instacart Products API
   description: >-
@@ -221,8 +248,6 @@ apis:
     url: openapi/instacart-products-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -231,6 +256,10 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-products-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
 - aid: instacart:instacart-replacements-api
   name: instacart Replacements API
   description: Endpoints for managing item replacements suggested by shoppers during order fulfillment.
@@ -243,8 +272,6 @@ apis:
     url: openapi/instacart-replacements-api-openapi.yml
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
-  - type: GraphQL
-    url: graphql/instacart-graphql.md
   - type: Documentation
     url: https://docs.instacart.com/connect/fulfillment/
   - type: AsyncAPI
@@ -253,7 +280,50 @@ apis:
     url: https://docs.instacart.com/connect/post-checkout/
   - type: Documentation
     url: https://docs.instacart.com/catalog/catalog_api/overview/
+  - type: Overlay
+    url: overlays/instacart-replacements-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/instacart-connect-events-asyncapi.yml
+- aid: instacart:instacart-mcp-server
+  name: Instacart Developer Platform MCP Server
+  description: >-
+    Instacart's first-party remote Model Context Protocol server. Production endpoint https://mcp.instacart.com/mcp
+    over Streamable HTTP, authenticated with a Developer Platform API key as an Authorization Bearer header;
+    a development endpoint runs at https://mcp.dev.instacart.tools/mcp. Both answered an anonymous tools/list
+    with HTTP 200 on 2026-08-27, returning the create-recipe and create-shopping-list tools with full
+    JSON Schema inputs. A separate, endpoint-undisclosed Enterprise MCP server covering store availability,
+    ingredient lookup and order assembly is documented but gated behind an Instacart representative.
+  humanURL: https://docs.instacart.com/developer_platform_api/guide/tutorials/mcp
+  baseURL: https://mcp.instacart.com/mcp
+  tags:
+  - Agents
+  - MCP
+  - Recipes
+  - Shopping Lists
+  properties:
+  - type: MCPServer
+    url: mcp/instacart-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/instacart-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.instacart.com/mcp_servers
+  - type: ChangeLog
+    url: https://docs.instacart.com/mcp_servers/changelog
+- aid: instacart:instacart-rest-api
+  name: instacart Rest API
+  description: The Rest API from instacart — 1 operation(s) for rest.
+  humanURL: https://docs.instacart.com/widgets/
+  baseURL: https://dboktu48tbzl9.cloudfront.net/{retailer-name}/evergreen
+  tags:
+  - Rest
+  properties:
+  - type: OpenAPI
+    url: openapi/instacart-rest-api-openapi.yml
+  - type: Documentation
+    url: https://docs.instacart.com/developer_platform_api/
 common:
+- type: Overlay
+  url: overlays/instacart-llm-integration-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/instacart-agentic-access.yml
 - type: VulnerabilityDisclosure
@@ -272,5 +342,130 @@ common:
   url: json-schema/instacart-order-schema.json
 - type: JSONSchema
   url: json-schema/instacart-product-schema.json
-description: Use the public Instacart APIs to add Instacart shopping capabilities
-  to your applications, such as product shopping lists and recipe ingredients.
+- type: WellKnown
+  url: well-known/instacart-well-known.yml
+- type: SecurityTxt
+  url: well-known/instacart-security.txt
+- type: MCPServer
+  url: mcp/instacart-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/instacart-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/instacart-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Conformance
+  url: conformance/instacart-conformance.yml
+- type: ErrorCatalog
+  url: errors/instacart-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/instacart-lifecycle.yml
+- type: OAuthScopes
+  url: scopes/instacart-scopes.yml
+- type: Conventions
+  url: conventions/instacart-conventions.yml
+- type: Sandbox
+  url: sandbox/instacart-sandbox.yml
+- type: ChangeLog
+  url: changelog/instacart-changelog.yml
+- type: Components
+  url: components/instacart-components.yml
+- type: DataModel
+  url: data-model/instacart-data-model.yml
+- type: Packages
+  url: packages/instacart-packages.yml
+- type: Plans
+  url: plans/instacart-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/instacart-rate-limits.yml
+- type: FinOps
+  url: finops/instacart-finops.yml
+- type: Vocabulary
+  url: vocabulary/instacart-vocabulary.yml
+- type: JSONStructure
+  url: json-structure/instacart-structure.json
+- type: Webhooks
+  url: asyncapi/instacart-connect-events-asyncapi.yml
+- type: AsyncAPI
+  url: asyncapi/instacart-connect-events-asyncapi.yml
+- type: Spectral
+  url: rules/instacart-asyncapi-spectral-rules.yml
+- type: Spectral
+  url: rules/instacart-jsonschema-spectral-rules.yml
+- type: Security
+  url: https://hackerone.com/instacart
+- type: StatusPage
+  url: https://enterprise-status.instacart.com/
+- type: Deprecation
+  url: https://docs.instacart.com/connect/api/fulfillment/deprecated
+- type: DeveloperPortal
+  url: https://docs.instacart.com/
+- type: Documentation
+  url: https://docs.instacart.com/
+- type: APIReference
+  url: https://docs.instacart.com/developer_platform_api/api/overview
+- type: GettingStarted
+  url: https://docs.instacart.com/developer_platform_api/get_started/overview
+- type: ChangeLog
+  url: https://docs.instacart.com/developer_platform_api/api/changelog
+- type: ErrorCodes
+  url: https://docs.instacart.com/developer_platform_api/api/error_and_status_codes
+- type: Authentication
+  url: https://docs.instacart.com/connect/api/authentication
+- type: Support
+  url: https://instacart.atlassian.net/servicedesk/customer/portal/1
+- type: FAQ
+  url: https://docs.instacart.com/developer_platform_api/faq
+- type: Blog
+  url: https://tech.instacart.com/
+- type: Signup
+  url: https://dashboard.instacart.com/
+- type: Portal
+  url: https://dashboard.instacart.com/
+- type: TermsOfService
+  url: https://www.instacart.com/terms
+- type: PrivacyPolicy
+  url: https://www.instacart.com/privacy
+- type: DeveloperTerms
+  url: https://docs.instacart.com/developer_platform_api/guide/terms_and_policies/developer_terms
+description: 'Instacart (Maplebear Inc.) is a North American grocery technology company that operates
+  the Instacart Marketplace and sells its underlying commerce, fulfillment, catalog, advertising and storefront
+  technology to retailers and brands. Its published API surface splits cleanly in two. The Instacart Developer
+  Platform API is open to app and website developers, costs nothing, and exposes two shoppable-page operations
+  plus a nearby-retailers lookup at connect.instacart.com/idp/v1 -- and, unusually, Instacart pays the
+  developer, commissioning attributed orders through an Impact affiliate programme. Instacart Connect
+  is the enterprise half: OAuth 2.0, partner-gated Fulfillment, Post-checkout, Transaction and Sandbox
+  APIs, the Catalog API, Carrot Ads and Shopping Widgets, all bundled into a retailer or brand partner
+  agreement. Instacart also runs a first-party remote Model Context Protocol server at https://mcp.instacart.com/mcp
+  whose tools/list is served anonymously, making it one of the few grocery-sector providers with a directly
+  reachable agent surface.'
+created: '2026-05-04'
+tags:
+- Grocery
+- E-Commerce
+- Marketplace
+- Retail
+- Logistics
+- Last Mile Delivery
+- Fulfillment
+- Catalog
+- Advertising
+- Agents
+- MCP
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-pointer-notes:
+- removed: GraphQL
+  reason: Instacart publishes no GraphQL surface. https://connect.instacart.com/graphql returns 404 (probed
+    2026-08-27) and 'graphql' appears zero times in the 174KB llms.txt that indexes the whole documentation
+    site. graphql/instacart-schema.graphql and graphql/instacart-graphql.md are API Evangelist modelling
+    artifacts that label themselves 'conceptual schema'; they are kept in the repo as analysis but are
+    no longer wired as a contract pointer, because a GraphQL pointer asserts on Instacart's behalf that
+    they serve one.
+  checked: '2026-08-27'
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 34
+  pass: local-v1
