@@ -1,11 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Instacart Catalog Authentication API
-  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.
+  title: Instacart Connect Fulfillment Authentication API
+  description: The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites. It combines grocery, delivery, and pickup functionality into a single API, allowing retailers to offer full-service shopping where Instacart shoppers pick items and suggest replacements, as well as same-day or scheduled delivery and pickup options. Key endpoints include finding stores that offer delivery, listing available time slots, previewing service options, and creating delivery or pickup orders.
   version: '2.0'
   contact:
-    name: Instacart Catalog Support
-    url: https://docs.instacart.com/catalog/catalog_api/overview/
+    name: Instacart Connect Support
+    url: https://docs.instacart.com/connect/fulfillment/
   termsOfService: https://www.instacart.com/terms
 servers:
 - url: https://connect.instacart.com
@@ -45,26 +45,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-          description: The Bearer token to use for authenticating API requests.
-        token_type:
-          type: string
-          enum:
-          - Bearer
-          description: The type of token issued.
-        expires_in:
-          type: integer
-          description: The number of seconds until the token expires. Typically 86400 seconds (24 hours).
-        scope:
-          type: string
-          description: The scope of access granted by the token.
-        created_at:
-          type: integer
-          description: Unix timestamp indicating when the token was created.
     TokenRequest:
       type: object
       required:
@@ -87,6 +67,26 @@ components:
         scope:
           type: string
           description: The API scope to request access for, such as connect:fulfillment.
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The Bearer token to use for authenticating API requests.
+        token_type:
+          type: string
+          enum:
+          - Bearer
+          description: The type of token issued.
+        expires_in:
+          type: integer
+          description: The number of seconds until the token expires. Typically 86400 seconds (24 hours).
+        scope:
+          type: string
+          description: The scope of access granted by the token.
+        created_at:
+          type: integer
+          description: Unix timestamp indicating when the token was created.
     Error:
       type: object
       properties:
@@ -100,7 +100,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: OAuth 2.0 Bearer token obtained using client credentials with the connect:data_ingestion scope.
+      description: OAuth 2.0 Bearer token obtained from the token endpoint. Valid for 24 hours.
 externalDocs:
-  description: Instacart Catalog API Documentation
-  url: https://docs.instacart.com/catalog/catalog_api/overview/
+  description: Instacart Connect Fulfillment API Documentation
+  url: https://docs.instacart.com/connect/fulfillment/

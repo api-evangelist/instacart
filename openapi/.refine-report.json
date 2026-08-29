@@ -1,30 +1,48 @@
 {
   "provider": "instacart",
   "sources": [
-    "instacart-authentication-api-openapi.yml",
-    "instacart-chat-api-openapi.yml",
-    "instacart-delivery-api-openapi.yml",
-    "instacart-items-api-openapi.yml",
-    "instacart-last-mile-delivery-api-openapi.yml",
-    "instacart-orders-api-openapi.yml",
-    "instacart-pickup-api-openapi.yml",
-    "instacart-products-api-openapi.yml",
-    "instacart-replacements-api-openapi.yml"
+    "_original/instacart-catalog-api-openapi.yml",
+    "_original/instacart-connect-fulfillment-api-openapi.yml",
+    "_original/instacart-connect-post-checkout-api-openapi.yml",
+    "_original/instacart-developer-platform-api-openapi.yml",
+    "_original/instacart-llm-integration-openapi.yml"
   ],
   "outputs": [
-    "instacart-authentication-api-openapi.yml",
-    "instacart-chat-api-openapi.yml",
-    "instacart-delivery-api-openapi.yml",
     "instacart-items-api-openapi.yml",
-    "instacart-last-mile-delivery-api-openapi.yml",
-    "instacart-orders-api-openapi.yml",
-    "instacart-pickup-api-openapi.yml",
     "instacart-products-api-openapi.yml",
-    "instacart-replacements-api-openapi.yml"
+    "instacart-authentication-api-openapi.yml",
+    "instacart-delivery-api-openapi.yml",
+    "instacart-last-mile-delivery-api-openapi.yml",
+    "instacart-pickup-api-openapi.yml",
+    "instacart-chat-api-openapi.yml",
+    "instacart-orders-api-openapi.yml",
+    "instacart-replacements-api-openapi.yml",
+    "instacart-rest-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (5 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "instacart-catalog-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "instacart-connect-fulfillment-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "instacart-connect-post-checkout-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "instacart-developer-platform-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "instacart-llm-integration-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "instacart-llm-integration-openapi.yml: tagged paths POST /rest/llm_integration/openapi/v2_1/recipes -> Rest",
+    "instacart-llm-integration-openapi.yml: declared missing tag: Rest",
+    "tag 'Products' spans 2 source specs (instacart-catalog-api-openapi.yml, instacart-developer-platform-api-openapi.yml): per-path servers applied"
+  ],
+  "skipped": [
+    "instacart-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-delivery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-items-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-last-mile-delivery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-pickup-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-replacements-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "instacart-rest-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

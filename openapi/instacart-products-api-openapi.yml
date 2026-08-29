@@ -1,17 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Instacart Catalog Authentication Products API
-  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.
-  version: '2.0'
-  contact:
-    name: Instacart Catalog Support
-    url: https://docs.instacart.com/catalog/catalog_api/overview/
+  title: Instacart Products API
   termsOfService: https://www.instacart.com/terms
+  version: '1.0'
+  description: 'Operations tagged Products across 2 of this provider''s published API definitions: instacart-catalog-api-openapi.yml, instacart-developer-platform-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://connect.instacart.com
   description: Production Server
-security:
-- bearerAuth: []
+- url: https://connect.dev.instacart.tools
+  description: Development Server
 tags:
 - name: Products
   description: Endpoints for creating and updating products in the retailer's catalog on Instacart. Products are the same across all of a retailer's stores.
@@ -54,6 +51,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://connect.instacart.com
+      description: Production Server
   /idp/v1/products/products_link:
     post:
       operationId: createShoppingListPage
@@ -92,6 +94,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - apiKeyAuth: []
+    servers:
+    - url: https://connect.instacart.com
+      description: Production Server
+    - url: https://connect.dev.instacart.tools
+      description: Development Server
   /idp/v1/products/recipe:
     post:
       operationId: createRecipePage
@@ -130,116 +139,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - apiKeyAuth: []
+    servers:
+    - url: https://connect.instacart.com
+      description: Production Server
+    - url: https://connect.dev.instacart.tools
+      description: Development Server
 components:
   schemas:
-    Ingredient:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The name of the ingredient.
-        display_text:
-          type: string
-          description: Custom display text for the ingredient on the recipe page.
-        product_ids:
-          type: array
-          description: Instacart product identifiers to match specific products.
-          items:
-            type: string
-        upcs:
-          type: array
-          description: Universal Product Codes to match specific products.
-          items:
-            type: string
-        measurements:
-          type: object
-          description: Measurement details for the ingredient.
-          properties:
-            amount:
-              type: number
-              description: The measurement amount.
-            unit:
-              type: string
-              description: The measurement unit.
-        filters:
-          type: object
-          description: Filters to narrow product matching for this ingredient.
-          properties:
-            department:
-              type: string
-              description: The store department to filter products by.
-    Error_2:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message describing what went wrong.
-        status:
-          type: integer
-          description: The HTTP status code of the error response.
-    ProductSubmissionRequest:
-      type: object
-      required:
-      - products
-      properties:
-        products:
-          type: array
-          description: The list of products to create or update.
-          items:
-            $ref: '#/components/schemas/Product'
-    RecipeRequest:
-      type: object
-      required:
-      - title
-      - ingredients
-      properties:
-        title:
-          type: string
-          description: The title of the recipe displayed on the recipe page.
-        image_url:
-          type: string
-          format: uri
-          description: URL of an image to display for the recipe.
-        author:
-          type: string
-          description: The name of the recipe author.
-        servings:
-          type: integer
-          description: The number of servings the recipe makes.
-          minimum: 1
-        cooking_time:
-          type: string
-          description: The estimated cooking time for the recipe.
-        external_reference_id:
-          type: string
-          description: An external identifier for the recipe from the partner system.
-        content_creator_credit_info:
-          type: object
-          description: Information for crediting the content creator on the recipe page.
-          properties:
-            name:
-              type: string
-              description: The name of the content creator.
-            url:
-              type: string
-              format: uri
-              description: URL to the content creator's website or profile.
-        expires_in:
-          type: integer
-          description: The number of seconds until the generated recipe link expires.
-          minimum: 1
-        instructions:
-          type: array
-          description: Step-by-step cooking instructions for the recipe.
-          items:
-            type: string
-        ingredients:
-          type: array
-          description: The list of ingredients required for the recipe.
-          items:
-            $ref: '#/components/schemas/Ingredient'
     SubmissionResponse:
       type: object
       properties:
@@ -269,49 +177,16 @@ components:
               message:
                 type: string
                 description: The error message describing the issue.
-    ProductsLinkResponse:
-      type: object
-      properties:
-        products_link_url:
-          type: string
-          format: uri
-          description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
-    ShoppingListRequest:
+    ProductSubmissionRequest:
       type: object
       required:
-      - title
-      - line_items
+      - products
       properties:
-        title:
-          type: string
-          description: The title displayed at the top of the shopping list page.
-        image_url:
-          type: string
-          format: uri
-          description: URL of an image to display on the shopping list page.
-        link_type:
-          type: string
-          description: The type of product link to create.
-        expires_in:
-          type: integer
-          description: The number of seconds until the generated link expires.
-          minimum: 1
-        instructions:
-          type: string
-          description: Additional instructions or notes to display on the page.
-        line_items:
+        products:
           type: array
-          description: The list of products to include on the shopping list page.
+          description: The list of products to create or update.
           items:
-            $ref: '#/components/schemas/LineItem'
-        landing_page_configuration:
-          type: object
-          description: Configuration options for the landing page appearance and behavior.
-          properties:
-            partner_linkback_url:
-              type: string
-              format: uri
-              description: URL to link back to the partner site from the landing page.
+            $ref: '#/components/schemas/Product'
     Product:
       type: object
       required:
@@ -363,6 +238,147 @@ components:
         status:
           type: integer
           description: The HTTP status code.
+    Ingredient:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the ingredient.
+        display_text:
+          type: string
+          description: Custom display text for the ingredient on the recipe page.
+        product_ids:
+          type: array
+          description: Instacart product identifiers to match specific products.
+          items:
+            type: string
+        upcs:
+          type: array
+          description: Universal Product Codes to match specific products.
+          items:
+            type: string
+        measurements:
+          type: object
+          description: Measurement details for the ingredient.
+          properties:
+            amount:
+              type: number
+              description: The measurement amount.
+            unit:
+              type: string
+              description: The measurement unit.
+        filters:
+          type: object
+          description: Filters to narrow product matching for this ingredient.
+          properties:
+            department:
+              type: string
+              description: The store department to filter products by.
+    RecipeRequest:
+      type: object
+      required:
+      - title
+      - ingredients
+      properties:
+        title:
+          type: string
+          description: The title of the recipe displayed on the recipe page.
+        image_url:
+          type: string
+          format: uri
+          description: URL of an image to display for the recipe.
+        author:
+          type: string
+          description: The name of the recipe author.
+        servings:
+          type: integer
+          description: The number of servings the recipe makes.
+          minimum: 1
+        cooking_time:
+          type: string
+          description: The estimated cooking time for the recipe.
+        external_reference_id:
+          type: string
+          description: An external identifier for the recipe from the partner system.
+        content_creator_credit_info:
+          type: object
+          description: Information for crediting the content creator on the recipe page.
+          properties:
+            name:
+              type: string
+              description: The name of the content creator.
+            url:
+              type: string
+              format: uri
+              description: URL to the content creator's website or profile.
+        expires_in:
+          type: integer
+          description: The number of seconds until the generated recipe link expires.
+          minimum: 1
+        instructions:
+          type: array
+          description: Step-by-step cooking instructions for the recipe.
+          items:
+            type: string
+        ingredients:
+          type: array
+          description: The list of ingredients required for the recipe.
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    ShoppingListRequest:
+      type: object
+      required:
+      - title
+      - line_items
+      properties:
+        title:
+          type: string
+          description: The title displayed at the top of the shopping list page.
+        image_url:
+          type: string
+          format: uri
+          description: URL of an image to display on the shopping list page.
+        link_type:
+          type: string
+          description: The type of product link to create.
+        expires_in:
+          type: integer
+          description: The number of seconds until the generated link expires.
+          minimum: 1
+        instructions:
+          type: string
+          description: Additional instructions or notes to display on the page.
+        line_items:
+          type: array
+          description: The list of products to include on the shopping list page.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        landing_page_configuration:
+          type: object
+          description: Configuration options for the landing page appearance and behavior.
+          properties:
+            partner_linkback_url:
+              type: string
+              format: uri
+              description: URL to link back to the partner site from the landing page.
+    ProductsLinkResponse:
+      type: object
+      properties:
+        products_link_url:
+          type: string
+          format: uri
+          description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
+    Error_2:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message describing what went wrong.
+        status:
+          type: integer
+          description: The HTTP status code of the error response.
     LineItem:
       type: object
       required:
@@ -413,6 +429,11 @@ components:
       type: http
       scheme: bearer
       description: OAuth 2.0 Bearer token obtained using client credentials with the connect:data_ingestion scope.
-externalDocs:
-  description: Instacart Catalog API Documentation
-  url: https://docs.instacart.com/catalog/catalog_api/overview/
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: API key authentication. Include your API key in the Authorization header.
+x-refined-from:
+- instacart-catalog-api-openapi.yml
+- instacart-developer-platform-api-openapi.yml

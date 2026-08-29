@@ -1,11 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Instacart Catalog Authentication Delivery API
-  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.
+  title: Instacart Connect Fulfillment Delivery API
+  description: The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites. It combines grocery, delivery, and pickup functionality into a single API, allowing retailers to offer full-service shopping where Instacart shoppers pick items and suggest replacements, as well as same-day or scheduled delivery and pickup options. Key endpoints include finding stores that offer delivery, listing available time slots, previewing service options, and creating delivery or pickup orders.
   version: '2.0'
   contact:
-    name: Instacart Catalog Support
-    url: https://docs.instacart.com/catalog/catalog_api/overview/
+    name: Instacart Connect Support
+    url: https://docs.instacart.com/connect/fulfillment/
   termsOfService: https://www.instacart.com/terms
 servers:
 - url: https://connect.instacart.com
@@ -216,81 +216,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ServiceOptionHoldResponse:
-      type: object
-      properties:
-        hold_id:
-          type: string
-          description: The unique identifier for the time slot hold.
-        expires_at:
-          type: string
-          format: date-time
-          description: The time at which the hold expires and the time slot is released.
-        service_option:
-          $ref: '#/components/schemas/ServiceOption'
-    ServiceOption:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the service option.
-        date:
-          type: string
-          format: date
-          description: The date of the service option.
-        window_starts_at:
-          type: string
-          format: date-time
-          description: The start time of the delivery or pickup window.
-        window_ends_at:
-          type: string
-          format: date-time
-          description: The end time of the delivery or pickup window.
-        fulfillment_type:
-          type: string
-          enum:
-          - delivery
-          - pickup
-          - last_mile
-          description: The type of fulfillment for this service option.
-    OrderResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the order.
-        status:
-          type: string
-          enum:
-          - brand_new
-          - acknowledged
-          - picking
-          - staging
-          - delivering
-          - delivered
-          - canceled
-          - rescheduled
-          description: The current status of the order.
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the order was created.
-        fulfillment_type:
-          type: string
-          enum:
-          - delivery
-          - pickup
-          - last_mile
-          description: The fulfillment type of the order.
-        service_option:
-          $ref: '#/components/schemas/ServiceOption'
-        store:
-          $ref: '#/components/schemas/Store'
-        items:
-          type: array
-          description: The items included in the order.
-          items:
-            $ref: '#/components/schemas/OrderItem'
     CreateOrderRequest:
       type: object
       required:
@@ -338,66 +263,6 @@ components:
           description: An array of stores offering the requested fulfillment type, sorted by distance with the closest store first.
           items:
             $ref: '#/components/schemas/Store'
-    Store:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the store.
-        name:
-          type: string
-          description: The name of the store.
-        address:
-          type: object
-          description: The physical address of the store.
-          properties:
-            address_line_1:
-              type: string
-              description: The street address.
-            city:
-              type: string
-              description: The city.
-            state:
-              type: string
-              description: The state or province.
-            postal_code:
-              type: string
-              description: The postal or ZIP code.
-        distance:
-          type: number
-          format: double
-          description: The distance from the customer's location to the store.
-    ServiceOptionsResponse:
-      type: object
-      properties:
-        service_options:
-          type: array
-          description: Available service option time slots for the requested fulfillment type.
-          items:
-            $ref: '#/components/schemas/ServiceOption'
-    OrderItem:
-      type: object
-      properties:
-        product_id:
-          type: string
-          description: The Instacart product identifier.
-        upc:
-          type: string
-          description: The Universal Product Code of the item.
-        name:
-          type: string
-          description: The name of the product.
-        quantity:
-          type: integer
-          description: The ordered quantity.
-        status:
-          type: string
-          enum:
-          - pending
-          - found
-          - replaced
-          - refunded
-          description: The current status of the item in the order.
     FindStoresRequest:
       type: object
       properties:
@@ -441,6 +306,43 @@ components:
               description: The items in the customer's cart.
               items:
                 $ref: '#/components/schemas/CartItem'
+    ServiceOptionHoldResponse:
+      type: object
+      properties:
+        hold_id:
+          type: string
+          description: The unique identifier for the time slot hold.
+        expires_at:
+          type: string
+          format: date-time
+          description: The time at which the hold expires and the time slot is released.
+        service_option:
+          $ref: '#/components/schemas/ServiceOption'
+    ServiceOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the service option.
+        date:
+          type: string
+          format: date
+          description: The date of the service option.
+        window_starts_at:
+          type: string
+          format: date-time
+          description: The start time of the delivery or pickup window.
+        window_ends_at:
+          type: string
+          format: date-time
+          description: The end time of the delivery or pickup window.
+        fulfillment_type:
+          type: string
+          enum:
+          - delivery
+          - pickup
+          - last_mile
+          description: The type of fulfillment for this service option.
     PreviewServiceOptionsRequest:
       type: object
       properties:
@@ -479,6 +381,66 @@ components:
         product_id:
           type: string
           description: The Instacart product identifier.
+    OrderItem:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: The Instacart product identifier.
+        upc:
+          type: string
+          description: The Universal Product Code of the item.
+        name:
+          type: string
+          description: The name of the product.
+        quantity:
+          type: integer
+          description: The ordered quantity.
+        status:
+          type: string
+          enum:
+          - pending
+          - found
+          - replaced
+          - refunded
+          description: The current status of the item in the order.
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the store.
+        name:
+          type: string
+          description: The name of the store.
+        address:
+          type: object
+          description: The physical address of the store.
+          properties:
+            address_line_1:
+              type: string
+              description: The street address.
+            city:
+              type: string
+              description: The city.
+            state:
+              type: string
+              description: The state or province.
+            postal_code:
+              type: string
+              description: The postal or ZIP code.
+        distance:
+          type: number
+          format: double
+          description: The distance from the customer's location to the store.
+    ServiceOptionsResponse:
+      type: object
+      properties:
+        service_options:
+          type: array
+          description: Available service option time slots for the requested fulfillment type.
+          items:
+            $ref: '#/components/schemas/ServiceOption'
     Error:
       type: object
       properties:
@@ -488,6 +450,44 @@ components:
         status:
           type: integer
           description: The HTTP status code.
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order.
+        status:
+          type: string
+          enum:
+          - brand_new
+          - acknowledged
+          - picking
+          - staging
+          - delivering
+          - delivered
+          - canceled
+          - rescheduled
+          description: The current status of the order.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the order was created.
+        fulfillment_type:
+          type: string
+          enum:
+          - delivery
+          - pickup
+          - last_mile
+          description: The fulfillment type of the order.
+        service_option:
+          $ref: '#/components/schemas/ServiceOption'
+        store:
+          $ref: '#/components/schemas/Store'
+        items:
+          type: array
+          description: The items included in the order.
+          items:
+            $ref: '#/components/schemas/OrderItem'
   parameters:
     userId:
       name: user_id
@@ -507,7 +507,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: OAuth 2.0 Bearer token obtained using client credentials with the connect:data_ingestion scope.
+      description: OAuth 2.0 Bearer token obtained from the token endpoint. Valid for 24 hours.
 externalDocs:
-  description: Instacart Catalog API Documentation
-  url: https://docs.instacart.com/catalog/catalog_api/overview/
+  description: Instacart Connect Fulfillment API Documentation
+  url: https://docs.instacart.com/connect/fulfillment/
