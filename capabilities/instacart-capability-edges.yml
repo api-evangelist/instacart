@@ -1,0 +1,25 @@
+slug: instacart
+provider: instacart
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Last Mile Delivery
+  spec_file: instacart-last-mile-delivery-api-openapi.yml
+  capability_id: BC-2420.40
+  capability_id_l1: BC-2420
+  capability_name: Last-Mile Delivery Operations Management
+  confidence: 0.8
+  evidence: '''findLastMileStores  Find stores offering last mile delivery'', ''createLastMileOrder  Create
+    a last mile delivery order'', ''stageLastMileOrder  Stage a last mile delivery order'''
+  reason: Operations explicitly create and stage last-mile delivery orders to end consignees — Last-Mile
+    Delivery Operations Management.

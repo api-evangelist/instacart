@@ -334,6 +334,9 @@ apis:
   - type: Documentation
     url: https://docs.instacart.com/developer_platform_api/
 common:
+- type: CapabilityMap
+  url: capabilities/instacart-capability-edges.yml
+  name: instacart Business Capability Map
 - type: Overlay
   url: overlays/instacart-llm-integration-overlay.yaml
 - type: AgenticAccess
