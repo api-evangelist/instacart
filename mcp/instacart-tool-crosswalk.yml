@@ -1,0 +1,126 @@
+generated: '2026-08-27'
+method: derived
+source: >-
+  mcp/instacart-mcp-tools.json (live tools/list, 2026-08-27) bound against
+  openapi/_original/instacart-developer-platform-api-openapi.yml,
+  openapi/instacart-products-api-openapi.yml and openapi/instacart-llm-integration-openapi.yml
+provider: Instacart
+providerId: instacart
+description: >-
+  Binds each tool published by Instacart's remote MCP server to the REST operation that backs it. Both
+  MCP tools map one-to-one onto Developer Platform operations, so each tool's real input schema is the
+  requestBody of its backing operation — and in this case the live tools/list schema can be compared
+  against the OpenAPI directly. Everything else Instacart ships as REST (Connect Fulfillment,
+  Post-checkout, Catalog) has no tool, which is the whole story of this crosswalk: the MCP surface
+  covers 2 of 24 published operations.
+surfaces:
+  openapi:
+    - file: openapi/_original/instacart-developer-platform-api-openapi.yml
+      servers: [https://connect.instacart.com, https://connect.dev.instacart.tools]
+      gated: false
+    - file: openapi/instacart-llm-integration-openapi.yml
+      servers: [https://www.instacart.com]
+      gated: false
+      note: legacy v2.1 recipe endpoint named by /.well-known/ai-plugin.json
+    - file: openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+      servers: [https://connect.instacart.com]
+      gated: true
+      note: OAuth 2.0 client_credentials, scope connect:fulfillment, credentials issued by Instacart
+    - file: openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+      servers: [https://connect.instacart.com]
+      gated: true
+    - file: openapi/_original/instacart-catalog-api-openapi.yml
+      servers: [https://connect.instacart.com]
+      gated: true
+  graphql:
+    endpoint: null
+    note: >-
+      graphql/instacart-schema.graphql in this repo is a modelled representation, not an introspected
+      schema; https://connect.instacart.com/graphql returns 404. No public GraphQL surface.
+  mcp:
+    endpoint: https://mcp.instacart.com/mcp
+    gated: false
+    note: tools/list served anonymously; tools/call requires an API key Bearer header
+crosswalk:
+  - tool: create-recipe
+    category: shoppable-page
+    rest:
+      - createRecipePage
+    binding: direct
+    confidence: high
+    note: >-
+      POST /idp/v1/products/recipe on connect.instacart.com. The tool's inputSchema (title, image_url,
+      author, servings, cooking_time, instructions[], ingredients[{name,quantity,unit,displayText}])
+      is a camelCase-per-item flattening of the RecipeRequest schema; title and ingredients are
+      required in both. A second, older REST route for the same capability exists at
+      POST /rest/llm_integration/openapi/v2_1/recipes on www.instacart.com (operationId create).
+  - tool: create-shopping-list
+    category: shoppable-page
+    rest:
+      - createShoppingListPage
+    binding: direct
+    confidence: high
+    note: >-
+      POST /idp/v1/products/products_link on connect.instacart.com. Tool inputSchema adds
+      expires_in and landingPageConfiguration{partnerLinkbackUrl,enablePantryItems}. Note the
+      lineItems quantity/unit fields the tool still exposes were deprecated in the REST API on
+      2026-03-18 in favour of line_item_measurements — the MCP schema has not followed.
+mcp_only: []
+rest_only:
+  - operationId: getNearbyRetailers
+    reason: Developer Platform retailer lookup; documented but not exposed as an MCP tool
+    note: >-
+      Documented at /developer_platform_api/api/retailers/get_nearby_retailers; not present in the
+      repo's OpenAPI either, so it is an operation gap on both surfaces.
+  - operationId: generateAccessToken
+    reason: OAuth token minting; not an agent-callable capability
+  - operationId: findDeliveryStores
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: findPickupStores
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: findLastMileStores
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: previewDeliveryTimeSlots
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: previewPickupTimeSlots
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: previewLastMileServiceOptions
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: reserveDeliveryTimeSlot
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: createDeliveryOrder
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: createPickupOrder
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: createLastMileOrder
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: stageLastMileOrder
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: cancelOrder
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: getOrder
+    reason: Connect Fulfillment API, partner-gated, no tool
+  - operationId: getOrderItems
+    reason: Connect Post-checkout API, partner-gated, no tool
+  - operationId: getOrderHandling
+    reason: Connect Post-checkout API, partner-gated, no tool
+  - operationId: updateItemReplacement
+    reason: Connect Post-checkout API, partner-gated, no tool
+  - operationId: getChatMessages
+    reason: Connect Post-checkout API, partner-gated, no tool
+  - operationId: sendChatMessage
+    reason: Connect Post-checkout API, partner-gated, no tool
+  - operationId: submitProducts
+    reason: Catalog API, partner-gated, no tool
+  - operationId: submitItems
+    reason: Catalog API, partner-gated, no tool
+coverage:
+  mcp_tools: 2
+  rest_operations_catalogued: 24
+  tools_bound_to_rest: 2
+  tools_without_rest: 0
+  rest_without_tool: 22
+  tool_coverage_of_rest: 0.08
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

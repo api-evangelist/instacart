@@ -1,0 +1,76 @@
+generated: '2026-08-27'
+method: probed
+source: >-
+  https://docs.instacart.com/developer_platform_api/guide/tutorials/mcp (published endpoint URLs),
+  https://docs.instacart.com/mcp_servers.md, and a live anonymous tools/list POST to
+  https://mcp.instacart.com/mcp
+provider: Instacart
+providerId: instacart
+name: Instacart Developer Platform MCP Server
+description: >-
+  Instacart publishes a first-party, remote Model Context Protocol server that exposes the Instacart
+  Developer Platform's two shoppable-page operations as MCP tools. The production endpoint is
+  https://mcp.instacart.com/mcp over Streamable HTTP, authenticated with an Instacart Developer
+  Platform API key passed as an Authorization Bearer header. A separate development endpoint exists at
+  https://mcp.dev.instacart.tools/mcp. Both endpoints answered an anonymous tools/list with HTTP 200
+  and the full tool schemas, so the tool contract below is observed, not inferred.
+deployment:
+  mode: remote
+  endpoint: https://mcp.instacart.com/mcp
+  transport: streamable-http
+  auth: api-key
+  verified: probed
+  environments:
+    - name: production
+      endpoint: https://mcp.instacart.com/mcp
+      probed: '2026-08-27'
+      tools_list_status: 200
+    - name: development
+      endpoint: https://mcp.dev.instacart.tools/mcp
+      probed: '2026-08-27'
+      tools_list_status: 200
+  auth_note: >-
+    Instacart's tutorial states "you need to pass your API key as an authorization header when
+    connecting to the MCP server" and the MCP inspector walkthrough sets Header name Authorization
+    with the API key in the Bearer Token field. tools/list is nevertheless served anonymously;
+    tools/call was not exercised, since doing so would create real pages on Instacart Marketplace.
+status: published
+x-evidence:
+  fetched: '2026-08-27'
+  method: POST
+  url: https://mcp.instacart.com/mcp
+  request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  http_status: 200
+  raw: mcp/instacart-mcp-tools.json
+tools:
+  - name: create-recipe
+    description: Create a recipe page on Instacart Marketplace
+    required: [title, ingredients]
+    input_schema_source: live tools/list response (mcp/instacart-mcp-tools.json)
+    rest_operation: createRecipePage
+  - name: create-shopping-list
+    description: Create a shopping list page on Instacart Marketplace
+    required: [title, lineItems]
+    input_schema_source: live tools/list response (mcp/instacart-mcp-tools.json)
+    rest_operation: createShoppingListPage
+tool_count: 2
+docs:
+  - https://docs.instacart.com/developer_platform_api/guide/tutorials/mcp
+  - https://docs.instacart.com/mcp_servers
+  - https://docs.instacart.com/mcp_servers/get-started/use-instacarts-mcp-server
+  - https://docs.instacart.com/mcp_servers/changelog
+other_servers:
+  - name: Instacart Enterprise MCP Server
+    docs: https://docs.instacart.com/mcp_servers
+    mode: remote
+    endpoint: null
+    auth: oauth
+    verified: searched
+    note: >-
+      Separate from the Developer Platform server above. Documented at /mcp_servers as supporting
+      store-availability checks, recipe ingredient lookup and order assembly, but the endpoint URL,
+      onboarding, rate limits and access provisioning are all gated behind "contact your Instacart
+      representative", so no endpoint is recorded. Documentation site published 2026-03-15.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

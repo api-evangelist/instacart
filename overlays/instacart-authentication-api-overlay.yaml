@@ -1,0 +1,50 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Instacart Catalog Authentication API
+  version: 1.0.0
+extends: ./instacart-authentication-api-openapi.yml
+x-provenance:
+  generated: '2026-08-27'
+  method: generated
+  source: API Evangelist enrichment pipeline; every value traces to a docs.instacart.com page cited in
+    the action
+  provider: instacart
+actions:
+- target: $.info
+  description: Stamp API Evangelist provenance and link the derived artifacts in this repo.
+  update:
+    x-apievangelist-provider: instacart
+    x-apievangelist-artifacts:
+      conventions: conventions/instacart-conventions.yml
+      errors: errors/instacart-problem-types.yml
+      lifecycle: lifecycle/instacart-lifecycle.yml
+      authentication: authentication/instacart-authentication.yml
+      scopes: scopes/instacart-scopes.yml
+      rate-limits: rate-limits/instacart-rate-limits.yml
+      sandbox: sandbox/instacart-sandbox.yml
+      conformance: conformance/instacart-conformance.yml
+      mcp: mcp/instacart-mcp.yml
+- target: $
+  description: Record the runtime semantics Instacart documents in prose but does not express in the contract.
+  update:
+    x-rate-limit:
+      status: 429
+      headers: []
+      note: Per-second threshold; no RateLimit-* headers and no Retry-After are published.
+      docs: https://docs.instacart.com/developer_platform_api/api/error_and_status_codes
+    x-idempotency:
+      supported: false
+      note: No idempotency key. Retrying a create duplicates the resource.
+    x-deprecation-policy:
+      minimum_notice: 6 months
+      announced_in: product changelog
+      sunset_header: false
+      docs: https://docs.instacart.com/connect/api/fulfillment/deprecated
+- target: $.components.securitySchemes
+  description: Point each security scheme at the documented key/token management guidance.
+  update:
+    x-docs:
+      developer_platform_api_keys: https://docs.instacart.com/developer_platform_api/get_started/api-keys
+      developer_platform_key_rotation: https://docs.instacart.com/developer_platform_api/api/key-rotation
+      connect_oauth: https://docs.instacart.com/connect/api/authentication
+      connect_scopes: https://docs.instacart.com/connect/api/permissions_scopes

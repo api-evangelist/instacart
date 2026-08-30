@@ -1,0 +1,77 @@
+generated: '2026-08-27'
+method: searched
+docs: https://docs.instacart.com/connect/api/permissions_scopes
+source: >-
+  https://docs.instacart.com/connect/api/permissions_scopes and
+  https://docs.instacart.com/connect/api/access_tokens
+provider: Instacart
+providerId: instacart
+description: >-
+  OAuth 2.0 permissions for the Instacart Connect APIs. Scope is selected at token-request time and the
+  resulting access token is limited to that API. Instacart's own guidance is to request the narrowest
+  scope for the task. Note the shape is unusual: `scope` and `grant_type` are coupled - the same
+  capability (Order Feedback) takes a different grant type depending on whether it is implemented in
+  the backend or the frontend - and one API (Transaction) takes no scope at all. Multiple scopes may
+  be requested in one token request, comma-separated, only when they share a grant_type. Omitting
+  scope on a client_credentials request yields a token covering every permitted API for that grant
+  type, which is the opposite of least privilege and worth calling out.
+  These scopes are documented, not declared: no oauth2 securityScheme with a scopes map appears in the
+  harvested OpenAPI, so derive-oauth-scopes.py found zero. Everything below was read from the docs.
+derived_from_spec: false
+token_endpoint: POST https://connect.instacart.com/v2/oauth/token
+token_lifetime: 24 hours
+revocation_endpoint: POST /v2/oauth/revoke_access_token
+scopes:
+  - name: 'connect:fulfillment'
+    grant_type: client_credentials
+    api: Fulfillment API
+    description: >-
+      Access stores, service options, reservations, order creation and order management.
+    docs: https://docs.instacart.com/connect/api/fulfillment/overview
+  - name: 'Connect::Orders::RatingService'
+    grant_type: client_credentials
+    api: Order Feedback API (backend implementation)
+    description: Create or update order feedback from a backend implementation.
+    docs: https://docs.instacart.com/connect/api/fulfillment/overview
+  - name: 'Connect::Orders::RatingService'
+    grant_type: 'fulfillment_user_assertion | urn:ietf:params:oauth:grant-type:retailer-json-bearer'
+    api: Order Feedback API (frontend implementation)
+    description: >-
+      Create or update order feedback from a frontend implementation, on behalf of an end user.
+    docs: https://docs.instacart.com/connect/api/fulfillment/overview
+  - name: 'connect:post_checkout'
+    grant_type: fulfillment_user_assertion
+    api: Post-checkout API
+    description: Access order detail and order status for a customer's order.
+    docs: https://docs.instacart.com/connect/api/post_checkout/overview
+  - name: account_linking
+    grant_type: authorization_code
+    api: Account linking
+    description: Link a customer's Connect user account to their Instacart account.
+    docs: https://docs.instacart.com/connect/api/fulfillment/users/generate_linking_token
+  - name: 'connect:data_ingestion'
+    grant_type: client_credentials
+    api: Catalog API
+    description: >-
+      Submit products and items to the retailer catalog. Not listed in the public permissions table;
+      captured from the bearerAuth description in Instacart's own Catalog API definition
+      (openapi/_original/instacart-catalog-api-openapi.yml).
+    source: openapi
+    docs: https://docs.instacart.com/catalog/catalog_api/overview/
+no_scope_required:
+  - api: Transaction API
+    grant_type: client_credentials
+    description: Send point of sale transaction information to Instacart. Scope value is None.
+    docs: https://docs.instacart.com/connect/api/transaction/overview
+notes:
+  - >-
+    "Partner retailers may have access to private APIs" with scope values published only in partner
+    documentation, so this list is the public subset, not the complete set.
+  - >-
+    The Developer Platform API (/idp/v1) does not use OAuth at all. It uses API keys with three
+    permission levels - read-only, read-write and admin - configured in the Developer Dashboard.
+    Those are permission tiers, not OAuth scopes, and are recorded in
+    authentication/instacart-authentication.yml and conventions/instacart-conventions.yml.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,69 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.instacart.com/widgets, https://docs.instacart.com/widgets/guide/concepts/prebuilt_widgets,
+  https://docs.instacart.com/widgets/guide/tutorials/get_started_with_prebuilt_widgets,
+  https://docs.instacart.com/widgets/guide/concepts/custom_widgets,
+  https://docs.instacart.com/widgets/guide/concepts/custom_events
+provider: Instacart
+providerId: instacart
+description: >-
+  Instacart Shopping Widgets are embeddable front-end web components, shipped as a single UMD library
+  and used through custom HTML elements. Instacart's framing is explicit and unusual: the widgets let a
+  retailer add e-commerce capability "without having to interact with any API directly" - they are an
+  alternative to the API, not a client for it. They are distinct from an SDK and are counted
+  separately.
+families:
+  - name: Prebuilt widgets
+    description: Widgets designed and maintained by Instacart, embedded as custom HTML elements.
+    components:
+      - name: Auth and Profile
+        element: '<instacart-auth>'
+        description: >-
+          Lets customers sign in or register. After authentication the Profile widget renders in its
+          place, offering profile, buy-it-again and logout.
+        docs: https://docs.instacart.com/widgets/widget_libraries/auth_and_profile
+      - name: Cart
+        description: >-
+          Displays the number of items in the customer's cart and navigates to the storefront for
+          checkout, keeping the retailer site and the storefront cart in sync.
+        docs: https://docs.instacart.com/widgets/widget_libraries/cart
+      - name: Search bar
+        description: >-
+          Embeds a product search bar; a query navigates the customer to the storefront search
+          results.
+        docs: https://docs.instacart.com/widgets/widget_libraries/search_bar
+      - name: Collection
+        description: >-
+          Displays the products in a curated collection and lets customers add them to the cart.
+        docs: https://docs.instacart.com/widgets/widget_libraries/collection
+  - name: Custom widgets
+    description: >-
+      Retailer-built widgets on top of the Instacart Developer Platform Partner API, requiring an
+      established user session. The Partner API reference lives on the partner-gated host
+      partner-docs.instacart.com.
+    docs: https://docs.instacart.com/widgets/guide/concepts/custom_widgets
+    gated: true
+loader:
+  type: umd-script
+  markup: '<script async src="https://dboktu48tbzl9.cloudfront.net/{retailer-name}/evergreen/ic-widgets-v1.umd.js"></script>'
+  module_format: Universal Module Definition
+  distribution: >-
+    Each retailer is issued a link to a unique distribution file at sign-up. The path is
+    per-retailer, so there is no single public bundle URL and no registry package.
+  pinning: unpinned
+  pinning_note: >-
+    The published loader path is "evergreen" and the filename carries a major version only
+    (ic-widgets-v1). A consumer cannot tell which build they are serving, and neither can we - the
+    only version signal in the entire distribution is the `v1` in the filename. See
+    packages/instacart-packages.yml.
+events:
+  custom_events: true
+  description: >-
+    Custom events let a retailer track site interactions - checkout, order cancellation, session
+    start - and feed them back into the widgets. Enabling them requires an Instacart representative.
+  docs: https://docs.instacart.com/widgets/guide/concepts/custom_events
+changelog: https://docs.instacart.com/widgets/changelog
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
