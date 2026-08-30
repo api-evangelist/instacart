@@ -327,6 +327,8 @@ apis:
   humanURL: https://docs.instacart.com/widgets/
   baseURL: https://dboktu48tbzl9.cloudfront.net/{retailer-name}/evergreen
   tags:
+  - REST
+  tags_raw:
   - Rest
   properties:
   - type: OpenAPI
