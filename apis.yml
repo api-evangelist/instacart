@@ -37,6 +37,12 @@ apis:
 - aid: instacart:shopping-widgets
   name: Instacart Shopping Widgets
   tags:
+  - Embeddings
+  - Retail
+  - Shopping
+  - Web Components
+  - Widgets
+  tags_raw:
   - Embedding
   - Retail
   - Shopping
