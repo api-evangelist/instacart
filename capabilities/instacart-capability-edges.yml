@@ -11,8 +11,30 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 1
+edge_count: 5
 edges:
+- tag: Pickup
+  spec_file: instacart-pickup-api-openapi.yml
+  capability_id: BC-2330.20
+  capability_id_l1: BC-2330
+  capability_name: Click-and-Collect Operations Management
+  confidence: 0.85
+  evidence: POST /v2/fulfillment/stores/pickup  findPickupStores  Find stores offering pickup; previewPickupTimeSlots;
+    createPickupOrder
+  reason: Finding pickup stores, previewing pickup windows and creating pickup orders is click-and-collect
+    operations bridging digital orders to physical stores.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: Delivery
+  spec_file: instacart-delivery-api-openapi.yml
+  capability_id: BC-520.40
+  capability_id_l1: BC-520
+  capability_name: Order Fulfilment Management
+  confidence: 0.8
+  evidence: POST /v2/fulfillment/users/{user_id}/orders/delivery createDeliveryOrder Create a delivery
+    order; previewDeliveryTimeSlots; cancelOrder
+  reason: Store eligibility lookup, delivery slot reservation, order creation and cancellation are order
+    promising and fulfilment orchestration.
+  recovered_from: vertical-agriculture-food-production-edges.json
 - tag: Last Mile Delivery
   spec_file: instacart-last-mile-delivery-api-openapi.yml
   capability_id: BC-2420.40
@@ -23,3 +45,26 @@ edges:
     a last mile delivery order'', ''stageLastMileOrder  Stage a last mile delivery order'''
   reason: Operations explicitly create and stage last-mile delivery orders to end consignees — Last-Mile
     Delivery Operations Management.
+- tag: Items
+  spec_file: instacart-items-api-openapi.yml
+  capability_id: BC-2370
+  capability_id_l1: BC-2370
+  capability_name: Product Information Management
+  confidence: 0.75
+  evidence: POST /v2/data_ingestion/catalog/item/submission  submitItems  Create or update items — 'keep
+    their Instacart product listings synchronized with their inventory management systems, ensuring accurate
+    product information, pricing, and availability'
+  reason: Catalog item creation/update with product attributes and availability is product information
+    management; ambiguous between item master data and channel syndication, so L1 only.
+  recovered_from: vertical-retail-consumer-goods-edges.json
+- tag: Orders
+  spec_file: instacart-orders-api-openapi.yml
+  capability_id: BC-520.40
+  capability_id_l1: BC-520
+  capability_name: Order Fulfilment Management
+  confidence: 0.7
+  evidence: GET /v2/post_checkout/orders/{order_id}/handling getOrderHandling; GET .../items getOrderItems;
+    schema Replacement
+  reason: Post-checkout order handling and item/replacement status retrieval supports fulfilment tracking
+    of placed orders.
+  recovered_from: vertical-agriculture-food-production-edges.json
