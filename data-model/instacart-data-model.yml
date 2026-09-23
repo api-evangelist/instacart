@@ -1,0 +1,517 @@
+generated: '2026-08-27'
+method: derived
+source: component schemas and $ref graph across openapi/ and openapi/_original/, plus the object reference
+  at docs.instacart.com
+provider: Instacart
+providerId: instacart
+description: 'Entity graph derived from the $ref links and id-reference fields in Instacart''s published
+  contracts. The graph is shallow by design: Instacart''s APIs are workflow-shaped rather than resource-shaped,
+  so the strong nouns are Order, Item, Store and ServiceOption, and most requests carry composites inline
+  rather than by reference. Identifiers are opaque strings with no published prefix scheme - unlike a
+  payments API, you cannot tell an order ID from a user ID by looking at it - and user_id is retailer-generated
+  (any unique identifier: login name, loyalty ID, email address), which makes it the one join key an integrator
+  controls.'
+entity_count: 36
+entities:
+- name: TokenResponse
+  field_count: 5
+  fields:
+  - access_token
+  - created_at
+  - expires_in
+  - scope
+  - token_type
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-authentication-api-openapi.yml
+- name: TokenRequest
+  field_count: 4
+  fields:
+  - client_id
+  - client_secret
+  - grant_type
+  - scope
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-authentication-api-openapi.yml
+- name: Error
+  field_count: 2
+  fields:
+  - error
+  - status
+  sources:
+  - openapi/_original/instacart-catalog-api-openapi.yml
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/_original/instacart-developer-platform-api-openapi.yml
+  - openapi/instacart-authentication-api-openapi.yml
+  - openapi/instacart-chat-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-items-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-orders-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+  - openapi/instacart-replacements-api-openapi.yml
+- name: ChatMessage
+  field_count: 4
+  fields:
+  - body
+  - created_at
+  - id
+  - sender
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-chat-api-openapi.yml
+- name: ChatMessagesResponse
+  field_count: 1
+  fields:
+  - messages
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-chat-api-openapi.yml
+- name: SendMessageRequest
+  field_count: 1
+  fields:
+  - body
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-chat-api-openapi.yml
+- name: ServiceOptionHoldResponse
+  field_count: 3
+  fields:
+  - expires_at
+  - hold_id
+  - service_option
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+- name: ServiceOption
+  field_count: 5
+  fields:
+  - date
+  - fulfillment_type
+  - id
+  - window_ends_at
+  - window_starts_at
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: OrderResponse
+  field_count: 7
+  fields:
+  - created_at
+  - fulfillment_type
+  - id
+  - items
+  - service_option
+  - status
+  - store
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: CreateOrderRequest
+  field_count: 4
+  fields:
+  - cart
+  - delivery_address
+  - delivery_instructions
+  - hold_id
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: StoresResponse
+  field_count: 1
+  fields:
+  - stores
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: Store
+  field_count: 4
+  fields:
+  - address
+  - distance
+  - id
+  - name
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: ServiceOptionsResponse
+  field_count: 1
+  fields:
+  - service_options
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: OrderItem
+  field_count: 5
+  fields:
+  - name
+  - product_id
+  - quantity
+  - status
+  - upc
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: FindStoresRequest
+  field_count: 7
+  fields:
+  - address_line_1
+  - address_line_2
+  - city
+  - latitude
+  - longitude
+  - postal_code
+  - state
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: ReserveTimeSlotRequest
+  field_count: 2
+  fields:
+  - cart
+  - service_option_id
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+- name: PreviewServiceOptionsRequest
+  field_count: 2
+  fields:
+  - address
+  - store_id
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: CartItem
+  field_count: 3
+  fields:
+  - product_id
+  - quantity
+  - upc
+  sources:
+  - openapi/_original/instacart-connect-fulfillment-api-openapi.yml
+  - openapi/instacart-delivery-api-openapi.yml
+  - openapi/instacart-last-mile-delivery-api-openapi.yml
+  - openapi/instacart-pickup-api-openapi.yml
+- name: ItemSubmissionRequest
+  field_count: 1
+  fields:
+  - items
+  sources:
+  - openapi/_original/instacart-catalog-api-openapi.yml
+  - openapi/instacart-items-api-openapi.yml
+- name: Item
+  field_count: 10
+  fields:
+  - aisle
+  - available
+  - inventory_count
+  - price
+  - product_code
+  - sale_end_date
+  - sale_price
+  - sale_start_date
+  - shelf
+  - store_code
+  sources:
+  - openapi/_original/instacart-catalog-api-openapi.yml
+  - openapi/instacart-items-api-openapi.yml
+- name: SubmissionResponse
+  field_count: 4
+  fields:
+  - errors
+  - status
+  - submission_id
+  - submitted_count
+  sources:
+  - openapi/_original/instacart-catalog-api-openapi.yml
+  - openapi/instacart-items-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: createRequest
+  field_count: 5
+  fields:
+  - ingredients
+  - instructions
+  - partner_name
+  - question
+  - title
+  sources:
+  - openapi/instacart-llm-integration-openapi.yml
+- name: Replacement
+  field_count: 3
+  fields:
+  - product_id
+  - product_name
+  - quantity
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-orders-api-openapi.yml
+- name: OrderHandlingResponse
+  field_count: 6
+  fields:
+  - address
+  - coordinates
+  - notes
+  - order_id
+  - shopper
+  - status
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-orders-api-openapi.yml
+- name: PostCheckoutOrderItem
+  field_count: 6
+  fields:
+  - id
+  - product_name
+  - quantity
+  - replacement
+  - replacement_status
+  - status
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-orders-api-openapi.yml
+- name: OrderItemsResponse
+  field_count: 1
+  fields:
+  - items
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-orders-api-openapi.yml
+- name: Ingredient
+  field_count: 6
+  fields:
+  - display_text
+  - filters
+  - measurements
+  - name
+  - product_ids
+  - upcs
+  sources:
+  - openapi/_original/instacart-developer-platform-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: Error_2
+  field_count: 2
+  fields:
+  - error
+  - status
+  sources:
+  - openapi/instacart-products-api-openapi.yml
+- name: ProductSubmissionRequest
+  field_count: 1
+  fields:
+  - products
+  sources:
+  - openapi/_original/instacart-catalog-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: RecipeRequest
+  field_count: 10
+  fields:
+  - author
+  - content_creator_credit_info
+  - cooking_time
+  - expires_in
+  - external_reference_id
+  - image_url
+  - ingredients
+  - instructions
+  - servings
+  - title
+  sources:
+  - openapi/_original/instacart-developer-platform-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: ProductsLinkResponse
+  field_count: 1
+  fields:
+  - products_link_url
+  sources:
+  - openapi/_original/instacart-developer-platform-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: ShoppingListRequest
+  field_count: 7
+  fields:
+  - expires_in
+  - image_url
+  - instructions
+  - landing_page_configuration
+  - line_items
+  - link_type
+  - title
+  sources:
+  - openapi/_original/instacart-developer-platform-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: Product
+  field_count: 11
+  fields:
+  - attributes
+  - brand
+  - category
+  - department
+  - description
+  - image_url
+  - name
+  - product_code
+  - size
+  - subcategory
+  - upc
+  sources:
+  - openapi/_original/instacart-catalog-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: LineItem
+  field_count: 8
+  fields:
+  - display_text
+  - filters
+  - line_item_measurements
+  - name
+  - product_ids
+  - quantity
+  - unit
+  - upcs
+  sources:
+  - openapi/_original/instacart-developer-platform-api-openapi.yml
+  - openapi/instacart-products-api-openapi.yml
+- name: ReplacementResponse
+  field_count: 2
+  fields:
+  - id
+  - replacement_status
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-replacements-api-openapi.yml
+- name: ReplacementDecisionRequest
+  field_count: 1
+  fields:
+  - status
+  sources:
+  - openapi/_original/instacart-connect-post-checkout-api-openapi.yml
+  - openapi/instacart-replacements-api-openapi.yml
+relationships:
+- from: TokenRequest
+  type: belongs_to
+  to: client
+  via: client_id
+- from: ChatMessagesResponse
+  type: has_many
+  to: ChatMessage
+  via: messages
+- from: ServiceOptionHoldResponse
+  type: belongs_to
+  to: hold
+  via: hold_id
+- from: ServiceOptionHoldResponse
+  type: has_one
+  to: ServiceOption
+  via: service_option
+- from: OrderResponse
+  type: has_one
+  to: ServiceOption
+  via: service_option
+- from: OrderResponse
+  type: has_one
+  to: Store
+  via: store
+- from: OrderResponse
+  type: has_many
+  to: OrderItem
+  via: items
+- from: CreateOrderRequest
+  type: belongs_to
+  to: hold
+  via: hold_id
+- from: StoresResponse
+  type: has_many
+  to: Store
+  via: stores
+- from: ServiceOptionsResponse
+  type: has_many
+  to: ServiceOption
+  via: service_options
+- from: OrderItem
+  type: belongs_to
+  to: product
+  via: product_id
+- from: ReserveTimeSlotRequest
+  type: belongs_to
+  to: service_option
+  via: service_option_id
+- from: PreviewServiceOptionsRequest
+  type: belongs_to
+  to: store
+  via: store_id
+- from: CartItem
+  type: belongs_to
+  to: product
+  via: product_id
+- from: ItemSubmissionRequest
+  type: has_many
+  to: Item
+  via: items
+- from: SubmissionResponse
+  type: belongs_to
+  to: submission
+  via: submission_id
+- from: Replacement
+  type: belongs_to
+  to: product
+  via: product_id
+- from: OrderHandlingResponse
+  type: belongs_to
+  to: order
+  via: order_id
+- from: PostCheckoutOrderItem
+  type: has_one
+  to: Replacement
+  via: replacement
+- from: OrderItemsResponse
+  type: has_many
+  to: PostCheckoutOrderItem
+  via: items
+- from: ProductSubmissionRequest
+  type: has_many
+  to: Product
+  via: products
+- from: RecipeRequest
+  type: belongs_to
+  to: external_reference
+  via: external_reference_id
+- from: RecipeRequest
+  type: has_many
+  to: Ingredient
+  via: ingredients
+- from: ShoppingListRequest
+  type: has_many
+  to: LineItem
+  via: line_items
+identifiers:
+  scheme: opaque strings
+  prefixes_published: false
+  notes:
+  - user_id is generated by the retailer and may be any unique identifier such as a login name, loyalty
+    ID or email address.
+  - order_id is generated by Instacart and used as a path parameter across Fulfillment and Post-checkout.
+  - API keys carry the prefix "keys." followed by 32 hex characters; that is the only published identifier
+    prefix in the surface.
+render: json-ld/instacart-context.jsonld
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

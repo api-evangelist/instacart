@@ -1,0 +1,80 @@
+generated: '2026-08-27'
+method: probed
+source: live unauthenticated HTTP probes of every apis.yml baseURL host, every OpenAPI servers[] host,
+  the documentation host, and the published MCP host
+provider: Instacart
+providerId: instacart
+description: 'Well-known document probe for Instacart. Two real documents are served, both from the marketplace
+  host www.instacart.com: an RFC 9116 security.txt pointing at the Instacart HackerOne program, and a
+  legacy OpenAI plugin manifest (ai-plugin.json) that names a live first-party OpenAPI at https://www.instacart.com/rest/llm_integration/config/openapi.yaml.
+  The API host (connect.instacart.com), the documentation host (docs.instacart.com) and the MCP host (mcp.instacart.com)
+  serve no well-known documents at all.'
+hosts:
+- host: www.instacart.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: instacart-security.txt
+    content_type: text/plain
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: instacart-ai-plugin.json
+    content_type: application/json
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: instacart.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: instacart-security.txt
+    content_type: text/plain
+- host: connect.instacart.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: docs.instacart.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: 200-shaped Docusaurus HTML shell is not returned; host answers 404 with the docs 404 page
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: mcp.instacart.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: The MCP server answers tools/list anonymously and takes an Instacart API key as an Authorization
+      Bearer header; it does not advertise OAuth protected-resource metadata.
+  - path: /.well-known/agent-card.json
+    status: 404
+notes:
+- No A2A Agent Card is served on any Instacart host. Both the current /.well-known/agent-card.json path
+  and the legacy /.well-known/agent.json path 404 everywhere probed, so no AgentCard artifact or pointer
+  was written.
+- The ai-plugin.json is the ChatGPT-plugin-era manifest and is still served and still resolves to a live
+  OpenAPI; it is captured here and the spec it names is saved to openapi/instacart-llm-integration-openapi.yml.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,105 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.instacart.com/connect/sandbox, https://docs.instacart.com/connect/api/sandbox/overview,
+  https://docs.instacart.com/connect/sandbox_guide/tutorials/get_a_token,
+  https://docs.instacart.com/developer_platform_api/get_started/api-keys,
+  https://docs.instacart.com/developer_platform_api/api/overview
+provider: Instacart
+providerId: instacart
+description: >-
+  Instacart ships two different kinds of test surface, and they are not equivalent. The Developer
+  Platform gives you a separate development host and development API keys - environment separation, no
+  simulation. Instacart Connect goes considerably further and ships a first-class Sandbox API whose
+  whole purpose is to drive an order through its real fulfilment state machine on demand: you generate
+  a batch, advance its status through the workflow, create shoppers, have those shoppers find, replace
+  and refund items, and fire order callbacks at your webhook endpoint. That is a fixture-and-trigger
+  toolkit for a physical-world workflow, and it is the strongest DX asset in Instacart's API surface.
+environments:
+  - name: Developer Platform - development
+    host: https://connect.dev.instacart.tools
+    keys: Development API key created in the Instacart Developer Dashboard
+    simulation: false
+    note: >-
+      Instacart's tutorials use the development host for integration testing before a Production key
+      is issued. A Production key request triggers a human review of the integrated app or site.
+  - name: Developer Platform - production
+    host: https://connect.instacart.com
+    keys: Production API key (issued after approval review)
+  - name: MCP - development
+    host: https://mcp.dev.instacart.tools/mcp
+    simulation: false
+    note: Instacart's MCP tutorial points integrators at the dev MCP endpoint first.
+  - name: MCP - production
+    host: https://mcp.instacart.com/mcp
+  - name: Connect Sandbox API
+    host: https://connect.instacart.com
+    simulation: true
+    auth: >-
+      Bearer token from the /v2/oauth/token endpoint with grant_type client_credentials and the
+      partner's client ID and secret.
+    docs: https://docs.instacart.com/connect/sandbox_guide/tutorials/get_a_token
+key_modes:
+  distinguishable: partial
+  key_format: 'keys.<32 hex characters>'
+  note: >-
+    Instacart API keys carry a single `keys.` prefix. Development and production keys are chosen at
+    creation time in the dashboard and are routed by HOST, not by key prefix, so a key does not tell
+    you by inspection which environment it belongs to. A test/live prefix convention would remove a
+    whole class of "wrong key in production" incidents.
+simulation_tooling:
+  - name: Generate a batch
+    endpoint: /connect/api/sandbox/batches/generate_batch
+    description: >-
+      Generates a batch containing an order ID and a shopper ID for an order created through the
+      Fulfillment API.
+  - name: Advance the batch status
+    endpoint: /connect/api/sandbox/batches/advance_batch_state
+    description: >-
+      Advances a batch through the statuses of the selected fulfillment workflow, in order.
+      Optionally set a specific status in the request body. This is Instacart's time-machine
+      equivalent: it moves a real-world workflow forward without a real shopper.
+  - name: Create a shopper
+    endpoint: /connect/api/sandbox/shoppers/create_shopper
+  - name: Create an order item as a shopper
+    endpoint: /connect/api/sandbox/shoppers/create_shopper_order_item
+  - name: Update an order item as a shopper
+    endpoint: /connect/api/sandbox/shoppers/update_shopper_order_item
+    description: >-
+      Simulate a shopper finding, replacing or refunding an item, or changing item quantity.
+  - name: Create an Instacart user
+    endpoint: /connect/api/sandbox/instacart_users/create_instacart_user
+  - name: Authorize an Instacart user for account linking
+    endpoint: /connect/api/sandbox/instacart_users/authorize_instacart_user
+  - name: Simulate an order callback
+    endpoint: /connect/api/sandbox/orders/simulate_order_callback
+    description: >-
+      Fires an event callback to the configured webhook for order statuses not covered by the batch
+      status transitions.
+test_flows:
+  - name: Test delivery
+    docs: https://docs.instacart.com/connect/sandbox_guide/tutorials/test_delivery
+  - name: Test pickup
+    docs: https://docs.instacart.com/connect/sandbox_guide/tutorials/test_pickup
+  - name: Test last mile delivery
+    docs: https://docs.instacart.com/connect/sandbox_guide/tutorials/test_last_mile_delivery
+  - name: Test account linking
+    docs: https://docs.instacart.com/connect/sandbox_guide/how_to/test_account_linking
+  - name: Test item additions by a shopper
+    docs: https://docs.instacart.com/connect/sandbox_guide/how_to/test_item_additions
+  - name: Test item updates by a shopper
+    docs: https://docs.instacart.com/connect/sandbox_guide/how_to/test_item_updates
+  - name: Simulate callbacks
+    docs: https://docs.instacart.com/connect/sandbox_guide/how_to/simulate_callbacks
+  - name: Test your recipes (Developer Platform)
+    docs: https://docs.instacart.com/developer_platform_api/guide/tutorials/test_your_recipes
+test_values:
+  published: false
+  note: >-
+    No published test cards, test bank accounts, hosted test tokens or fixture identifiers. Payment is
+    handled by Instacart Marketplace, not by the partner, so there is no payment test surface. No test
+    values are invented here.
+changelog: https://docs.instacart.com/connect/api/sandbox/changelog
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

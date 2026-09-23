@@ -1,0 +1,134 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.instacart.com/developer_platform_api/api/error_and_status_codes and
+  https://docs.instacart.com/connect/api/error_and_status_codes, enriched from the 4xx/5xx responses
+  declared in openapi/ and openapi/_original/
+provider: Instacart
+providerId: instacart
+format: proprietary
+rfc9457: false
+content_type: application/json
+description: >-
+  Instacart returns a proprietary JSON error envelope, not RFC 9457 problem+json. Every error carries
+  a human-readable error.message and a numeric internal error.code, with a meta object that names the
+  offending parameter. There are two envelope shapes: a single error, and a multi-error wrapper whose
+  outer code is always 9999 and whose errors[] array holds single-error objects.
+envelope:
+  single: |
+    {
+      "error": { "message": "User not found", "code": 1001 },
+      "meta":  { "key": "user_id" }
+    }
+  multiple: |
+    {
+      "error": {
+        "message": "There were issues with your request",
+        "code": 9999,
+        "errors": [
+          { "error": { "message": "can't be blank", "code": 1001 },
+            "meta":  { "key": "order.service_option_id" } }
+        ]
+      },
+      "meta": {}
+    }
+  fields:
+    - name: error.message
+      description: Describes the cause of the error.
+    - name: error.code
+      description: Internal numeric error code identifier.
+    - name: error.errors
+      description: Present only on the multi-error envelope; array of single-error objects.
+    - name: meta.key
+      description: Names the request parameter associated with the error, when there is one.
+identification_rule: >-
+  Instacart's own guidance is to identify an error from the combination of error.code and meta.key -
+  code 1001 means "a parameter is invalid" and meta.key says which one.
+status_codes:
+  - status: 200
+    reason: Success
+    description: The request succeeded; the response carries the resource or the action result.
+  - status: 400
+    reason: Bad request
+    description: Request unacceptable. Check required parameters and syntax, then retry.
+    retryable: false
+  - status: 401
+    reason: Unauthorized
+    description: Server refused the request. Verify the access token is valid, then retry.
+    retryable: false
+  - status: 403
+    reason: Forbidden
+    description: >-
+      Request denied; caller lacks permission for the resource. Also returned by the Connect token
+      endpoint when client credentials are passed as query parameters instead of in the body.
+    retryable: false
+  - status: 404
+    reason: Not found
+    description: Resource could not be found; check the resource ID.
+    retryable: false
+  - status: 408
+    reason: Request timeout
+    description: The server closed a connection that had become idle.
+    retryable: true
+  - status: 429
+    reason: Too many requests
+    description: >-
+      Requests exceeded the per-second rate limit. Retry later; if it repeats, contact your Instacart
+      representative.
+    retryable: true
+  - status: 500
+    reason: Internal server error
+    description: An issue occurred on Instacart servers. Retry later with exponential backoff.
+    retryable: true
+  - status: 503
+    reason: Service unavailable
+    description: Server could not fulfil the request; possibly overloaded or in maintenance.
+    retryable: true
+error_codes:
+  - code: 1001
+    title: Invalid parameter
+    description: A parameter is invalid; meta.key identifies which parameter.
+    remediation: Correct the named parameter and resend.
+  - code: 2003
+    title: Retry later
+    description: Transient condition; the request should be retried.
+    remediation: Retry with exponential backoff and jitter.
+  - code: 4000
+    title: Record not found
+    description: The referenced record does not exist.
+    remediation: Verify the identifier before resending.
+  - code: 4001
+    title: Invalid request
+    description: The request as a whole is malformed or not acceptable.
+    remediation: Review the endpoint reference for required fields and shapes.
+  - code: 4002
+    title: Failed to resolve a valid context
+    description: Instacart could not resolve the retailer/user/order context for the request.
+    remediation: Confirm the token scope and the identifiers in the request path.
+  - code: 500x
+    title: Internal issues
+    description: Family of internal server error codes (for example 5000).
+    remediation: Retry later; the Operations team monitors and resolves these.
+  - code: 9999
+    title: Multiple errors found
+    description: Wrapper code; the errors[] array contains the individual errors.
+    remediation: Iterate errors[] and correct each named meta.key.
+server_error_example: |
+  {
+    "error": {
+      "message": "Sorry, an unexpected error occurred. Our team has been notified. Please try again later.",
+      "code": 5000
+    },
+    "meta": {}
+  }
+notes:
+  - >-
+    The error catalogue is not exhaustive. Instacart states the table "defines some of the error codes
+    you might see" and directs readers to the Response section of each endpoint topic for the
+    endpoint-specific set, so a complete machine-readable error catalogue is not published.
+  - >-
+    No error type URIs, no problem+json media type, and no stable string error slugs - only numeric
+    codes - so error handling cannot be written against a documented enum.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

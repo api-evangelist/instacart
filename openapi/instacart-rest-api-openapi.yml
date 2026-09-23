@@ -11,7 +11,7 @@ paths:
   /rest/llm_integration/openapi/v2_1/recipes:
     post:
       operationId: create
-      summary: Create an Instacart link to the shopping list of ingredients.
+      summary: Create an Instacart link to the shopping list of ingredients
       requestBody:
         required: true
         content:

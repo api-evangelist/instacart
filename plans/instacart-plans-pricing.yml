@@ -4,34 +4,112 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Instacart
 providerId: instacart
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-08-27'
+generated: '2026-08-27'
+method: searched
+reconciled: true
+source: >-
+  https://docs.instacart.com/developer_platform_api/get_started/overview,
+  https://docs.instacart.com/developer_platform_api/get_started/api-keys,
+  https://docs.instacart.com/developer_platform_api/guide/concepts/launch_activities/conversions_and_payments,
+  https://docs.instacart.com/developer_platform_api/guide/concepts/launch_activities/approval_process,
+  https://docs.instacart.com/connect,
+  https://docs.instacart.com/connect/api/permissions_scopes
+plan_count: 3
 tags:
   - Grocery
   - E-Commerce
   - Marketplace
   - Logistics
   - Same-Day Delivery
-description: Instacart's Connect / Developer Platform APIs are offered to retail and brand partners under
-  a partner agreement rather than as a self-serve developer product. Access is OAuth 2.0 and granted
-  upon enrollment, with one development and one production environment per partner. Public per-call
-  pricing is not published; the underlying business is the marketplace take rate on grocery orders, retail
-  technology subscriptions for the Instacart-Powered storefronts, and ads.
-notes: No public per-API price list. Marketplace economics (delivery, service, and merchant take rates)
-  are the dominant cost levers; reconcile against the partner agreement.
+description: >-
+  Instacart publishes no per-call price list for any of its APIs, and this is a deliberate model rather
+  than a documentation gap. The Developer Platform inverts the usual arrangement: it costs the
+  developer nothing, and Instacart pays the developer, through an affiliate programme run on Impact
+  that commissions orders attributed to the integration. The Connect APIs, Catalog API and Carrot Ads
+  are enterprise surfaces bundled into a retailer or brand partner agreement, priced on marketplace
+  economics — take rate, retail technology subscription, ad spend — not on API consumption. The
+  material gate on the Developer Platform is not money, it is a human review: a Production API key
+  triggers a review of the integrated app or website, and access is granted by email.
+notes: >-
+  Re-read from the live documentation 2026-08-27. No pricing page, no plan table, no metering, no
+  quota tiers are published anywhere on docs.instacart.com. The prior version of this file was written
+  by a bulk sweep and marked generated; the substance is confirmed and the affiliate direction of
+  payment is now recorded, which the earlier version missed.
 sources:
-  - https://docs.instacart.com/connect/api
-  - https://docs.instacart.com/
+  - https://docs.instacart.com/developer_platform_api/get_started/overview
+  - https://docs.instacart.com/developer_platform_api/guide/concepts/launch_activities/conversions_and_payments
+  - https://docs.instacart.com/connect
 plans:
-  - id: instacart-partner
-    name: Instacart Connect Partner
+  - id: instacart-developer-platform
+    name: Instacart Developer Platform
+    type: free
+    price: '0'
+    currency: USD
+    billing_period: none
+    description: >-
+      Self-serve-ish access for app and website developers to the two shoppable-page endpoints
+      (createRecipePage, createShoppingListPage), the nearby-retailers lookup and the remote MCP
+      server. Development keys are created in the Instacart Developer Dashboard. A Production key
+      requires passing Instacart's pre-launch checklist and a human approval review, with the result
+      emailed back.
+    included_quota: not published
+    overage: not published
+    limits:
+      - per-second request threshold, numeric value not published; HTTP 429 on exhaustion
+      - a single API key may be scoped to only one of /products/products_link or /products/recipe
+    entries:
+      - label: API access
+        name: developer_platform_access
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: year
+        geo: US/CA
+        domains:
+          - https://connect.instacart.com/idp/v1
+          - https://mcp.instacart.com/mcp
+        unit: 1
+        price: '0'
+        userMultiplied: false
+    elements:
+      - name: Developer Dashboard API keys (read-only / read-write / admin)
+      - name: Development and production environments
+      - name: Remote MCP server
+      - name: Production key approval review
+  - id: instacart-idp-affiliate
+    name: Developer Platform affiliate programme (Impact)
+    type: revenue-share
+    description: >-
+      Instacart pays partners commission on orders attributed to their integration, tracked through
+      Impact. Commission rates and programme terms are not published; sign-up links and terms are
+      emailed to active partners. Attribution parameters are appended automatically to every
+      generated URL and must not be hardcoded. Allow 24-48 hours after Impact account creation for
+      parameters to populate.
+    price: commission, rate not published
+    direction: instacart-pays-partner
+    entries:
+      - label: Order attribution commission
+        name: affiliate_commission
+        type: metered
+        metric: attributed_order
+        limit: -1
+        timeFrame: usage
+        geo: US/CA
+        unit: 1
+        price: not published
+        userMultiplied: false
+  - id: instacart-connect-partner
+    name: Instacart Connect / Enterprise partner agreement
     type: enterprise
-    description: Partner-only API access for retailers and CPG brands. Access granted via Instacart enrollment;
-      OAuth 2.0 over HTTPS; both a development and production environment provisioned. APIs are bundled
-      into the partner agreement.
+    description: >-
+      Partner-only access to the Connect Fulfillment, Post-checkout, Transaction and Sandbox APIs, the
+      Catalog API, Carrot Ads, Storefront and the Enterprise MCP server. OAuth 2.0 credentials are
+      issued by Instacart on enrollment, with development and production environments provisioned.
+      Onboarding, access provisioning, rate limits and monitoring all run through an assigned Instacart
+      representative. APIs are bundled into the agreement; economics are the marketplace take rate,
+      retail technology subscriptions and advertising spend.
+    price: contact partner team
     entries:
       - label: Partner program access
         description: API access bundled into the Instacart partner agreement; not separately metered
@@ -42,39 +120,16 @@ plans:
         timeFrame: year
         geo: US/CA
         domains:
-          - https://{instacart_domain}/v2
+          - https://connect.instacart.com/v2
         unit: 1
         price: contact partner team
         userMultiplied: false
     elements:
-      - name: Instacart Connect API
-      - name: OAuth 2.0
+      - name: OAuth 2.0 client credentials
       - name: Development + production environments
-      - name: 6-month deprecation notice for retired fields
-      - name: Backward-compatible additions
-  - id: instacart-marketplace
-    name: Marketplace Take Rate (retailer billing)
-    type: usage-based
-    description: Retailers and brands pay Instacart take rates on completed orders rather than per API
-      call. Specific rates are negotiated per retailer.
-    entries:
-      - label: Per-order take rate
-        description: Negotiated take rate on completed marketplace orders
-        name: take_rate
-        type: metered
-        metric: order
-        limit: -1
-        timeFrame: usage
-        geo: US/CA
-        domains:
-          - https://{instacart_domain}/v2
-        unit: 1
-        price: see partner agreement
-        userMultiplied: false
-    elements:
-      - name: Marketplace fulfillment
-      - name: Shopper network
-      - name: Storefront / Powered-by Instacart
+      - name: Connect Sandbox API
+      - name: Six-month minimum deprecation notice
+      - name: Enterprise status page access (on request)
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

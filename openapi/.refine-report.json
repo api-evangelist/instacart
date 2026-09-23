@@ -31,7 +31,8 @@
     "instacart-llm-integration-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
     "instacart-llm-integration-openapi.yml: tagged paths POST /rest/llm_integration/openapi/v2_1/recipes -> Rest",
     "instacart-llm-integration-openapi.yml: declared missing tag: Rest",
-    "tag 'Products' spans 2 source specs (instacart-catalog-api-openapi.yml, instacart-developer-platform-api-openapi.yml): per-path servers applied"
+    "tag 'Products' spans 2 source specs (instacart-catalog-api-openapi.yml, instacart-developer-platform-api-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "instacart-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",

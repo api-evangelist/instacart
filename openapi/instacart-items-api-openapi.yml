@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Instacart Catalog Items API
-  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified. This API is designed for retailers who need to keep their Instacart product listings synchronized with their inventory management systems, ensuring accurate product information, pricing, and availability across the platform.
+  description: The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform.
   version: '2.0'
   contact:
     name: Instacart Catalog Support
@@ -56,54 +56,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    SubmissionResponse:
-      type: object
-      properties:
-        submission_id:
-          type: string
-          description: A unique identifier for tracking the submission.
-        status:
-          type: string
-          enum:
-          - accepted
-          - processing
-          - completed
-          - failed
-          description: The current status of the submission.
-        submitted_count:
-          type: integer
-          description: The number of records submitted.
-        errors:
-          type: array
-          description: Any validation errors found in the submitted data.
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-                description: The index of the record with the error.
-              message:
-                type: string
-                description: The error message describing the issue.
-    ItemSubmissionRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: The list of items to create or update at specific store locations.
-          items:
-            $ref: '#/components/schemas/Item'
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
     Item:
       type: object
       required:
@@ -147,6 +99,54 @@ components:
         shelf:
           type: string
           description: The shelf location within the aisle.
+    ItemSubmissionRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The list of items to create or update at specific store locations.
+          items:
+            $ref: '#/components/schemas/Item'
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
+    SubmissionResponse:
+      type: object
+      properties:
+        submission_id:
+          type: string
+          description: A unique identifier for tracking the submission.
+        status:
+          type: string
+          enum:
+          - accepted
+          - processing
+          - completed
+          - failed
+          description: The current status of the submission.
+        submitted_count:
+          type: integer
+          description: The number of records submitted.
+        errors:
+          type: array
+          description: Any validation errors found in the submitted data.
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: The index of the record with the error.
+              message:
+                type: string
+                description: The error message describing the issue.
   securitySchemes:
     bearerAuth:
       type: http

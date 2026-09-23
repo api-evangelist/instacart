@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Instacart Connect Fulfillment Delivery API
-  description: The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites. It combines grocery, delivery, and pickup functionality into a single API, allowing retailers to offer full-service shopping where Instacart shoppers pick items and suggest replacements, as well as same-day or scheduled delivery and pickup options. Key endpoints include finding stores that offer delivery, listing available time slots, previewing service options, and creating delivery or pickup orders.
+  description: The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites.
   version: '2.0'
   contact:
     name: Instacart Connect Support
@@ -216,6 +216,111 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ServiceOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the service option.
+        date:
+          type: string
+          format: date
+          description: The date of the service option.
+        window_starts_at:
+          type: string
+          format: date-time
+          description: The start time of the delivery or pickup window.
+        window_ends_at:
+          type: string
+          format: date-time
+          description: The end time of the delivery or pickup window.
+        fulfillment_type:
+          type: string
+          enum:
+          - delivery
+          - pickup
+          - last_mile
+          description: The type of fulfillment for this service option.
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the store.
+        name:
+          type: string
+          description: The name of the store.
+        address:
+          type: object
+          description: The physical address of the store.
+          properties:
+            address_line_1:
+              type: string
+              description: The street address.
+            city:
+              type: string
+              description: The city.
+            state:
+              type: string
+              description: The state or province.
+            postal_code:
+              type: string
+              description: The postal or ZIP code.
+        distance:
+          type: number
+          format: double
+          description: The distance from the customer's location to the store.
+    StoresResponse:
+      type: object
+      properties:
+        stores:
+          type: array
+          description: An array of stores offering the requested fulfillment type, sorted by distance with the closest store first.
+          items:
+            $ref: '#/components/schemas/Store'
+    ReserveTimeSlotRequest:
+      type: object
+      required:
+      - service_option_id
+      properties:
+        service_option_id:
+          type: string
+          description: The identifier of the service option time slot to reserve.
+        cart:
+          type: object
+          description: The customer's cart details to associate with the reservation.
+          properties:
+            items:
+              type: array
+              description: The items in the customer's cart.
+              items:
+                $ref: '#/components/schemas/CartItem'
+    FindStoresRequest:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+          description: The street address of the customer's location.
+        address_line_2:
+          type: string
+          description: Additional address information such as apartment or suite number.
+        city:
+          type: string
+          description: The city of the customer's location.
+        state:
+          type: string
+          description: The state or province of the customer's location.
+        postal_code:
+          type: string
+          description: The postal or ZIP code of the customer's location.
+        latitude:
+          type: number
+          format: double
+          description: The latitude coordinate of the customer's location.
+        longitude:
+          type: number
+          format: double
+          description: The longitude coordinate of the customer's location.
     CreateOrderRequest:
       type: object
       required:
@@ -255,57 +360,6 @@ components:
         delivery_instructions:
           type: string
           description: Special instructions for the delivery driver.
-    StoresResponse:
-      type: object
-      properties:
-        stores:
-          type: array
-          description: An array of stores offering the requested fulfillment type, sorted by distance with the closest store first.
-          items:
-            $ref: '#/components/schemas/Store'
-    FindStoresRequest:
-      type: object
-      properties:
-        address_line_1:
-          type: string
-          description: The street address of the customer's location.
-        address_line_2:
-          type: string
-          description: Additional address information such as apartment or suite number.
-        city:
-          type: string
-          description: The city of the customer's location.
-        state:
-          type: string
-          description: The state or province of the customer's location.
-        postal_code:
-          type: string
-          description: The postal or ZIP code of the customer's location.
-        latitude:
-          type: number
-          format: double
-          description: The latitude coordinate of the customer's location.
-        longitude:
-          type: number
-          format: double
-          description: The longitude coordinate of the customer's location.
-    ReserveTimeSlotRequest:
-      type: object
-      required:
-      - service_option_id
-      properties:
-        service_option_id:
-          type: string
-          description: The identifier of the service option time slot to reserve.
-        cart:
-          type: object
-          description: The customer's cart details to associate with the reservation.
-          properties:
-            items:
-              type: array
-              description: The items in the customer's cart.
-              items:
-                $ref: '#/components/schemas/CartItem'
     ServiceOptionHoldResponse:
       type: object
       properties:
@@ -318,56 +372,6 @@ components:
           description: The time at which the hold expires and the time slot is released.
         service_option:
           $ref: '#/components/schemas/ServiceOption'
-    ServiceOption:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the service option.
-        date:
-          type: string
-          format: date
-          description: The date of the service option.
-        window_starts_at:
-          type: string
-          format: date-time
-          description: The start time of the delivery or pickup window.
-        window_ends_at:
-          type: string
-          format: date-time
-          description: The end time of the delivery or pickup window.
-        fulfillment_type:
-          type: string
-          enum:
-          - delivery
-          - pickup
-          - last_mile
-          description: The type of fulfillment for this service option.
-    PreviewServiceOptionsRequest:
-      type: object
-      properties:
-        store_id:
-          type: string
-          description: The unique identifier of the store to preview service options for.
-        address:
-          type: object
-          description: The delivery or pickup address.
-          properties:
-            address_line_1:
-              type: string
-              description: The street address.
-            address_line_2:
-              type: string
-              description: Additional address information.
-            city:
-              type: string
-              description: The city.
-            state:
-              type: string
-              description: The state or province.
-            postal_code:
-              type: string
-              description: The postal or ZIP code.
     CartItem:
       type: object
       properties:
@@ -404,22 +408,22 @@ components:
           - replaced
           - refunded
           description: The current status of the item in the order.
-    Store:
+    PreviewServiceOptionsRequest:
       type: object
       properties:
-        id:
+        store_id:
           type: string
-          description: The unique identifier for the store.
-        name:
-          type: string
-          description: The name of the store.
+          description: The unique identifier of the store to preview service options for.
         address:
           type: object
-          description: The physical address of the store.
+          description: The delivery or pickup address.
           properties:
             address_line_1:
               type: string
               description: The street address.
+            address_line_2:
+              type: string
+              description: Additional address information.
             city:
               type: string
               description: The city.
@@ -429,27 +433,6 @@ components:
             postal_code:
               type: string
               description: The postal or ZIP code.
-        distance:
-          type: number
-          format: double
-          description: The distance from the customer's location to the store.
-    ServiceOptionsResponse:
-      type: object
-      properties:
-        service_options:
-          type: array
-          description: Available service option time slots for the requested fulfillment type.
-          items:
-            $ref: '#/components/schemas/ServiceOption'
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
     OrderResponse:
       type: object
       properties:
@@ -488,19 +471,36 @@ components:
           description: The items included in the order.
           items:
             $ref: '#/components/schemas/OrderItem'
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
+    ServiceOptionsResponse:
+      type: object
+      properties:
+        service_options:
+          type: array
+          description: Available service option time slots for the requested fulfillment type.
+          items:
+            $ref: '#/components/schemas/ServiceOption'
   parameters:
-    userId:
-      name: user_id
-      in: path
-      required: true
-      description: The unique identifier for the user in the retailer's system.
-      schema:
-        type: string
     orderId:
       name: order_id
       in: path
       required: true
       description: The unique identifier for the order.
+      schema:
+        type: string
+    userId:
+      name: user_id
+      in: path
+      required: true
+      description: The unique identifier for the user in the retailer's system.
       schema:
         type: string
   securitySchemes:

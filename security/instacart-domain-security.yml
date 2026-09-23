@@ -1,4 +1,4 @@
-generated: '2026-07-11'
+generated: '2026-08-27'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
@@ -11,11 +11,6 @@ hosts:
   https: true
   tls_version: TLSv1.3
   cert_expires: Nov 24 23:59:59 2026 GMT
-  hsts: null
-- host: connect.dev.instacart.tools
-  https: true
-  tls_version: TLSv1.3
-  cert_expires: Dec 20 23:59:59 2026 GMT
   hsts: null
 domains:
 - domain: instacart.com
@@ -30,9 +25,3 @@ domains:
   spf: true
   dmarc: true
   dmarc_policy: reject
-- domain: instacart.tools
-  dnssec: false
-  caa: []
-  spf: true
-  dmarc: true
-  dmarc_policy: none

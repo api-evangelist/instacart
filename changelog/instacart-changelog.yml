@@ -1,0 +1,103 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.instacart.com/developer_platform_api/api/changelog and
+  https://docs.instacart.com/mcp_servers/changelog
+provider: Instacart
+providerId: instacart
+description: >-
+  Instacart maintains eight separate dated changelogs, one per product surface, all reachable from
+  docs.instacart.com and all reverse-chronological. Every one of them states that the changes listed
+  are non-breaking. The entries below are the recent window from the Developer Platform and MCP
+  changelogs - the two surfaces an outside developer can reach without a partner agreement.
+scheme: dated-entries
+versioning: uri-path (see lifecycle/instacart-lifecycle.yml)
+breaking_change_policy: >-
+  Additive only. Deprecated endpoints and fields are announced in the changelog and remain supported
+  for a minimum of six months.
+changelogs:
+  - name: Developer Platform API
+    url: https://docs.instacart.com/developer_platform_api/api/changelog
+  - name: MCP Servers
+    url: https://docs.instacart.com/mcp_servers/changelog
+  - name: Connect Fulfillment API
+    url: https://docs.instacart.com/connect/api/fulfillment/changelog
+  - name: Connect Sandbox API
+    url: https://docs.instacart.com/connect/api/sandbox/changelog
+  - name: Catalog
+    url: https://docs.instacart.com/catalog/changelog
+  - name: Carrot Ads API
+    url: https://docs.instacart.com/ads/api/ads/changelog
+  - name: Shopping Widgets
+    url: https://docs.instacart.com/widgets/changelog
+  - name: Ads Manager
+    url: https://docs.instacart.com/ads_manager/changelog
+entries:
+  - date: '2026-06-18'
+    api: Developer Platform
+    breaking: false
+    additions: false
+    highlights:
+      - Pre-launch checklist updated with demo submission requirements, integration requirements and
+        customer-facing copy guidelines for production key approval.
+      - Launch activities reordered; conversion tracking and affiliate payments is now an optional
+        final step after the approval process.
+      - Conversion tracking guidance revised with automatic Impact parameter appending and a 24-48
+        hour setup period.
+  - date: '2026-03-18'
+    api: Developer Platform
+    breaking: false
+    deprecations:
+      - 'LineItem.quantity on Create shopping list page'
+      - 'LineItem.unit on Create shopping list page'
+    highlights:
+      - Deprecated quantity and unit on the LineItem object in favour of the line_item_measurements
+        array, which lets retailers supply multiple measurements per line item so Instacart can pick
+        the best one for quantity calculation.
+  - date: '2026-03-15'
+    api: MCP Servers
+    breaking: false
+    highlights:
+      - MCP Servers documentation site published.
+  - date: '2026-02-04'
+    api: Developer Platform
+    breaking: false
+    highlights:
+      - Call to Action button designs refreshed based on new A/B test results.
+  - date: '2026-01-06'
+    api: Developer Platform
+    breaking: false
+    highlights:
+      - Create shopping list page reference expanded with a Prerequisites section, a dedicated UPC
+        section, a Best practices section covering URL caching and units of measurement, and clearer
+        line item field documentation.
+  - date: '2025-11-12'
+    api: Developer Platform
+    breaking: false
+    highlights:
+      - API key structure documentation corrected to reflect the expected values.
+  - date: '2025-11-03'
+    api: Developer Platform
+    breaking: false
+    highlights:
+      - Developer guideline links updated.
+  - date: '2025-10-23'
+    api: Developer Platform
+    breaking: false
+    highlights:
+      - Get started section reorganised; Quick start and Authentication subsections removed.
+  - date: '2025-10-06'
+    api: Developer Platform
+    breaking: false
+    highlights:
+      - Get started page expanded with end-to-end process and capability detail.
+  - date: '2025-09-18'
+    api: Developer Platform
+    breaking: false
+    additions: true
+    highlights:
+      - Added support for `upcs` on line items. When product UPCs are present, Instacart searches
+        exclusively on the supplied identifiers and prioritises retailers carrying a match.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

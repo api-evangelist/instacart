@@ -1,0 +1,145 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.instacart.com/connect/api/fulfillment/deprecated,
+  https://docs.instacart.com/developer_platform_api/api/changelog,
+  https://docs.instacart.com/support/subscribe_status_page,
+  https://docs.instacart.com/developer_platform_api/api/overview
+provider: Instacart
+providerId: instacart
+description: >-
+  Instacart runs a documented, conservative API lifecycle: URI-path versioning, additive-only changes,
+  dated per-product changelogs, a named minimum six-month deprecation window, and a dedicated page
+  where retired endpoints are parked rather than deleted. The one gap is runtime signalling - none of
+  the deprecation posture is expressed in HTTP headers (no RFC 8594 Sunset, no Deprecation header) or
+  in the OpenAPI, so a client learns about a deprecation only by reading the changelog.
+versioning:
+  scheme: uri-path
+  current:
+    - api: Instacart Developer Platform API
+      version: v1
+      path_prefix: /idp/v1/
+    - api: Instacart Connect APIs
+      version: v2
+      path_prefix: /v2/
+    - api: LLM integration recipes endpoint
+      version: v2.1
+      path_prefix: /rest/llm_integration/openapi/v2_1/
+      host: www.instacart.com
+  header_negotiation: false
+  compatibility: >-
+    Additive and backward compatible. New fields are optional. Every published changelog states that
+    the changes it lists are non-breaking.
+deprecation:
+  policy_published: true
+  policy_url: https://docs.instacart.com/connect/api/fulfillment/deprecated
+  minimum_notice: 6 months
+  policy_text: >-
+    "When the Instacart Connect team deprecates endpoints, we announce the deprecation in the
+    changelog and then move the endpoints to this location. Deprecated endpoints remain supported for
+    a minimum of six months but might be removed in the future."
+  announcement_channel: product changelog
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  runtime_signal: >-
+    None. Deprecation is documentation-only; no Sunset or Deprecation response header is documented,
+    and no `deprecated: true` flag appears in the harvested OpenAPI definitions.
+  deprecated_operations:
+    - operation: Reserve a previewed time slot
+      path: create_service_option_hold_with_cart
+      replacement: Reserve a time slot
+      docs: https://docs.instacart.com/connect/api/fulfillment/delivery/create_service_option_hold_with_cart
+    - operation: Get orders
+      replacement: null
+      docs: https://docs.instacart.com/connect/api/fulfillment/delivery/get_orders
+    - operation: Cancel a last mile delivery order (lastmile URI)
+      replacement: Cancel an order (shared endpoint)
+      docs: https://docs.instacart.com/connect/api/fulfillment/lastmile/cancel_order
+    - operation: Create a last mile delivery order (lastmile URI)
+      replacement: Create a last mile delivery order (last_mile URI)
+      docs: https://docs.instacart.com/connect/api/fulfillment/lastmile/create_order
+    - operation: Reserve a time slot for last mile delivery (lastmile URI)
+      replacement: Reserve a time slot (shared endpoint)
+    - operation: Create a user and validate an address (lastmile URI)
+      replacement: Create a Connect user and validate an address
+    - operation: Find stores offering last mile delivery (lastmile URI)
+      replacement: Find stores offering last mile delivery (last_mile URI)
+    - operation: Get a last mile delivery order (lastmile URI)
+      replacement: Get an order (shared endpoint)
+    - operation: List time slots for last mile delivery (lastmile URI)
+      replacement: List time slots / Preview time slots for last mile delivery
+    - operation: Stage a last mile delivery order (lastmile URI)
+      replacement: Stage a last mile delivery order (last_mile URI)
+    - operation: Update a last mile delivery order (lastmile URI)
+      replacement: Update a last mile delivery order (last_mile URI)
+    - operation: Validate an address (lastmile URI)
+      replacement: Create a Connect user and validate an address
+  deprecated_fields:
+    - field: LineItem.quantity
+      api: Developer Platform - Create shopping list page
+      deprecated_on: '2026-03-18'
+      replacement: line_item_measurements[]
+    - field: LineItem.unit
+      api: Developer Platform - Create shopping list page
+      deprecated_on: '2026-03-18'
+      replacement: line_item_measurements[]
+      note: >-
+        Still present in the live MCP create-shopping-list inputSchema as of 2026-08-27, so the agent
+        surface is one deprecation behind the REST surface.
+changelogs:
+  - name: Developer Platform API
+    url: https://docs.instacart.com/developer_platform_api/api/changelog
+    dated: true
+    latest_entry: '2026-06-18'
+  - name: MCP Servers
+    url: https://docs.instacart.com/mcp_servers/changelog
+    dated: true
+    latest_entry: '2026-03-15'
+  - name: Connect Fulfillment API
+    url: https://docs.instacart.com/connect/api/fulfillment/changelog
+    dated: true
+  - name: Connect Sandbox API
+    url: https://docs.instacart.com/connect/api/sandbox/changelog
+    dated: true
+  - name: Catalog
+    url: https://docs.instacart.com/catalog/changelog
+    dated: true
+  - name: Carrot Ads API
+    url: https://docs.instacart.com/ads/api/ads/changelog
+    dated: true
+  - name: Shopping Widgets
+    url: https://docs.instacart.com/widgets/changelog
+    dated: true
+  - name: Ads Manager
+    url: https://docs.instacart.com/ads_manager/changelog
+    dated: true
+status_page:
+  published: true
+  url: https://enterprise-status.instacart.com/
+  name: Instacart Enterprise Status
+  probed: '2026-08-27'
+  http_status: 200
+  access: >-
+    Gated. The status page redirects to https://enterprise-status.instacart.com/access/login and
+    Instacart's docs say access must be requested through the support user-management flow. It is a
+    real, Instacart-operated status page, not a public one.
+  subscriptions:
+    - email
+    - sms
+    - webhook
+  docs: https://docs.instacart.com/support/subscribe_status_page
+sla:
+  published: false
+  note: >-
+    No public uptime or latency SLA. Availability commitments live in the partner agreement, not in
+    the documentation.
+support:
+  service_desk: https://instacart.atlassian.net/servicedesk/customer/portal/1
+  named_representative: true
+  note: >-
+    Escalation runs through an assigned Instacart representative or the Enterprise Service Desk;
+    there is no public developer support forum.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

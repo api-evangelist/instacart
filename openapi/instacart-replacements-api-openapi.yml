@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Instacart Connect Post-Checkout Replacements API
-  description: The Instacart Connect Post-Checkout API allows retailers to provide their customers with real-time order tracking and shopper interaction after an order has been placed. Retailers can use this API to build custom order status pages that display order details, live tracking information, and shopper communication. Customers can see updates while their order is being shopped and delivered, approve or decline item replacements suggested by shoppers, and communicate directly with shoppers via chat about replacements and additions.
+  description: The Instacart Connect Post-Checkout API allows retailers to provide their customers with real-time order tracking and shopper interaction after an order has been placed.
   version: '2.0'
   contact:
     name: Instacart Connect Support

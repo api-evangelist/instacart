@@ -148,45 +148,6 @@ paths:
       description: Development Server
 components:
   schemas:
-    SubmissionResponse:
-      type: object
-      properties:
-        submission_id:
-          type: string
-          description: A unique identifier for tracking the submission.
-        status:
-          type: string
-          enum:
-          - accepted
-          - processing
-          - completed
-          - failed
-          description: The current status of the submission.
-        submitted_count:
-          type: integer
-          description: The number of records submitted.
-        errors:
-          type: array
-          description: Any validation errors found in the submitted data.
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-                description: The index of the record with the error.
-              message:
-                type: string
-                description: The error message describing the issue.
-    ProductSubmissionRequest:
-      type: object
-      required:
-      - products
-      properties:
-        products:
-          type: array
-          description: The list of products to create or update.
-          items:
-            $ref: '#/components/schemas/Product'
     Product:
       type: object
       required:
@@ -229,6 +190,45 @@ components:
           description: Additional product attributes such as dietary information or certifications.
           additionalProperties:
             type: string
+    ProductSubmissionRequest:
+      type: object
+      required:
+      - products
+      properties:
+        products:
+          type: array
+          description: The list of products to create or update.
+          items:
+            $ref: '#/components/schemas/Product'
+    SubmissionResponse:
+      type: object
+      properties:
+        submission_id:
+          type: string
+          description: A unique identifier for tracking the submission.
+        status:
+          type: string
+          enum:
+          - accepted
+          - processing
+          - completed
+          - failed
+          description: The current status of the submission.
+        submitted_count:
+          type: integer
+          description: The number of records submitted.
+        errors:
+          type: array
+          description: Any validation errors found in the submitted data.
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: The index of the record with the error.
+              message:
+                type: string
+                description: The error message describing the issue.
     Error:
       type: object
       properties:
@@ -238,6 +238,49 @@ components:
         status:
           type: integer
           description: The HTTP status code.
+    ShoppingListRequest:
+      type: object
+      required:
+      - title
+      - line_items
+      properties:
+        title:
+          type: string
+          description: The title displayed at the top of the shopping list page.
+        image_url:
+          type: string
+          format: uri
+          description: URL of an image to display on the shopping list page.
+        link_type:
+          type: string
+          description: The type of product link to create.
+        expires_in:
+          type: integer
+          description: The number of seconds until the generated link expires.
+          minimum: 1
+        instructions:
+          type: string
+          description: Additional instructions or notes to display on the page.
+        line_items:
+          type: array
+          description: The list of products to include on the shopping list page.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        landing_page_configuration:
+          type: object
+          description: Configuration options for the landing page appearance and behavior.
+          properties:
+            partner_linkback_url:
+              type: string
+              format: uri
+              description: URL to link back to the partner site from the landing page.
+    ProductsLinkResponse:
+      type: object
+      properties:
+        products_link_url:
+          type: string
+          format: uri
+          description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
     Ingredient:
       type: object
       required:
@@ -272,6 +315,60 @@ components:
         filters:
           type: object
           description: Filters to narrow product matching for this ingredient.
+          properties:
+            department:
+              type: string
+              description: The store department to filter products by.
+    Error_2:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message describing what went wrong.
+        status:
+          type: integer
+          description: The HTTP status code of the error response.
+    LineItem:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the product.
+        quantity:
+          type: number
+          description: The quantity of the product to add.
+          minimum: 1
+        unit:
+          type: string
+          description: The unit of measurement for the quantity.
+        display_text:
+          type: string
+          description: Custom display text for the line item on the page.
+        product_ids:
+          type: array
+          description: Instacart product identifiers to match specific products.
+          items:
+            type: string
+        upcs:
+          type: array
+          description: Universal Product Codes to match specific products.
+          items:
+            type: string
+        line_item_measurements:
+          type: object
+          description: Measurement details for the line item.
+          properties:
+            amount:
+              type: number
+              description: The measurement amount.
+            unit:
+              type: string
+              description: The measurement unit.
+        filters:
+          type: object
+          description: Filters to narrow product matching.
           properties:
             department:
               type: string
@@ -327,103 +424,6 @@ components:
           description: The list of ingredients required for the recipe.
           items:
             $ref: '#/components/schemas/Ingredient'
-    ShoppingListRequest:
-      type: object
-      required:
-      - title
-      - line_items
-      properties:
-        title:
-          type: string
-          description: The title displayed at the top of the shopping list page.
-        image_url:
-          type: string
-          format: uri
-          description: URL of an image to display on the shopping list page.
-        link_type:
-          type: string
-          description: The type of product link to create.
-        expires_in:
-          type: integer
-          description: The number of seconds until the generated link expires.
-          minimum: 1
-        instructions:
-          type: string
-          description: Additional instructions or notes to display on the page.
-        line_items:
-          type: array
-          description: The list of products to include on the shopping list page.
-          items:
-            $ref: '#/components/schemas/LineItem'
-        landing_page_configuration:
-          type: object
-          description: Configuration options for the landing page appearance and behavior.
-          properties:
-            partner_linkback_url:
-              type: string
-              format: uri
-              description: URL to link back to the partner site from the landing page.
-    ProductsLinkResponse:
-      type: object
-      properties:
-        products_link_url:
-          type: string
-          format: uri
-          description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
-    Error_2:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message describing what went wrong.
-        status:
-          type: integer
-          description: The HTTP status code of the error response.
-    LineItem:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The name of the product.
-        quantity:
-          type: number
-          description: The quantity of the product to add.
-          minimum: 1
-        unit:
-          type: string
-          description: The unit of measurement for the quantity.
-        display_text:
-          type: string
-          description: Custom display text for the line item on the page.
-        product_ids:
-          type: array
-          description: Instacart product identifiers to match specific products.
-          items:
-            type: string
-        upcs:
-          type: array
-          description: Universal Product Codes to match specific products.
-          items:
-            type: string
-        line_item_measurements:
-          type: object
-          description: Measurement details for the line item.
-          properties:
-            amount:
-              type: number
-              description: The measurement amount.
-            unit:
-              type: string
-              description: The measurement unit.
-        filters:
-          type: object
-          description: Filters to narrow product matching.
-          properties:
-            department:
-              type: string
-              description: The store department to filter products by.
   securitySchemes:
     bearerAuth:
       type: http

@@ -4,47 +4,88 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Instacart
 providerId: instacart
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
+modified: '2026-08-27'
+generated: '2026-08-27'
+method: searched
 reconciled: true
+source: >-
+  https://docs.instacart.com/developer_platform_api/api/error_and_status_codes,
+  https://docs.instacart.com/connect/api/error_and_status_codes,
+  https://docs.instacart.com/developer_platform_api/api/overview,
+  https://docs.instacart.com/mcp_servers/get-started/use-instacarts-mcp-server
+limit_count: 0
 tags:
   - Grocery
   - E-Commerce
   - Marketplace
   - Rate Limiting
-description: Instacart Connect APIs are throttled per-second. Exceeding the per-second threshold returns
-  HTTP 429 ("Too many requests"). Specific per-second numbers are not published in the public Connect
-  documentation; partners with persistent 429s are directed to contact their Instacart representative.
-  All requests must use HTTPS; HTTP requests are rejected.
-notes: Per-second TPS ceiling exists but is not numerically published; documented as 'per-second threshold'
-  rather than fabricated.
+description: >-
+  Instacart throttles per second and publishes no number. Both the Developer Platform and the Connect
+  error references define HTTP 429 as "the number of your requests has exceeded the rate limit for
+  requests per second", and neither states what that rate is. There is no published quota, no burst
+  allowance, and — the part that matters most for an automated client — no rate-limit response headers
+  of any kind. No X-RateLimit-*, no RateLimit-*, no Retry-After. A caller cannot read its remaining
+  budget or learn when to come back; it can only observe the rejection and guess. Persistent 429s are
+  a conversation with your Instacart representative, not a self-service tuning exercise.
+notes: >-
+  limit_count is 0 because zero numeric limits are published, not because none exist. The per-second
+  ceiling is real and documented in prose; only its value is withheld. For the MCP server, Instacart's
+  own documentation lists rate limits alongside onboarding and provisioning as things to "contact your
+  Instacart representative" about.
 sources:
-  - https://docs.instacart.com/connect/api
+  - https://docs.instacart.com/developer_platform_api/api/error_and_status_codes
+  - https://docs.instacart.com/connect/api/error_and_status_codes
 responseCodes:
   throttled: 429
   serviceUnavailable: 503
+  timeout: 408
+headers:
+  published: false
+  request: []
+  response: []
+  retry_after: false
+  note: >-
+    No rate-limit signalling headers are documented on any Instacart API response. This is the single
+    biggest runtime gap in the surface for agent consumers.
 limits:
   - name: Per-second request threshold
-    scope: partner
+    scope: per-key
     metric: requests_per_second
-    limit: per-second threshold (exact value not publicly published)
+    window: 1s
+    limit: null
+    burst: null
     applies:
-      - Instacart Connect API
+      - Instacart Developer Platform API
+      - Instacart Connect APIs
+    note: Documented as a per-second rate limit; the numeric value is not published.
+  - name: MCP server rate limits
+    scope: per-partner
+    metric: not published
+    window: null
+    limit: null
+    applies:
+      - Instacart MCP servers
+    note: >-
+      "For onboarding, access provisioning, rate limits, and monitoring, contact your Instacart
+      representative." https://docs.instacart.com/mcp_servers/get-started/use-instacarts-mcp-server
 policies:
-  - name: HTTPS Required
-    description: All requests must use HTTPS; HTTP requests are rejected.
-  - name: Backoff Strategy
-    description: On HTTP 429, clients should back off and retry with exponential backoff and jitter; persistent
-      throttling should be raised with the Instacart partner representative.
-  - name: Backward Compatibility
-    description: New fields are additive and optional; deprecated fields remain functional for at least
-      six months with advance notice in the changelog.
-  - name: Encoding and Types
-    description: Strings are UTF-8 without enforced length limits; integers default to int64.
-  - name: Fair Use
-    description: Throttling is designed to allow legitimate traffic while preventing denial-of-service.
+  - name: HTTPS required
+    description: All requests must use HTTPS; requests over plain HTTP fail.
+  - name: Backoff strategy
+    description: >-
+      On 429 or 5xx, back off and retry with exponential backoff and jitter. Instacart asks partners to
+      discuss their retry plan with their representative before implementing it. Note there is no
+      idempotency key, so a retried write can duplicate — see conventions/instacart-conventions.yml.
+  - name: Token reuse
+    description: >-
+      Connect access tokens are valid for 24 hours and must be reused during that period rather than
+      re-minted per request.
+  - name: Backward compatibility
+    description: >-
+      New fields are additive and optional; deprecated fields and endpoints remain supported for at
+      least six months after the changelog announcement.
+  - name: Encoding and types
+    description: Strings are UTF-8 with no enforced length limits; integers default to int64.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

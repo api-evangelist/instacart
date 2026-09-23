@@ -1,0 +1,211 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://docs.instacart.com/developer_platform_api/api/overview,
+  https://docs.instacart.com/developer_platform_api/api/error_and_status_codes,
+  https://docs.instacart.com/connect/api/authentication,
+  https://docs.instacart.com/connect/api/access_tokens,
+  https://docs.instacart.com/connect/api/permissions_scopes,
+  https://docs.instacart.com/connect/api/fulfillment/delivery/cancel_order,
+  https://docs.instacart.com/connect/api/fulfillment/deprecated,
+  plus the OpenAPI definitions in openapi/
+provider: Instacart
+providerId: instacart
+description: >-
+  Cross-cutting runtime semantics for the two distinct Instacart API programs. The Developer Platform
+  API (connect.instacart.com/idp/v1) is API-key authenticated and open to app developers; the Connect
+  APIs (connect.instacart.com/v2) are OAuth 2.0 and partner-gated. They share a host, an error
+  envelope and a rate-limit posture but differ on authentication.
+auth:
+  styles:
+    - program: Developer Platform API
+      style: api-key
+      transport: Authorization header, Bearer token
+      key_format: 'keys.<32 hex characters>'
+      key_prefix: 'keys.'
+      environments:
+        development: https://connect.dev.instacart.tools
+        production: https://connect.instacart.com
+      management: >-
+        Keys are created, viewed, rotated and revoked in the Instacart Developer Dashboard
+        (https://dashboard.instacart.com/). Permission levels are read-only, read-write and admin.
+      rotation_documented: true
+      rotation_docs: https://docs.instacart.com/developer_platform_api/api/key-rotation
+    - program: Connect APIs (Fulfillment, Post-checkout, Catalog, Transaction, Sandbox)
+      style: oauth2
+      transport: Authorization header, Bearer token
+      token_endpoint: POST https://connect.instacart.com/v2/oauth/token
+      grant_types:
+        - client_credentials
+        - authorization_code
+        - fulfillment_user_assertion
+        - 'urn:ietf:params:oauth:grant-type:retailer-json-bearer'
+      token_lifetime: 24 hours; reuse the same token during that period
+      credential_placement: >-
+        client_id and client_secret MUST be sent in the request body. Passing them as query
+        parameters returns HTTP 403.
+      revocation: POST /v2/oauth/revoke_access_token
+      scopes_file: scopes/instacart-scopes.yml
+  https_required: true
+  https_note: HTTP requests fail; the docs require https in every request URL.
+request_headers:
+  required:
+    - name: Authorization
+      description: API key or OAuth bearer token
+    - name: Content-Type
+      description: Must be application/json
+  optional:
+    - name: Accept
+      description: Must be application/json
+    - name: Accept-Language
+      description: 'en-US, en-CA or fr-CA; defaults by location'
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    Instacart publishes no idempotency key, no request-replay semantics and no safe-retry contract for
+    any write operation. This is a real gap for agent use: createDeliveryOrder, createPickupOrder,
+    createLastMileOrder, createRecipePage and createShoppingListPage all create a new resource on every
+    call, and the Developer Platform docs say plainly that "each call generates a new page with a
+    unique URL". Retrying a timed-out create therefore duplicates. The 5xx guidance is to retry with
+    exponential backoff, which without an idempotency key is duplication-by-design.
+  evidence:
+    - https://docs.instacart.com/developer_platform_api/api/error_and_status_codes
+    - https://docs.instacart.com/developer_platform_api/api/products/create_shopping_list_page
+dry_run_mode:
+  supported: false
+  substitute: >-
+    The Connect Sandbox API (see sandbox/instacart-sandbox.yml) plus the development host
+    connect.dev.instacart.tools are the rehearsal surface. There is no per-request dry-run/preview
+    flag; previewing time slots (previewDeliveryTimeSlots, previewPickupTimeSlots) is a domain
+    read, not a dry run of the write.
+reversibility:
+  grade: verified
+  summary: >-
+    Instacart documents a cancel path for fulfillment orders and states the exact window in which it
+    works, in terms of order status rather than elapsed time. Shoppable-page creation on the Developer
+    Platform has an expiry knob but no delete operation.
+  surfaces:
+    - write_operation: createDeliveryOrder
+      reversal: cancelOrder
+      reversal_operation: POST /v2/fulfillment/users/{user_id}/orders/{order_id}/cancel
+      window: >-
+        Only while the order status is brand_new. Once a shopper is assigned and status moves to
+        acknowledged, the order can no longer be cancelled through this endpoint.
+      window_stated: true
+      docs: https://docs.instacart.com/connect/api/fulfillment/delivery/cancel_order
+      grade: verified
+    - write_operation: createPickupOrder
+      reversal: cancelOrder
+      reversal_operation: POST /v2/fulfillment/users/{user_id}/orders/{order_id}/cancel
+      window: status must still be brand_new
+      window_stated: true
+      docs: https://docs.instacart.com/connect/api/fulfillment/delivery/cancel_order
+      grade: verified
+    - write_operation: createLastMileOrder
+      reversal: cancelOrder
+      reversal_operation: POST /v2/fulfillment/users/{user_id}/orders/{order_id}/cancel
+      window: status must still be brand_new
+      window_stated: true
+      docs: https://docs.instacart.com/connect/api/fulfillment/delivery/cancel_order
+      grade: verified
+      note: >-
+        A dispatch-specific variant exists at /connect/api/fulfillment/lastmile/cancel_order_dispatch;
+        the older lastmile-specific cancel URI is deprecated in favour of the shared endpoint.
+    - write_operation: updateItemReplacement
+      reversal: null
+      window: null
+      window_stated: false
+      grade: none
+      note: >-
+        A customer's approve/reject decision on a shopper's replacement suggestion is terminal in the
+        API; correction happens through the order refund flow, which Instacart operates, not through
+        a published endpoint.
+    - write_operation: createShoppingListPage
+      reversal: null
+      window: >-
+        No delete operation. The only lifetime control is the optional expires_in field (days);
+        without it, the docs state the shopping list never expires.
+      window_stated: partial
+      docs: https://docs.instacart.com/developer_platform_api/api/products/create_shopping_list_page
+      grade: none
+    - write_operation: createRecipePage
+      reversal: null
+      window: null
+      window_stated: false
+      grade: none
+      note: Recipe pages, once created, have no published delete or expiry operation.
+    - write_operation: submitProducts / submitItems
+      reversal: null
+      window: null
+      window_stated: false
+      grade: none
+      note: >-
+        Catalog submissions are corrected by submitting a new version of the record, not by an undo.
+        Item-level availability can be suppressed with blackout_times, which is a state change rather
+        than a reversal.
+pagination:
+  style: none-documented
+  note: >-
+    No cursor, page or limit/offset convention is documented for any Developer Platform or Connect
+    endpoint, and no pagination parameters appear in the OpenAPI. Collection responses (order items,
+    chat messages, time slots) are returned whole.
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+  note: >-
+    No free-form metadata object. The closest analogue is landingPageConfiguration on shopping list
+    pages and partnerLinkbackUrl for attribution.
+request_id_tracing:
+  header: null
+  documented: false
+  note: >-
+    No request-id or correlation-id header is documented on requests or responses. Support escalation
+    is via the Instacart representative or the Enterprise Service Desk, not a request identifier.
+versioning:
+  style: uri-path
+  values:
+    - /idp/v1/ (Developer Platform API)
+    - /v2/ (Connect APIs)
+    - /rest/llm_integration/openapi/v2_1/ (legacy LLM integration endpoint on www.instacart.com)
+  header_versioning: false
+  compatibility_policy: >-
+    New fields are additive and optional. Instacart's changelogs state that all changes are
+    non-breaking changes; deprecated endpoints and fields remain supported for a minimum of six months
+    after announcement.
+  docs: https://docs.instacart.com/connect/api/fulfillment/deprecated
+error_envelope:
+  format: proprietary
+  rfc9457: false
+  content_type: application/json
+  shape: '{ "error": { "message": string, "code": integer, "errors"?: [ ... ] }, "meta": { "key"?: string } }'
+  multi_error_code: 9999
+  catalog: errors/instacart-problem-types.yml
+  docs: https://docs.instacart.com/developer_platform_api/api/error_and_status_codes
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: 429
+  retry_after: not documented
+  note: >-
+    Instacart documents the 429 and the advice to back off, but publishes no X-RateLimit-*/RateLimit-*
+    headers and no Retry-After. An agent cannot read its remaining budget; it can only observe the
+    rejection. See rate-limits/instacart-rate-limits.yml.
+retries:
+  guidance: >-
+    5xx responses are retryable; Instacart recommends exponential backoff and asks partners to discuss
+    a retry strategy with their representative before implementing one. Webhook callbacks may be
+    delivered more than once when an order reverts to a previous status, so consumers must be
+    idempotent on the receive side even though the API is not on the send side.
+  at_least_once_callbacks: true
+  docs: https://docs.instacart.com/connect/api/fulfillment/communications/event_callbacks
+cross_links:
+  errors: errors/instacart-problem-types.yml
+  lifecycle: lifecycle/instacart-lifecycle.yml
+  authentication: authentication/instacart-authentication.yml
+  scopes: scopes/instacart-scopes.yml
+  rate_limits: rate-limits/instacart-rate-limits.yml
+  sandbox: sandbox/instacart-sandbox.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

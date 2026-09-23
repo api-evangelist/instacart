@@ -1,0 +1,210 @@
+generated: '2026-08-27'
+method: derived
+source: >-
+  openapi/ and openapi/_original/ definitions, asyncapi/instacart-connect-events-asyncapi.yml,
+  well-known/instacart-well-known.yml, mcp/instacart-mcp-tools.json, plus the docs pages cited per
+  entry
+provider: Instacart
+providerId: instacart
+description: >-
+  Cross-cutting and domain standard conformance for Instacart's published API surface, asserted from
+  the contracts and the documentation rather than from marketing claims.
+conformance:
+  - id: openapi
+    name: OpenAPI Specification
+    conforms: true
+    version: '3.1.0 (harvested/refined), 3.0.1 (first-party llm_integration spec)'
+    evidence: >-
+      openapi/instacart-llm-integration-openapi.yml is served first-party at
+      https://www.instacart.com/rest/llm_integration/config/openapi.yaml (HTTP 200, openapi 3.0.1) and
+      is named by Instacart's own /.well-known/ai-plugin.json. The remaining definitions in openapi/
+      are API Evangelist renderings of Instacart's published reference; Instacart does not publish a
+      downloadable OpenAPI for the Connect or Developer Platform APIs.
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    version: JSON-RPC 2.0 over Streamable HTTP
+    evidence: >-
+      POST https://mcp.instacart.com/mcp with {"jsonrpc":"2.0","id":1,"method":"tools/list"} returned
+      HTTP 200 and a well-formed MCP tools array with JSON Schema inputSchema on 2026-08-27. Saved at
+      mcp/instacart-mcp-tools.json.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: true
+    evidence: >-
+      Connect APIs authenticate with OAuth 2.0. Documented grants: client_credentials,
+      authorization_code, and two custom assertion grants (fulfillment_user_assertion and
+      urn:ietf:params:oauth:grant-type:retailer-json-bearer). Token endpoint POST /v2/oauth/token,
+      revocation at /v2/oauth/revoke_access_token, 24-hour tokens, credentials required in the request
+      body. https://docs.instacart.com/connect/api/authentication
+  - id: oauth2-rfc8414
+    name: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+    conforms: false
+    evidence: >-
+      /.well-known/oauth-authorization-server returned 404 on www.instacart.com, connect.instacart.com
+      and mcp.instacart.com (probed 2026-08-27). No discoverable AS metadata.
+  - id: oidc
+    name: OpenID Connect
+    conforms: false
+    evidence: /.well-known/openid-configuration 404 on every probed host.
+  - id: rfc9457
+    name: Problem Details for HTTP APIs (RFC 9457)
+    conforms: false
+    evidence: >-
+      Errors use a proprietary {error:{message,code},meta:{key}} envelope with application/json, not
+      application/problem+json. See errors/instacart-problem-types.yml.
+  - id: rfc9116
+    name: security.txt (RFC 9116)
+    conforms: true
+    evidence: >-
+      https://www.instacart.com/.well-known/security.txt returned HTTP 200 with Contact, Expires,
+      Acknowledgments, Preferred-Languages, Policy and Hiring fields. Saved verbatim at
+      well-known/instacart-security.txt.
+  - id: rfc8594
+    name: Sunset HTTP Header (RFC 8594)
+    conforms: false
+    evidence: >-
+      A six-month minimum deprecation policy is published, but no Sunset or Deprecation response
+      header is documented and no deprecated flag appears in the specs.
+  - id: idempotency
+    name: Idempotency keys for unsafe methods
+    conforms: false
+    evidence: >-
+      No idempotency header or replay semantics documented anywhere; create operations explicitly
+      generate a new resource on every call.
+  - id: pagination
+    name: Documented pagination
+    conforms: false
+    evidence: No cursor/page/limit convention documented; no pagination parameters in the specs.
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: partial
+    version: '2.6.0'
+    evidence: >-
+      Instacart documents a full event-callback (webhook) catalogue at
+      /connect/api/fulfillment/communications/event_callbacks but publishes no AsyncAPI document.
+      asyncapi/instacart-connect-events-asyncapi.yml in this repo is an API Evangelist rendering of
+      that documented catalogue, not a provider artifact.
+  - id: webhooks
+    name: Published webhook/event catalogue
+    conforms: true
+    evidence: >-
+      Named, per-workflow event callbacks (brand_new, acknowledged, picking, item found/replaced/
+      refunded/not picked, checkout, delivering, order location, late delivery, customer missing,
+      staged, and more) with a documented at-least-once redelivery caveat and OAuth-protected callback
+      endpoints. https://docs.instacart.com/connect/api/fulfillment/communications/event_callbacks
+  - id: json-schema
+    name: JSON Schema
+    conforms: true
+    evidence: >-
+      The live MCP tools/list inputSchema objects are JSON Schema (type/properties/required/
+      additionalProperties/minItems). 36 component schemas are extracted to json-schema/ in this repo.
+  - id: scim
+    name: SCIM
+    conforms: false
+    evidence: No SCIM schema URNs and no user-provisioning API in the published surface.
+  - id: odata
+    name: OData
+    conforms: false
+    evidence: No $metadata surface and no OData query conventions.
+  - id: fhir
+    name: HL7 FHIR
+    conforms: false
+    evidence: Not a healthcare API.
+  - id: fapi
+    name: FAPI
+    conforms: false
+    evidence: Not a financial-grade API programme.
+  - id: psd2
+    name: PSD2 / Open Banking
+    conforms: false
+    evidence: Not applicable; Instacart is a grocery marketplace, not an ASPSP.
+  - id: 'json:api'
+    name: 'JSON:API'
+    conforms: false
+    evidence: Responses are bespoke JSON; no JSON:API document structure or media type.
+domain_standards:
+  market: Grocery retail / e-commerce marketplace and last-mile logistics
+  regime_standards_probed:
+    - GS1 / GTIN-UPC product identifiers
+    - EDI X12 (retail supply chain)
+    - Schema.org Recipe
+    - OpenRTB (retail media)
+  findings:
+    - id: gs1-upc
+      name: GS1 UPC / GTIN product identification
+      conforms: true
+      strength: field-level
+      evidence: >-
+        The Developer Platform shopping-list contract accepts a `upcs` array on line items, and
+        Instacart states that when UPCs are present it searches exclusively on the supplied
+        identifiers, prioritising retailers carrying a match. The Catalog API and the catalog
+        inventory file specification are keyed on retailer product codes and UPC. Added to the
+        contract 2025-09-18 per the Developer Platform changelog.
+        https://docs.instacart.com/developer_platform_api/api/products/create_shopping_list_page
+      spec_location: >-
+        components.schemas.ShoppingListRequest (line_items[].upcs) in
+        openapi/_original/instacart-developer-platform-api-openapi.yml
+    - id: openrtb
+      name: OpenRTB / retail media standard bidding
+      conforms: false
+      evidence: >-
+        Carrot Ads is a first-party retail media API (display placements, sponsored products, ad
+        events) with a bespoke contract. No OpenRTB bid-request shape, no IAB Retail Media
+        Measurement field names appear in the documented endpoints, so an advertiser platform that
+        already speaks OpenRTB still needs a bespoke Instacart connector.
+        https://docs.instacart.com/ads
+    - id: schema-org-recipe
+      name: Schema.org Recipe
+      conforms: false
+      evidence: >-
+        The recipe contract is a bespoke object (title, image_url, author, servings, cooking_time,
+        instructions[], ingredients[{name,quantity,unit}]). The field names are semantically close to
+        schema.org/Recipe (recipeIngredient, recipeInstructions, recipeYield, cookTime) but are not
+        the standard's, and no JSON-LD Recipe payload is accepted. This is the clearest missed
+        domain-standard opportunity in the surface: publishers already emit schema.org Recipe markup
+        for search, and accepting it directly would remove a mapping step from every integration.
+    - id: x12-edi
+      name: EDI X12 retail supply chain
+      conforms: false
+      evidence: >-
+        Catalog and inventory exchange is by JSON API and by spreadsheet inventory file, not by X12
+        transaction sets.
+  summary: >-
+    One real domain-standard signature is present and it is at the field level: GS1 UPC/GTIN
+    identifiers as a first-class matching key across the Developer Platform, Catalog API and inventory
+    file. The rest of the surface is proprietary - notably the recipe object, which sits one rename
+    away from schema.org/Recipe and does not take it.
+compliance:
+  program_published: true
+  vulnerability_disclosure:
+    published: true
+    policy: https://hackerone.com/instacart
+    contact: security@instacart.com
+    source: https://www.instacart.com/.well-known/security.txt
+  certifications_published: false
+  certifications_note: >-
+    No trust centre and no named certification claims (SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP) are
+    published on any probed Instacart host. trust.instacart.com and security.instacart.com do not
+    resolve; www.instacart.com/company/security returns 404. Certification evidence, where it exists,
+    is shared under the partner agreement.
+  regulatory_surface_in_contract:
+    - name: SNAP EBT eligibility
+      evidence: >-
+        Catalog inventory file columns determine SNAP EBT product eligibility - a US federal benefits
+        programme expressed directly in the data contract.
+        https://docs.instacart.com/catalog/catalog_inventory_file/specifications/snap-ebt-requirements
+    - name: California Proposition 65 warnings
+      evidence: >-
+        Required warning columns for retailers doing online business in California (27 CCR 25600.2).
+        https://docs.instacart.com/catalog/catalog_inventory_file/specifications/ca-prop65-warning-requirements
+    - name: Restricted and age-gated products (alcohol, cannabinoid)
+      evidence: >-
+        Dedicated alcohol and cannabinoid column requirements with minimum-age and maximum-quantity
+        constraints varying by region.
+    - name: Quebec / Canadian bilingual labelling
+      evidence: >-
+        Locale column requirement obliging English and French attribute content for Quebec retailers.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Instacart Connect Fulfillment Authentication API
-  description: The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites. It combines grocery, delivery, and pickup functionality into a single API, allowing retailers to offer full-service shopping where Instacart shoppers pick items and suggest replacements, as well as same-day or scheduled delivery and pickup options. Key endpoints include finding stores that offer delivery, listing available time slots, previewing service options, and creating delivery or pickup orders.
+  description: The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites.
   version: '2.0'
   contact:
     name: Instacart Connect Support
@@ -45,6 +45,15 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
     TokenRequest:
       type: object
       required:
@@ -87,15 +96,6 @@ components:
         created_at:
           type: integer
           description: Unix timestamp indicating when the token was created.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
   securitySchemes:
     bearerAuth:
       type: http

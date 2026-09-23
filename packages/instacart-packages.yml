@@ -1,0 +1,151 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  npm registry (registry.npmjs.org), PyPI, RubyGems, and the Instacart developer documentation at
+  docs.instacart.com; version and published date read from each registry's metadata endpoint on
+  2026-08-27
+provider: Instacart
+providerId: instacart
+description: >-
+  Instacart publishes NO first-party client library for any of its APIs. Not for the Developer
+  Platform API, not for the Connect APIs, not for the Catalog or Carrot Ads APIs, and not for the MCP
+  server. Every integration path in the documentation is a raw HTTP call - the endpoint reference
+  ships cURL, Java, Python and Go request examples inline rather than SDK snippets, and the docs
+  say developers "can integrate the selected capabilities through REST API calls using any language".
+  The @instacart/* namespace on npm is real and first-party, but it holds internal front-end
+  engineering tooling from 2019-2022, none of which calls an Instacart API. The only shipped client
+  artifact is the Shopping Widgets UMD bundle, and it is distributed per-retailer from a CloudFront
+  path with no registry and no version pin.
+api_sdk_count: 0
+official_package_count: 6
+packages:
+  - name: ic-snacks
+    registry: npm
+    url: https://www.npmjs.com/package/ic-snacks
+    official: true
+    api_sdk: false
+    language: javascript
+    version: 0.0.159
+    published: '2022-02-14'
+    repository: https://github.com/instacart/Snacks
+    description: >-
+      The Instacart Component Library for Web - a React design-system component library. First-party
+      Instacart, but a UI kit, not an API client. Last published February 2022.
+  - name: '@instacart/radium'
+    registry: npm
+    url: https://www.npmjs.com/package/@instacart/radium
+    official: true
+    api_sdk: false
+    language: javascript
+    version: 0.26.6
+    published: '2020-10-05'
+    repository: https://github.com/instacart/radium
+    description: Instacart's fork of Radium, for managing inline styles on React elements.
+  - name: redux-rails
+    registry: npm
+    url: https://www.npmjs.com/package/redux-rails
+    official: true
+    api_sdk: false
+    language: javascript
+    version: 2.0.0
+    published: '2021-09-23'
+    repository: https://github.com/instacart/redux-rails
+    description: >-
+      Generic Redux/Rails data-fetching helper published by the Instacart org. Not bound to any
+      Instacart API.
+  - name: '@instacart/eslint-config'
+    registry: npm
+    url: https://www.npmjs.com/package/@instacart/eslint-config
+    official: true
+    api_sdk: false
+    language: javascript
+    version: 0.3.0
+    published: '2021-02-22'
+    repository: https://github.com/instacart/javascript
+    description: Instacart's shared ESLint configuration. Internal engineering tooling.
+  - name: '@instacart/tsconfig'
+    registry: npm
+    url: https://www.npmjs.com/package/@instacart/tsconfig
+    official: true
+    api_sdk: false
+    language: typescript
+    version: 0.1.1
+    published: '2019-04-05'
+    repository: https://github.com/instacart/javascript
+    description: Instacart's shared TypeScript configuration. Internal engineering tooling.
+  - name: '@instacart/prettier-config'
+    registry: npm
+    url: https://www.npmjs.com/package/@instacart/prettier-config
+    official: true
+    api_sdk: false
+    language: javascript
+    version: 0.1.1
+    published: '2019-04-04'
+    repository: https://github.com/instacart/javascript
+    description: Instacart's shared Prettier configuration. Internal engineering tooling.
+  - name: beetstrap
+    registry: rubygems
+    url: https://rubygems.org/gems/beetstrap
+    official: true
+    api_sdk: false
+    language: ruby
+    version: 0.0.10
+    published: '2015-10-23'
+    repository: https://github.com/instacart/beetstrap
+    description: >-
+      Instacart's Bootstrap theme gem. First-party, dormant since 2015. Listed only to record that
+      the RubyGems surface was checked.
+  - name: ic-widgets-v1.umd.js
+    registry: cdn
+    url: https://dboktu48tbzl9.cloudfront.net/{retailer-name}/evergreen/ic-widgets-v1.umd.js
+    official: true
+    api_sdk: false
+    language: javascript
+    version: null
+    published: null
+    note: >-
+      The Shopping Widgets library, distributed per-retailer from CloudFront on an "evergreen" path.
+      There is no registry metadata endpoint to query, and the URL is not pinned - the only version
+      token anywhere in the distribution is the `v1` major in the filename, which has not changed. A
+      retailer cannot determine which build they are serving, and neither can a consumer of this
+      artifact, so version and published are recorded as null deliberately rather than omitted. Each
+      retailer's distribution link is issued at sign-up, so the URL above is the documented template,
+      not a fetchable asset.
+    docs: https://docs.instacart.com/widgets/guide/tutorials/get_started_with_prebuilt_widgets
+registries_checked:
+  - registry: npm
+    query: instacart
+    first_party_api_sdk_found: false
+    note: >-
+      The @instacart scope exists and is genuinely Instacart's. Third-party community wrappers exist
+      (@striderlabs/mcp-instacart, instacart-for-agents, instacart_api on RubyGems) and are excluded
+      here - none is published by Instacart.
+  - registry: pypi
+    queries: [instacart, instacart-api, instacart-mcp]
+    result: 404 on all three
+    first_party_api_sdk_found: false
+  - registry: rubygems
+    query: instacart
+    first_party_api_sdk_found: false
+  - registry: maven-central
+    first_party_api_sdk_found: false
+  - registry: nuget
+    first_party_api_sdk_found: false
+  - registry: pkg.go.dev
+    first_party_api_sdk_found: false
+  - registry: packagist
+    first_party_api_sdk_found: false
+  - registry: crates.io
+    first_party_api_sdk_found: false
+findings:
+  - >-
+    Zero first-party API SDKs against an API surface of roughly two dozen documented operations across
+    five products. For agent consumers this is partly mitigated by the MCP server, which is arguably
+    Instacart's SDK substitute for the Developer Platform - but it covers only 2 of those operations.
+  - >-
+    Every first-party package in any registry predates 2023. The newest official Instacart publication
+    found anywhere was ic-snacks in February 2022, more than four years before this probe. The API
+    surface, by contrast, changed as recently as June 2026.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

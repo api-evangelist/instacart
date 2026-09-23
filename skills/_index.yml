@@ -1,0 +1,66 @@
+generated: '2026-08-27'
+method: generated
+source: >-
+  Grounded in the operationIds present in openapi/ and openapi/_original/ and in the live MCP
+  tools/list at mcp/instacart-mcp-tools.json; runtime rules taken from
+  conventions/instacart-conventions.yml, errors/instacart-problem-types.yml and
+  sandbox/instacart-sandbox.yml
+provider: Instacart
+providerId: instacart
+description: >-
+  Packaged Agent Skills for Instacart's five marquee flows. Instacart publishes no AGENTS.md and no
+  skills manifest of its own (probed 2026-08-27: docs.instacart.com/AGENTS.md 404,
+  www.instacart.com/AGENTS.md 404, docs.instacart.com/skills.json 404, instacart/.github AGENTS.md
+  404), so these are generated from the contracts, not harvested. Every operationId referenced exists
+  in a definition in this repo.
+provider_published: false
+skills:
+  - name: instacart-create-shoppable-recipe
+    file: skills/instacart-create-shoppable-recipe.md
+    api: Instacart Developer Platform API
+    gated: false
+    operations: [createRecipePage]
+    mcp_tools: [create-recipe]
+  - name: instacart-create-shopping-list
+    file: skills/instacart-create-shopping-list.md
+    api: Instacart Developer Platform API
+    gated: false
+    operations: [createShoppingListPage]
+    mcp_tools: [create-shopping-list]
+  - name: instacart-place-delivery-order
+    file: skills/instacart-place-delivery-order.md
+    api: Instacart Connect Fulfillment API
+    gated: true
+    operations:
+      - generateAccessToken
+      - findDeliveryStores
+      - previewDeliveryTimeSlots
+      - reserveDeliveryTimeSlot
+      - createDeliveryOrder
+      - getOrder
+      - cancelOrder
+  - name: instacart-track-order-post-checkout
+    file: skills/instacart-track-order-post-checkout.md
+    api: Instacart Connect Post-checkout API
+    gated: true
+    operations:
+      - getOrder
+      - getOrderItems
+      - getOrderHandling
+      - updateItemReplacement
+      - getChatMessages
+      - sendChatMessage
+  - name: instacart-submit-catalog-data
+    file: skills/instacart-submit-catalog-data.md
+    api: Instacart Catalog API
+    gated: true
+    operations: [submitProducts, submitItems]
+cross_cutting_rules:
+  - No idempotency key exists on any Instacart write. Never blind-retry a create.
+  - Cancel works on a fulfillment order only while its status is brand_new.
+  - Rate limiting is a per-second threshold signalled only by HTTP 429; no RateLimit-* headers.
+  - Errors are {error:{message,code},meta:{key}}; read code together with meta.key.
+  - Event callbacks are at-least-once; receivers must be idempotent.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
