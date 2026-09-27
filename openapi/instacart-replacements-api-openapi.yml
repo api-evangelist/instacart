@@ -58,18 +58,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
+  parameters:
+    orderId:
+      name: order_id
+      in: path
+      required: true
+      description: The unique identifier for the order.
+      schema:
+        type: string
+    orderItemId:
+      name: order_item_id
+      in: path
+      required: true
+      description: The unique identifier for a specific item within the order.
+      schema:
+        type: string
   schemas:
-    ReplacementDecisionRequest:
-      type: object
-      required:
-      - status
-      properties:
-        status:
-          type: string
-          enum:
-          - APPROVED
-          - REJECTED
-          description: The customer's decision on the replacement. APPROVED accepts the replacement. REJECTED declines the replacement and triggers an automatic refund.
     ReplacementResponse:
       type: object
       properties:
@@ -91,21 +95,17 @@ components:
         status:
           type: integer
           description: The HTTP status code.
-  parameters:
-    orderItemId:
-      name: order_item_id
-      in: path
-      required: true
-      description: The unique identifier for a specific item within the order.
-      schema:
-        type: string
-    orderId:
-      name: order_id
-      in: path
-      required: true
-      description: The unique identifier for the order.
-      schema:
-        type: string
+    ReplacementDecisionRequest:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string
+          enum:
+          - APPROVED
+          - REJECTED
+          description: The customer's decision on the replacement. APPROVED accepts the replacement. REJECTED declines the replacement and triggers an automatic refund.
   securitySchemes:
     bearerAuth:
       type: http

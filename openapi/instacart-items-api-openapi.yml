@@ -56,6 +56,25 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ItemSubmissionRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The list of items to create or update at specific store locations.
+          items:
+            $ref: '#/components/schemas/Item'
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
     Item:
       type: object
       required:
@@ -99,25 +118,6 @@ components:
         shelf:
           type: string
           description: The shelf location within the aisle.
-    ItemSubmissionRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: The list of items to create or update at specific store locations.
-          items:
-            $ref: '#/components/schemas/Item'
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
     SubmissionResponse:
       type: object
       properties:

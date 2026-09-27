@@ -152,68 +152,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ServiceOption:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the service option.
-        date:
-          type: string
-          format: date
-          description: The date of the service option.
-        window_starts_at:
-          type: string
-          format: date-time
-          description: The start time of the delivery or pickup window.
-        window_ends_at:
-          type: string
-          format: date-time
-          description: The end time of the delivery or pickup window.
-        fulfillment_type:
-          type: string
-          enum:
-          - delivery
-          - pickup
-          - last_mile
-          description: The type of fulfillment for this service option.
-    Store:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the store.
-        name:
-          type: string
-          description: The name of the store.
-        address:
-          type: object
-          description: The physical address of the store.
-          properties:
-            address_line_1:
-              type: string
-              description: The street address.
-            city:
-              type: string
-              description: The city.
-            state:
-              type: string
-              description: The state or province.
-            postal_code:
-              type: string
-              description: The postal or ZIP code.
-        distance:
-          type: number
-          format: double
-          description: The distance from the customer's location to the store.
-    StoresResponse:
-      type: object
-      properties:
-        stores:
-          type: array
-          description: An array of stores offering the requested fulfillment type, sorted by distance with the closest store first.
-          items:
-            $ref: '#/components/schemas/Store'
     FindStoresRequest:
       type: object
       properties:
@@ -240,81 +178,14 @@ components:
           type: number
           format: double
           description: The longitude coordinate of the customer's location.
-    CreateOrderRequest:
-      type: object
-      required:
-      - hold_id
-      properties:
-        hold_id:
-          type: string
-          description: The identifier of the time slot hold from the reserve step.
-        cart:
-          type: object
-          description: The finalized cart for the order.
-          properties:
-            items:
-              type: array
-              description: The items to include in the order.
-              items:
-                $ref: '#/components/schemas/CartItem'
-        delivery_address:
-          type: object
-          description: The delivery address for the order.
-          properties:
-            address_line_1:
-              type: string
-              description: The street address.
-            address_line_2:
-              type: string
-              description: Additional address information.
-            city:
-              type: string
-              description: The city.
-            state:
-              type: string
-              description: The state or province.
-            postal_code:
-              type: string
-              description: The postal or ZIP code.
-        delivery_instructions:
-          type: string
-          description: Special instructions for the delivery driver.
-    CartItem:
+    StoresResponse:
       type: object
       properties:
-        upc:
-          type: string
-          description: The Universal Product Code of the item.
-        quantity:
-          type: integer
-          description: The quantity of the item.
-          minimum: 1
-        product_id:
-          type: string
-          description: The Instacart product identifier.
-    OrderItem:
-      type: object
-      properties:
-        product_id:
-          type: string
-          description: The Instacart product identifier.
-        upc:
-          type: string
-          description: The Universal Product Code of the item.
-        name:
-          type: string
-          description: The name of the product.
-        quantity:
-          type: integer
-          description: The ordered quantity.
-        status:
-          type: string
-          enum:
-          - pending
-          - found
-          - replaced
-          - refunded
-          description: The current status of the item in the order.
+        stores:
+          type: array
+          description: An array of stores offering the requested fulfillment type, sorted by distance with the closest store first.
+          items:
+            $ref: '#/components/schemas/Store'
     PreviewServiceOptionsRequest:
       type: object
       properties:
@@ -387,6 +258,96 @@ components:
         status:
           type: integer
           description: The HTTP status code.
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the store.
+        name:
+          type: string
+          description: The name of the store.
+        address:
+          type: object
+          description: The physical address of the store.
+          properties:
+            address_line_1:
+              type: string
+              description: The street address.
+            city:
+              type: string
+              description: The city.
+            state:
+              type: string
+              description: The state or province.
+            postal_code:
+              type: string
+              description: The postal or ZIP code.
+        distance:
+          type: number
+          format: double
+          description: The distance from the customer's location to the store.
+    OrderItem:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: The Instacart product identifier.
+        upc:
+          type: string
+          description: The Universal Product Code of the item.
+        name:
+          type: string
+          description: The name of the product.
+        quantity:
+          type: integer
+          description: The ordered quantity.
+        status:
+          type: string
+          enum:
+          - pending
+          - found
+          - replaced
+          - refunded
+          description: The current status of the item in the order.
+    CartItem:
+      type: object
+      properties:
+        upc:
+          type: string
+          description: The Universal Product Code of the item.
+        quantity:
+          type: integer
+          description: The quantity of the item.
+          minimum: 1
+        product_id:
+          type: string
+          description: The Instacart product identifier.
+    ServiceOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the service option.
+        date:
+          type: string
+          format: date
+          description: The date of the service option.
+        window_starts_at:
+          type: string
+          format: date-time
+          description: The start time of the delivery or pickup window.
+        window_ends_at:
+          type: string
+          format: date-time
+          description: The end time of the delivery or pickup window.
+        fulfillment_type:
+          type: string
+          enum:
+          - delivery
+          - pickup
+          - last_mile
+          description: The type of fulfillment for this service option.
     ServiceOptionsResponse:
       type: object
       properties:
@@ -395,19 +356,58 @@ components:
           description: Available service option time slots for the requested fulfillment type.
           items:
             $ref: '#/components/schemas/ServiceOption'
+    CreateOrderRequest:
+      type: object
+      required:
+      - hold_id
+      properties:
+        hold_id:
+          type: string
+          description: The identifier of the time slot hold from the reserve step.
+        cart:
+          type: object
+          description: The finalized cart for the order.
+          properties:
+            items:
+              type: array
+              description: The items to include in the order.
+              items:
+                $ref: '#/components/schemas/CartItem'
+        delivery_address:
+          type: object
+          description: The delivery address for the order.
+          properties:
+            address_line_1:
+              type: string
+              description: The street address.
+            address_line_2:
+              type: string
+              description: Additional address information.
+            city:
+              type: string
+              description: The city.
+            state:
+              type: string
+              description: The state or province.
+            postal_code:
+              type: string
+              description: The postal or ZIP code.
+        delivery_instructions:
+          type: string
+          description: Special instructions for the delivery driver.
   parameters:
-    orderId:
-      name: order_id
-      in: path
-      required: true
-      description: The unique identifier for the order.
-      schema:
-        type: string
     userId:
       name: user_id
       in: path
       required: true
       description: The unique identifier for the user in the retailer's system.
+      schema:
+        type: string
+    orderId:
+      name: order_id
+      in: path
+      required: true
+      description: The unique identifier for the order.
       schema:
         type: string
   securitySchemes:
