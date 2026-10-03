@@ -74,19 +74,45 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Replacement:
+    Error:
       type: object
-      description: Details about the replacement product suggested by the shopper.
       properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
+    PostCheckoutOrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order item.
         product_name:
           type: string
-          description: The name of the replacement product.
-        product_id:
-          type: string
-          description: The product identifier of the replacement.
+          description: The name of the ordered product.
         quantity:
           type: integer
-          description: The quantity of the replacement product.
+          description: The ordered quantity.
+        status:
+          type: string
+          enum:
+          - pending
+          - found
+          - replaced
+          - refunded
+          - not_found
+          description: The current status of the item during shopping.
+        replacement:
+          $ref: '#/components/schemas/Replacement'
+        replacement_status:
+          type: string
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          description: The customer's decision on the replacement, if one was suggested.
     OrderHandlingResponse:
       type: object
       properties:
@@ -156,45 +182,19 @@ components:
           description: The list of items in the order with their current statuses.
           items:
             $ref: '#/components/schemas/PostCheckoutOrderItem'
-    Error:
+    Replacement:
       type: object
+      description: Details about the replacement product suggested by the shopper.
       properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
-    PostCheckoutOrderItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the order item.
         product_name:
           type: string
-          description: The name of the ordered product.
+          description: The name of the replacement product.
+        product_id:
+          type: string
+          description: The product identifier of the replacement.
         quantity:
           type: integer
-          description: The ordered quantity.
-        status:
-          type: string
-          enum:
-          - pending
-          - found
-          - replaced
-          - refunded
-          - not_found
-          description: The current status of the item during shopping.
-        replacement:
-          $ref: '#/components/schemas/Replacement'
-        replacement_status:
-          type: string
-          enum:
-          - PENDING
-          - APPROVED
-          - REJECTED
-          description: The customer's decision on the replacement, if one was suggested.
+          description: The quantity of the replacement product.
   parameters:
     orderId:
       name: order_id

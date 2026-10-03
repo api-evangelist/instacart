@@ -66,15 +66,6 @@ components:
           description: The list of items to create or update at specific store locations.
           items:
             $ref: '#/components/schemas/Item'
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
     Item:
       type: object
       required:
@@ -147,6 +138,15 @@ components:
               message:
                 type: string
                 description: The error message describing the issue.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
   securitySchemes:
     bearerAuth:
       type: http

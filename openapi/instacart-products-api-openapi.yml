@@ -148,6 +148,54 @@ paths:
       description: Development Server
 components:
   schemas:
+    ProductSubmissionRequest:
+      type: object
+      required:
+      - products
+      properties:
+        products:
+          type: array
+          description: The list of products to create or update.
+          items:
+            $ref: '#/components/schemas/Product'
+    SubmissionResponse:
+      type: object
+      properties:
+        submission_id:
+          type: string
+          description: A unique identifier for tracking the submission.
+        status:
+          type: string
+          enum:
+          - accepted
+          - processing
+          - completed
+          - failed
+          description: The current status of the submission.
+        submitted_count:
+          type: integer
+          description: The number of records submitted.
+        errors:
+          type: array
+          description: Any validation errors found in the submitted data.
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: The index of the record with the error.
+              message:
+                type: string
+                description: The error message describing the issue.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
     Product:
       type: object
       required:
@@ -190,54 +238,15 @@ components:
           description: Additional product attributes such as dietary information or certifications.
           additionalProperties:
             type: string
-    Error:
+    Error_2:
       type: object
       properties:
         error:
           type: string
-          description: A human-readable error message.
+          description: A human-readable error message describing what went wrong.
         status:
           type: integer
-          description: The HTTP status code.
-    SubmissionResponse:
-      type: object
-      properties:
-        submission_id:
-          type: string
-          description: A unique identifier for tracking the submission.
-        status:
-          type: string
-          enum:
-          - accepted
-          - processing
-          - completed
-          - failed
-          description: The current status of the submission.
-        submitted_count:
-          type: integer
-          description: The number of records submitted.
-        errors:
-          type: array
-          description: Any validation errors found in the submitted data.
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-                description: The index of the record with the error.
-              message:
-                type: string
-                description: The error message describing the issue.
-    ProductSubmissionRequest:
-      type: object
-      required:
-      - products
-      properties:
-        products:
-          type: array
-          description: The list of products to create or update.
-          items:
-            $ref: '#/components/schemas/Product'
+          description: The HTTP status code of the error response.
     ShoppingListRequest:
       type: object
       required:
@@ -319,15 +328,6 @@ components:
             department:
               type: string
               description: The store department to filter products by.
-    Error_2:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message describing what went wrong.
-        status:
-          type: integer
-          description: The HTTP status code of the error response.
     ProductsLinkResponse:
       type: object
       properties:
@@ -335,6 +335,44 @@ components:
           type: string
           format: uri
           description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
+    Ingredient:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the ingredient.
+        display_text:
+          type: string
+          description: Custom display text for the ingredient on the recipe page.
+        product_ids:
+          type: array
+          description: Instacart product identifiers to match specific products.
+          items:
+            type: string
+        upcs:
+          type: array
+          description: Universal Product Codes to match specific products.
+          items:
+            type: string
+        measurements:
+          type: object
+          description: Measurement details for the ingredient.
+          properties:
+            amount:
+              type: number
+              description: The measurement amount.
+            unit:
+              type: string
+              description: The measurement unit.
+        filters:
+          type: object
+          description: Filters to narrow product matching for this ingredient.
+          properties:
+            department:
+              type: string
+              description: The store department to filter products by.
     RecipeRequest:
       type: object
       required:
@@ -386,44 +424,6 @@ components:
           description: The list of ingredients required for the recipe.
           items:
             $ref: '#/components/schemas/Ingredient'
-    Ingredient:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The name of the ingredient.
-        display_text:
-          type: string
-          description: Custom display text for the ingredient on the recipe page.
-        product_ids:
-          type: array
-          description: Instacart product identifiers to match specific products.
-          items:
-            type: string
-        upcs:
-          type: array
-          description: Universal Product Codes to match specific products.
-          items:
-            type: string
-        measurements:
-          type: object
-          description: Measurement details for the ingredient.
-          properties:
-            amount:
-              type: number
-              description: The measurement amount.
-            unit:
-              type: string
-              description: The measurement unit.
-        filters:
-          type: object
-          description: Filters to narrow product matching for this ingredient.
-          properties:
-            department:
-              type: string
-              description: The store department to filter products by.
   securitySchemes:
     bearerAuth:
       type: http
