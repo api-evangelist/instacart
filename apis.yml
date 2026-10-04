@@ -33,6 +33,9 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/instacart.png
 url: https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml
 modified: '2026-08-27'
+x-docs-platform: docusaurus
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
 apis:
 - aid: instacart:shopping-widgets
   name: Instacart Shopping Widgets
