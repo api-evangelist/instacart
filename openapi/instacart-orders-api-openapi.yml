@@ -74,15 +74,14 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
+    OrderItemsResponse:
       type: object
       properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
+        items:
+          type: array
+          description: The list of items in the order with their current statuses.
+          items:
+            $ref: '#/components/schemas/PostCheckoutOrderItem'
     PostCheckoutOrderItem:
       type: object
       properties:
@@ -113,6 +112,19 @@ components:
           - APPROVED
           - REJECTED
           description: The customer's decision on the replacement, if one was suggested.
+    Replacement:
+      type: object
+      description: Details about the replacement product suggested by the shopper.
+      properties:
+        product_name:
+          type: string
+          description: The name of the replacement product.
+        product_id:
+          type: string
+          description: The product identifier of the replacement.
+        quantity:
+          type: integer
+          description: The quantity of the replacement product.
     OrderHandlingResponse:
       type: object
       properties:
@@ -174,27 +186,15 @@ components:
         notes:
           type: string
           description: Any delivery or pickup instructions included with the order.
-    OrderItemsResponse:
+    Error:
       type: object
       properties:
-        items:
-          type: array
-          description: The list of items in the order with their current statuses.
-          items:
-            $ref: '#/components/schemas/PostCheckoutOrderItem'
-    Replacement:
-      type: object
-      description: Details about the replacement product suggested by the shopper.
-      properties:
-        product_name:
+        error:
           type: string
-          description: The name of the replacement product.
-        product_id:
-          type: string
-          description: The product identifier of the replacement.
-        quantity:
+          description: A human-readable error message.
+        status:
           type: integer
-          description: The quantity of the replacement product.
+          description: The HTTP status code.
   parameters:
     orderId:
       name: order_id

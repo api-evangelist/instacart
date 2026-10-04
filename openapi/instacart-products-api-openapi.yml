@@ -148,6 +148,48 @@ paths:
       description: Development Server
 components:
   schemas:
+    Product:
+      type: object
+      required:
+      - product_code
+      - name
+      properties:
+        product_code:
+          type: string
+          description: The retailer's unique product identifier used to match the product in the Instacart system.
+        name:
+          type: string
+          description: The display name of the product.
+        brand:
+          type: string
+          description: The brand name of the product.
+        description:
+          type: string
+          description: A detailed description of the product.
+        size:
+          type: string
+          description: The size or quantity description of the product.
+        upc:
+          type: string
+          description: The Universal Product Code for the product.
+        image_url:
+          type: string
+          format: uri
+          description: URL to the primary product image.
+        category:
+          type: string
+          description: The product category in the retailer's taxonomy.
+        subcategory:
+          type: string
+          description: The product subcategory.
+        department:
+          type: string
+          description: The store department the product belongs to.
+        attributes:
+          type: object
+          description: Additional product attributes such as dietary information or certifications.
+          additionalProperties:
+            type: string
     ProductSubmissionRequest:
       type: object
       required:
@@ -196,93 +238,51 @@ components:
         status:
           type: integer
           description: The HTTP status code.
-    Product:
+    Ingredient:
       type: object
       required:
-      - product_code
       - name
       properties:
-        product_code:
-          type: string
-          description: The retailer's unique product identifier used to match the product in the Instacart system.
         name:
           type: string
-          description: The display name of the product.
-        brand:
+          description: The name of the ingredient.
+        display_text:
           type: string
-          description: The brand name of the product.
-        description:
-          type: string
-          description: A detailed description of the product.
-        size:
-          type: string
-          description: The size or quantity description of the product.
-        upc:
-          type: string
-          description: The Universal Product Code for the product.
-        image_url:
-          type: string
-          format: uri
-          description: URL to the primary product image.
-        category:
-          type: string
-          description: The product category in the retailer's taxonomy.
-        subcategory:
-          type: string
-          description: The product subcategory.
-        department:
-          type: string
-          description: The store department the product belongs to.
-        attributes:
-          type: object
-          description: Additional product attributes such as dietary information or certifications.
-          additionalProperties:
-            type: string
-    Error_2:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message describing what went wrong.
-        status:
-          type: integer
-          description: The HTTP status code of the error response.
-    ShoppingListRequest:
-      type: object
-      required:
-      - title
-      - line_items
-      properties:
-        title:
-          type: string
-          description: The title displayed at the top of the shopping list page.
-        image_url:
-          type: string
-          format: uri
-          description: URL of an image to display on the shopping list page.
-        link_type:
-          type: string
-          description: The type of product link to create.
-        expires_in:
-          type: integer
-          description: The number of seconds until the generated link expires.
-          minimum: 1
-        instructions:
-          type: string
-          description: Additional instructions or notes to display on the page.
-        line_items:
+          description: Custom display text for the ingredient on the recipe page.
+        product_ids:
           type: array
-          description: The list of products to include on the shopping list page.
+          description: Instacart product identifiers to match specific products.
           items:
-            $ref: '#/components/schemas/LineItem'
-        landing_page_configuration:
+            type: string
+        upcs:
+          type: array
+          description: Universal Product Codes to match specific products.
+          items:
+            type: string
+        measurements:
           type: object
-          description: Configuration options for the landing page appearance and behavior.
+          description: Measurement details for the ingredient.
           properties:
-            partner_linkback_url:
+            amount:
+              type: number
+              description: The measurement amount.
+            unit:
               type: string
-              format: uri
-              description: URL to link back to the partner site from the landing page.
+              description: The measurement unit.
+        filters:
+          type: object
+          description: Filters to narrow product matching for this ingredient.
+          properties:
+            department:
+              type: string
+              description: The store department to filter products by.
+    ProductsLinkResponse:
+      type: object
+      properties:
+        products_link_url:
+          type: string
+          format: uri
+          description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
     LineItem:
       type: object
       required:
@@ -324,51 +324,6 @@ components:
         filters:
           type: object
           description: Filters to narrow product matching.
-          properties:
-            department:
-              type: string
-              description: The store department to filter products by.
-    ProductsLinkResponse:
-      type: object
-      properties:
-        products_link_url:
-          type: string
-          format: uri
-          description: The unique URL to the generated shopping list or recipe page on Instacart Marketplace.
-    Ingredient:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The name of the ingredient.
-        display_text:
-          type: string
-          description: Custom display text for the ingredient on the recipe page.
-        product_ids:
-          type: array
-          description: Instacart product identifiers to match specific products.
-          items:
-            type: string
-        upcs:
-          type: array
-          description: Universal Product Codes to match specific products.
-          items:
-            type: string
-        measurements:
-          type: object
-          description: Measurement details for the ingredient.
-          properties:
-            amount:
-              type: number
-              description: The measurement amount.
-            unit:
-              type: string
-              description: The measurement unit.
-        filters:
-          type: object
-          description: Filters to narrow product matching for this ingredient.
           properties:
             department:
               type: string
@@ -424,6 +379,51 @@ components:
           description: The list of ingredients required for the recipe.
           items:
             $ref: '#/components/schemas/Ingredient'
+    ShoppingListRequest:
+      type: object
+      required:
+      - title
+      - line_items
+      properties:
+        title:
+          type: string
+          description: The title displayed at the top of the shopping list page.
+        image_url:
+          type: string
+          format: uri
+          description: URL of an image to display on the shopping list page.
+        link_type:
+          type: string
+          description: The type of product link to create.
+        expires_in:
+          type: integer
+          description: The number of seconds until the generated link expires.
+          minimum: 1
+        instructions:
+          type: string
+          description: Additional instructions or notes to display on the page.
+        line_items:
+          type: array
+          description: The list of products to include on the shopping list page.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        landing_page_configuration:
+          type: object
+          description: Configuration options for the landing page appearance and behavior.
+          properties:
+            partner_linkback_url:
+              type: string
+              format: uri
+              description: URL to link back to the partner site from the landing page.
+    Error_2:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message describing what went wrong.
+        status:
+          type: integer
+          description: The HTTP status code of the error response.
   securitySchemes:
     bearerAuth:
       type: http
