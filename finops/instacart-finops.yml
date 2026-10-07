@@ -119,10 +119,8 @@ apis:
 unitEconomics:
   - name: Cost per Order
     metric: take_rate_revenue / orders_fulfilled
-    target: TBD
   - name: Return on Ad Spend
     metric: attributed_revenue / ads_spend
-    target: TBD
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
