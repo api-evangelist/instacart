@@ -1,53 +1,23 @@
-generated: '2026-07-15'
+generated: '2026-09-23'
 method: generated
-source: openapi/instacart-catalog-api-openapi.yml, openapi/instacart-connect-fulfillment-api-openapi.yml,
-  openapi/instacart-connect-post-checkout-api-openapi.yml, openapi/instacart-developer-platform-api-openapi.yml
+source: openapi/instacart-authentication-api-openapi.yml, openapi/instacart-chat-api-openapi.yml,
+  openapi/instacart-delivery-api-openapi.yml, openapi/instacart-items-api-openapi.yml, openapi/instacart-last-mile-delivery-api-openapi.yml,
+  openapi/instacart-orders-api-openapi.yml, openapi/instacart-pickup-api-openapi.yml, openapi/instacart-products-api-openapi.yml,
+  openapi/instacart-replacements-api-openapi.yml, openapi/instacart-rest-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
-  operations: 23
+  operations: 24
   by_action_class:
-    acting: 19
-    connected: 4
+    acting: 17
+    connected: 7
   by_consequence:
-    write: 5
-    physical: 14
-    read: 4
+    write: 6
+    read: 7
+    physical: 11
   human_in_the_loop_required: 0
 operations:
-- path: /v2/data_ingestion/catalog/product/submission
-  method: post
-  operationId: submitProducts
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v2/data_ingestion/catalog/item/submission
-  method: post
-  operationId: submitItems
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /v2/oauth/token
   method: post
   operationId: generateAccessToken
@@ -64,9 +34,19 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /v2/fulfillment/stores/delivery
+- path: /v2/post_checkout/chat/{order_id}/messages
+  method: get
+  operationId: getChatMessages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v2/post_checkout/chat/{order_id}/messages
   method: post
-  operationId: findDeliveryStores
+  operationId: sendChatMessage
   x-agentic-access:
     action-class: acting
     consequence: physical
@@ -82,6 +62,16 @@ operations:
       - abnormal
       - high-value
     audit: required
+- path: /v2/fulfillment/stores/delivery
+  method: post
+  operationId: findDeliveryStores
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
 - path: /v2/fulfillment/users/{user_id}/service_options/delivery
   method: post
   operationId: previewDeliveryTimeSlots
@@ -164,54 +154,16 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /v2/fulfillment/stores/pickup
+- path: /v2/data_ingestion/catalog/item/submission
   method: post
-  operationId: findPickupStores
+  operationId: submitItems
   x-agentic-access:
     action-class: acting
-    consequence: physical
+    consequence: write
     subject: required
     audience: null
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v2/fulfillment/users/{user_id}/service_options/pickup
-  method: post
-  operationId: previewPickupTimeSlots
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v2/fulfillment/users/{user_id}/orders/pickup
-  method: post
-  operationId: createPickupOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
+      max-ttl: 900
     escalation:
       human-in-the-loop: conditional
       triggers:
@@ -222,20 +174,12 @@ operations:
   method: post
   operationId: findLastMileStores
   x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /v2/fulfillment/lastmile/users/{user_id}/service_options
   method: post
   operationId: previewLastMileServiceOptions
@@ -310,9 +254,19 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /v2/post_checkout/orders/{order_id}/items/{order_item_id}/replacement
-  method: put
-  operationId: updateItemReplacement
+- path: /v2/fulfillment/stores/pickup
+  method: post
+  operationId: findPickupStores
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v2/fulfillment/users/{user_id}/service_options/pickup
+  method: post
+  operationId: previewPickupTimeSlots
   x-agentic-access:
     action-class: acting
     consequence: physical
@@ -328,19 +282,9 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /v2/post_checkout/chat/{order_id}/messages
-  method: get
-  operationId: getChatMessages
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v2/post_checkout/chat/{order_id}/messages
+- path: /v2/fulfillment/users/{user_id}/orders/pickup
   method: post
-  operationId: sendChatMessage
+  operationId: createPickupOrder
   x-agentic-access:
     action-class: acting
     consequence: physical
@@ -350,6 +294,22 @@ operations:
       max-ttl: 300
       exchange: true
       purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v2/data_ingestion/catalog/product/submission
+  method: post
+  operationId: submitProducts
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
     escalation:
       human-in-the-loop: conditional
       triggers:
@@ -375,6 +335,40 @@ operations:
 - path: /idp/v1/products/recipe
   method: post
   operationId: createRecipePage
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v2/post_checkout/orders/{order_id}/items/{order_item_id}/replacement
+  method: put
+  operationId: updateItemReplacement
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rest/llm_integration/openapi/v2_1/recipes
+  method: post
+  operationId: create
   x-agentic-access:
     action-class: acting
     consequence: write
