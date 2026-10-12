@@ -1,0 +1,23 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://composio.dev/toolkits/instacart
+checked:
+- https://composio.dev/toolkits/instacart
+- https://monid.ai/tools/instacart
+- https://n8n.io/integrations/instacart/
+- https://zapier.com/apps/instacart/integrations
+summary: null
+marketplace_apps:
+- marketplace: composio
+  channel: agent-gateway
+  app: instacart
+  url: https://composio.dev/toolkits/instacart
+  identity: action-prefix
+  actions:
+  - key: INSTACART_CREATE_INSTACART_RECIPE_LINK
+  - key: INSTACART_CREATE_RECIPE_PAGE
+  - key: INSTACART_CREATE_SHOPPING_LIST_PAGE
+  - key: INSTACART_GET_NEARBY_RETAILERS
+edges: []
+templates: []
