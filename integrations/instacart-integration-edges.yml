@@ -7,6 +7,7 @@ checked:
 - https://monid.ai/tools/instacart
 - https://n8n.io/integrations/instacart/
 - https://zapier.com/apps/instacart/integrations
+- toast/integrations/toast-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: composio
@@ -19,5 +20,22 @@ marketplace_apps:
   - key: INSTACART_CREATE_RECIPE_PAGE
   - key: INSTACART_CREATE_SHOPPING_LIST_PAGE
   - key: INSTACART_GET_NEARBY_RETAILERS
-edges: []
+edges:
+- partner_name: Toast (own)
+  partner: toast
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://pos.toasttab.com/partners/directory/instacartbusiness
+  mirror_of: toast/integrations/toast-integration-edges.yml
+  apps:
+  - 'Instacart Business '
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Food Service Distributor
 templates: []
