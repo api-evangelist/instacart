@@ -74,57 +74,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    OrderItemsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          description: The list of items in the order with their current statuses.
-          items:
-            $ref: '#/components/schemas/PostCheckoutOrderItem'
-    PostCheckoutOrderItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the order item.
-        product_name:
-          type: string
-          description: The name of the ordered product.
-        quantity:
-          type: integer
-          description: The ordered quantity.
-        status:
-          type: string
-          enum:
-          - pending
-          - found
-          - replaced
-          - refunded
-          - not_found
-          description: The current status of the item during shopping.
-        replacement:
-          $ref: '#/components/schemas/Replacement'
-        replacement_status:
-          type: string
-          enum:
-          - PENDING
-          - APPROVED
-          - REJECTED
-          description: The customer's decision on the replacement, if one was suggested.
-    Replacement:
-      type: object
-      description: Details about the replacement product suggested by the shopper.
-      properties:
-        product_name:
-          type: string
-          description: The name of the replacement product.
-        product_id:
-          type: string
-          description: The product identifier of the replacement.
-        quantity:
-          type: integer
-          description: The quantity of the replacement product.
     OrderHandlingResponse:
       type: object
       properties:
@@ -186,6 +135,19 @@ components:
         notes:
           type: string
           description: Any delivery or pickup instructions included with the order.
+    Replacement:
+      type: object
+      description: Details about the replacement product suggested by the shopper.
+      properties:
+        product_name:
+          type: string
+          description: The name of the replacement product.
+        product_id:
+          type: string
+          description: The product identifier of the replacement.
+        quantity:
+          type: integer
+          description: The quantity of the replacement product.
     Error:
       type: object
       properties:
@@ -195,6 +157,44 @@ components:
         status:
           type: integer
           description: The HTTP status code.
+    OrderItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          description: The list of items in the order with their current statuses.
+          items:
+            $ref: '#/components/schemas/PostCheckoutOrderItem'
+    PostCheckoutOrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order item.
+        product_name:
+          type: string
+          description: The name of the ordered product.
+        quantity:
+          type: integer
+          description: The ordered quantity.
+        status:
+          type: string
+          enum:
+          - pending
+          - found
+          - replaced
+          - refunded
+          - not_found
+          description: The current status of the item during shopping.
+        replacement:
+          $ref: '#/components/schemas/Replacement'
+        replacement_status:
+          type: string
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          description: The customer's decision on the replacement, if one was suggested.
   parameters:
     orderId:
       name: order_id

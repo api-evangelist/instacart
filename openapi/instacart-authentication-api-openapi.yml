@@ -45,6 +45,15 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A human-readable error message.
+        status:
+          type: integer
+          description: The HTTP status code.
     TokenRequest:
       type: object
       required:
@@ -87,15 +96,6 @@ components:
         created_at:
           type: integer
           description: Unix timestamp indicating when the token was created.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: A human-readable error message.
-        status:
-          type: integer
-          description: The HTTP status code.
   securitySchemes:
     bearerAuth:
       type: http
