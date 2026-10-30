@@ -1,4 +1,4 @@
-# instacart (instacart)
+# Instacart
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,138 +64,262 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Use the public Instacart APIs to add Instacart shopping capabilities to your applications, such as product shopping lists and recipe ingredients.
+Instacart (Maplebear Inc.) is a North American grocery technology company that operates the Instacart Marketplace and sells its underlying commerce, fulfillment, catalog, advertising and storefront technology to retailers and brands. Its published API surface splits cleanly in two. The Instacart Developer Platform API is open to app and website developers, costs nothing, and exposes two shoppable-page operations plus a nearby-retailers lookup at connect.instacart.com/idp/v1 -- and, unusually, Instacart pays the developer, commissioning attributed orders through an Impact affiliate programme. Instacart Connect is the enterprise half: OAuth 2.0, partner-gated Fulfillment, Post-checkout, Transaction and Sandbox APIs, the Catalog API, Carrot Ads and Shopping Widgets, all bundled into a retailer or brand partner agreement. Instacart also runs a first-party remote Model Context Protocol server at https://mcp.instacart.com/mcp whose tools/list is served anonymously, making it one of the few grocery-sector providers with a directly reachable agent surface.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/instacart/refs/heads/main/apis.yml)
+**Areas:** Grocery · E-Commerce · Marketplace · Retail · Logistics · Last Mile Delivery · Fulfillment · Catalog · Advertising · Agents · MCP · Agentic Commerce
 
-## Timestamps
+## Instacart on APIs.io
 
-- **Modified:** 2026-05-19
+Everything profiled for Instacart is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/instacart/](https://apis.io/providers/instacart/)** — or go straight to one of the APIs or properties below.
 
-## APIs
+### APIs (12)
 
-### Instacart Developer Platform API
+- [Instacart Shopping Widgets](https://apis.io/apis/instacart/shopping-widgets/) — Instacart Shopping Widgets are front-end web components that retailers can embed into their websites to add e-commerce functionalities powered by Instacart…
+- [instacart Authentication API](https://apis.io/apis/instacart/instacart-authentication-api/) — Endpoints for obtaining and managing OAuth 2.0 access tokens used to authenticate API requests.
+- [instacart Chat API](https://apis.io/apis/instacart/instacart-chat-api/) — Endpoints for shopper-customer communication including sending and retrieving chat messages.
+- [instacart Delivery API](https://apis.io/apis/instacart/instacart-delivery-api/) — Endpoints for finding delivery stores, previewing time slots, reserving time slots, and creating delivery orders.
+- [instacart Items API](https://apis.io/apis/instacart/instacart-items-api/) — Endpoints for updating item-level attributes such as pricing and availability at specific store locations. Items contain information that can vary from one…
+- [instacart Last Mile Delivery API](https://apis.io/apis/instacart/instacart-last-mile-delivery-api/) — Endpoints for last mile delivery where items are pre-packed and only require delivery from the store to the customer.
+- [instacart Orders API](https://apis.io/apis/instacart/instacart-orders-api/) — Endpoints for retrieving order status, handling details, and item information after checkout.
+- [instacart Pickup API](https://apis.io/apis/instacart/instacart-pickup-api/) — Endpoints for finding pickup stores, previewing time slots, reserving time slots, and creating pickup orders.
+- [instacart Products API](https://apis.io/apis/instacart/instacart-products-api/) — Endpoints for creating and updating products in the retailer's catalog on Instacart. Products are the same across all of a retailer's stores.
+- [instacart Replacements API](https://apis.io/apis/instacart/instacart-replacements-api/) — Endpoints for managing item replacements suggested by shoppers during order fulfillment.
+- [Instacart Developer Platform MCP Server](https://apis.io/apis/instacart/instacart-mcp-server/) — Instacart's first-party remote Model Context Protocol server. Production endpoint https://mcp.instacart.com/mcp over Streamable HTTP, authenticated with a…
+- [instacart Rest API](https://apis.io/apis/instacart/instacart-rest-api/) — The Rest API from instacart — 1 operation(s) for rest.
 
-The Instacart Developer Platform API is a REST-based API that allows app developers to add Instacart shopping capabilities to their websites and applications. It provides endpoints for creating product shopping lists and recipe pages on Instacart Marketplace, enabling users to select a store, add ingredients or products to a cart, and check out.
+### Published properties
 
-- **Human URL:** [https://docs.instacart.com/developer_platform_api/](https://docs.instacart.com/developer_platform_api/)
-- **Base URL:** `https://connect.instacart.com`
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-#### Tags
+#### AsyncAPI (1)
 
-- Delivery
-- E-Commerce
-- Grocery
-- Products
-- Recipes
-- Shopping
+Event-driven and webhook contracts.
 
-#### Properties
+- [Instacart Connect Event Callbacks](https://apis.io/asyncapis/instacart/instacart-connect-events-asyncapi/)
 
-- [Documentation](https://docs.instacart.com/developer_platform_api/)
-- [OpenAPI](openapi/instacart-developer-platform-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/instacart-developer-platform-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-developer-platform-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Event channels (1)
 
-### Instacart Connect Fulfillment API
+Individual events and webhooks the provider emits.
 
-The Instacart Connect Fulfillment API enables retailers to integrate Instacart fulfillment capabilities directly into their e-commerce sites. It combines grocery, delivery, and pickup functionality into a single API, allowing retailers to offer full-service shopping where Instacart shoppers pick items and suggest replacements, as well as same-day or scheduled delivery and pickup options.
+- [/webhook](https://apis.io/channels/instacart/webhook/)
 
-- **Human URL:** [https://docs.instacart.com/connect/fulfillment/](https://docs.instacart.com/connect/fulfillment/)
-- **Base URL:** `https://connect.instacart.com`
+#### GraphQL (1)
 
-#### Tags
+GraphQL schemas.
 
-- Delivery
-- E-Commerce
-- Fulfillment
-- Grocery
-- Pickup
-- Retail
+- [Moved to /providers/instacart/](https://apis.io/graphqls/instacart/instacart-graphql/)
 
-#### Properties
+#### MCP servers (1)
 
-- [Documentation](https://docs.instacart.com/connect/fulfillment/)
-- [OpenAPI](openapi/instacart-connect-fulfillment-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/instacart-connect-fulfillment-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-connect-fulfillment-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/instacart-connect-events-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+Model Context Protocol servers that expose the API to agents.
 
-### Instacart Connect Post-Checkout API
+- [Instacart Developer Platform MCP Server](https://apis.io/servers/instacart/instacart-developer-platform-mcp-server/)
 
-The Instacart Connect Post-Checkout API allows retailers to provide their customers with real-time order tracking and shopper interaction after an order has been placed. Retailers can use this API to build custom order status pages that display order details, live tracking information, and shopper communication.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.instacart.com/connect/post-checkout/](https://docs.instacart.com/connect/post-checkout/)
-- **Base URL:** `https://connect.instacart.com`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Instacart Agentic Access](https://apis.io/agentic-access/instacart/instacart-agentic-access/)
 
-- Delivery
-- Fulfillment
-- Orders
-- Retail
-- Tracking
+#### JSON Schema (35)
 
-#### Properties
+The data models the API reads and writes.
 
-- [Documentation](https://docs.instacart.com/connect/post-checkout/)
-- [OpenAPI](openapi/instacart-connect-post-checkout-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/instacart-connect-post-checkout-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-connect-post-checkout-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [CartItem](https://apis.io/schemas/instacart/instacart-cartitem/)
+- [ChatMessage](https://apis.io/schemas/instacart/instacart-chatmessage/)
+- [ChatMessagesResponse](https://apis.io/schemas/instacart/instacart-chatmessagesresponse/)
+- [CreateOrderRequest](https://apis.io/schemas/instacart/instacart-createorderrequest/)
+- [Error](https://apis.io/schemas/instacart/instacart-error/)
+- [FindStoresRequest](https://apis.io/schemas/instacart/instacart-findstoresrequest/)
+- [Ingredient](https://apis.io/schemas/instacart/instacart-ingredient/)
+- [Item](https://apis.io/schemas/instacart/instacart-item/)
+- [ItemSubmissionRequest](https://apis.io/schemas/instacart/instacart-itemsubmissionrequest/)
+- [LineItem](https://apis.io/schemas/instacart/instacart-lineitem/)
+- [Instacart Order](https://apis.io/schemas/instacart/instacart-order/)
+- [OrderHandlingResponse](https://apis.io/schemas/instacart/instacart-orderhandlingresponse/)
+- [OrderItem](https://apis.io/schemas/instacart/instacart-orderitem/)
+- [OrderItemsResponse](https://apis.io/schemas/instacart/instacart-orderitemsresponse/)
+- [OrderResponse](https://apis.io/schemas/instacart/instacart-orderresponse/)
+- [PostCheckoutOrderItem](https://apis.io/schemas/instacart/instacart-postcheckoutorderitem/)
+- [PreviewServiceOptionsRequest](https://apis.io/schemas/instacart/instacart-previewserviceoptionsrequest/)
+- [Instacart Product](https://apis.io/schemas/instacart/instacart-product/)
+- [ProductsLinkResponse](https://apis.io/schemas/instacart/instacart-productslinkresponse/)
+- [ProductSubmissionRequest](https://apis.io/schemas/instacart/instacart-productsubmissionrequest/)
+- [RecipeRequest](https://apis.io/schemas/instacart/instacart-reciperequest/)
+- [Replacement](https://apis.io/schemas/instacart/instacart-replacement/)
+- [ReplacementDecisionRequest](https://apis.io/schemas/instacart/instacart-replacementdecisionrequest/)
+- [ReplacementResponse](https://apis.io/schemas/instacart/instacart-replacementresponse/)
+- [ReserveTimeSlotRequest](https://apis.io/schemas/instacart/instacart-reservetimeslotrequest/)
+- …and 10 more published on APIs.io
 
-### Instacart Catalog API
+#### JSON Structure (1)
 
-The Instacart Catalog API enables retailers to programmatically manage their product catalogs on the Instacart platform. Retailers can use the API to create or update products and items, with partial updates supported so that only the attributes included in the request body are modified.
+Data models expressed in JSON Structure.
 
-- **Human URL:** [https://docs.instacart.com/catalog/catalog_api/overview/](https://docs.instacart.com/catalog/catalog_api/overview/)
-- **Base URL:** `https://connect.instacart.com`
+- [Instacart Structure](https://apis.io/json-structure/instacart/instacart-structure/)
 
-#### Tags
+#### JSON-LD (1)
 
-- Catalog
-- E-Commerce
-- Inventory
-- Products
-- Retail
+Linked-data contexts for the provider's vocabulary.
 
-#### Properties
+- [Instacart Context](https://apis.io/jsonld/instacart/instacart-context/)
 
-- [Documentation](https://docs.instacart.com/catalog/catalog_api/overview/)
-- [OpenAPI](openapi/instacart-catalog-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/instacart-catalog-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-catalog-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Vocabulary (1)
 
-### Instacart Shopping Widgets
+The provider's domain terms, defined.
 
-Instacart Shopping Widgets are front-end web components that retailers can embed into their websites to add e-commerce functionalities powered by Instacart without interacting with any API directly. The widgets enable features such as product search results, cart management, product collections, and user authentication.
+- [Instacart Domain Vocabulary](https://apis.io/vocabularies/instacart/instacart-vocabulary/)
 
-- **Human URL:** [https://docs.instacart.com/widgets/](https://docs.instacart.com/widgets/)
-- **Base URL:** `https://api.example.com`
+#### Collections (13)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Embedding
-- Retail
-- Shopping
-- Web Components
-- Widgets
+- [Instacart Catalog Authentication API](https://apis.io/collections/instacart/open-instacart-authentication-api/)
+- [Instacart Catalog API](https://apis.io/collections/instacart/open-instacart-catalog-api/)
+- [Instacart Catalog Authentication Chat API](https://apis.io/collections/instacart/open-instacart-chat-api/)
+- [Instacart Connect Fulfillment API](https://apis.io/collections/instacart/open-instacart-connect-fulfillment-api/)
+- [Instacart Connect Post-Checkout API](https://apis.io/collections/instacart/open-instacart-connect-post-checkout-api/)
+- [Instacart Catalog Authentication Delivery API](https://apis.io/collections/instacart/open-instacart-delivery-api/)
+- [Instacart Developer Platform API](https://apis.io/collections/instacart/open-instacart-developer-platform-api/)
+- [Instacart Catalog Authentication Items API](https://apis.io/collections/instacart/open-instacart-items-api/)
+- [Instacart Catalog Authentication Last Mile Delivery API](https://apis.io/collections/instacart/open-instacart-last-mile-delivery-api/)
+- [Instacart Catalog Authentication Orders API](https://apis.io/collections/instacart/open-instacart-orders-api/)
+- [Instacart Catalog Authentication Pickup API](https://apis.io/collections/instacart/open-instacart-pickup-api/)
+- [Instacart Catalog Authentication Products API](https://apis.io/collections/instacart/open-instacart-products-api/)
+- [Instacart Catalog Authentication Replacements API](https://apis.io/collections/instacart/open-instacart-replacements-api/)
 
-#### Properties
+#### Overlays (20)
 
-- [Documentation](https://docs.instacart.com/widgets/)
-- [Postman Collection](collections/instacart-catalog-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-catalog-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/instacart-connect-fulfillment-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-connect-fulfillment-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/instacart-connect-post-checkout-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-connect-post-checkout-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/instacart-developer-platform-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/instacart-developer-platform-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+OpenAPI overlays, including conversational phrasing for each operation.
 
-## Common Properties
+- [Instacart Authentication Api Overlay](https://apis.io/overlays/instacart/instacart-authentication-api-overlay/)
+- [Instacart Authentication Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-authentication-api-phrasing-overlay/)
+- [Instacart Chat Api Overlay](https://apis.io/overlays/instacart/instacart-chat-api-overlay/)
+- [Instacart Chat Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-chat-api-phrasing-overlay/)
+- [Instacart Delivery Api Overlay](https://apis.io/overlays/instacart/instacart-delivery-api-overlay/)
+- [Instacart Delivery Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-delivery-api-phrasing-overlay/)
+- [Instacart Items Api Overlay](https://apis.io/overlays/instacart/instacart-items-api-overlay/)
+- [Instacart Items Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-items-api-phrasing-overlay/)
+- [Instacart Last Mile Delivery Api Overlay](https://apis.io/overlays/instacart/instacart-last-mile-delivery-api-overlay/)
+- [Instacart Last Mile Delivery Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-last-mile-delivery-api-phrasing-overlay/)
+- [Instacart Llm Integration Overlay](https://apis.io/overlays/instacart/instacart-llm-integration-overlay/)
+- [Instacart Orders Api Overlay](https://apis.io/overlays/instacart/instacart-orders-api-overlay/)
+- [Instacart Orders Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-orders-api-phrasing-overlay/)
+- [Instacart Pickup Api Overlay](https://apis.io/overlays/instacart/instacart-pickup-api-overlay/)
+- [Instacart Pickup Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-pickup-api-phrasing-overlay/)
+- [Instacart Products Api Overlay](https://apis.io/overlays/instacart/instacart-products-api-overlay/)
+- [Instacart Products Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-products-api-phrasing-overlay/)
+- [Instacart Replacements Api Overlay](https://apis.io/overlays/instacart/instacart-replacements-api-overlay/)
+- [Instacart Replacements Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-replacements-api-phrasing-overlay/)
+- [Instacart Rest Api Phrasing Overlay](https://apis.io/overlays/instacart/instacart-rest-api-phrasing-overlay/)
 
-- [GitHub Organization](https://github.com/instacart)
-- [LinkedIn](https://www.linkedin.com/company/instacart)
-- [JSON-LD](json-ld/instacart-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [JSON Schema](json-schema/instacart-order-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/instacart-product-schema.json) — [JSON Schema](https://json-schema.org/specification)
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Instacart — asyncapi rules](https://apis.io/rules/instacart/instacart-asyncapi-spectral-rules/)
+- [Instacart — jsonschema rules](https://apis.io/rules/instacart/instacart-jsonschema-spectral-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Instacart Authentication](https://apis.io/security/instacart/instacart-authentication/)
+- [Instacart Domain Security](https://apis.io/security/instacart/instacart-domain-security/)
+- [Instacart Vulnerability Disclosure](https://apis.io/security/instacart/instacart-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Instacart Scopes](https://apis.io/scopes/instacart/instacart-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Instacart Plans Pricing](https://apis.io/plans/instacart/instacart-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Instacart Rate Limits](https://apis.io/rate-limits/instacart/instacart-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Instacart Finops](https://apis.io/finops/instacart/instacart-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.instacart.com/)
+- [Documentation](https://docs.instacart.com/)
+- [Getting started](https://docs.instacart.com/developer_platform_api/get_started/overview)
+- [API reference](https://docs.instacart.com/developer_platform_api/api/overview)
+- [Support](https://instacart.atlassian.net/servicedesk/customer/portal/1)
+- [Changelog](https://docs.instacart.com/developer_platform_api/api/changelog)
+- [Blog](https://company.instacart.com/blog)
+- [Security](https://hackerone.com/instacart)
+- [Terms of service](https://www.instacart.com/terms)
+- [Privacy policy](https://www.instacart.com/privacy)
+- [GitHub](https://github.com/instacart)
+- [Status](https://enterprise-status.instacart.com/)
+
+## API Evangelist rating
+
+**Kin Score 70.0** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 63.6 |
+| Contract governance | 31.8 |
+| Operational transparency | 81.6 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 65.8 |
+
+**Agent readiness 37.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 40.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/instacart/](https://apis.io/providers/instacart/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Instacart: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/instacart/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
